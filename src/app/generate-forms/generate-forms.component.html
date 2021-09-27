@@ -1,0 +1,41 @@
+<mat-stepper>
+    <!-- Process Type -->
+    <mat-step label="Registration Type" state="phone">
+        <app-upload-cust-data></app-upload-cust-data>
+    </mat-step>
+
+    <!-- Process 1 -->
+    <mat-step label="Applicant Registration" state="phone">
+        <app-registration></app-registration>
+        <div class="d-flex justify-content-around pt-3">
+            <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
+            <button mat-button matStepperNext class="btn-theme-secondary">Next</button>
+        </div>
+    </mat-step>
+
+    <!-- Process 2 -->
+    <mat-step label="MI Land Details" state="chat">
+        <app-mi-land-details></app-mi-land-details>
+        <div class="d-flex justify-content-around pt-3">
+            <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
+            <button mat-button matStepperNext class="btn-theme-secondary">Next</button>
+        </div>
+    </mat-step>
+
+    <!-- Process 3 -->
+    <mat-step label="Survey / Crop Details">
+        <app-land-crop-details></app-land-crop-details>
+        <div class="d-flex justify-content-around pt-3">
+            <button mat-button matStepperPrevious class="btn-theme-secondary">Back</button>
+            <!-- <button mat-button matStepperNext class="btn-theme-secondary">Next</button> -->
+        </div>
+    </mat-step>
+
+    <!-- Icon overrides. -->
+    <ng-template matStepperIcon="phone">
+        <mat-icon>call_end</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="chat">
+        <mat-icon>forum</mat-icon>
+    </ng-template>
+</mat-stepper>

@@ -1,0 +1,36 @@
+<mat-sidenav-container class="vh-100">
+    <!-- Side Nav -->
+    <mat-sidenav #lefSideNav mode="side">
+        <mat-nav-list id="left-side-nav">
+
+            <div class="d-flex justify-content-around">
+                <h3 mat-list-item class="py-3"> {{userName}} </h3>
+            </div>
+
+            <ng-container *ngFor="let item of navListItems">
+                <mat-nav-list>
+                    <a mat-list-item [routerLink]="item.link" routerLinkActive="hl-active" (click)="lefSideNav.close()">
+                        <mat-icon> {{item.icon}} </mat-icon> <span class="px-3"> {{item.scrName}} </span>
+                    </a>
+                </mat-nav-list>
+            </ng-container>
+
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Main content -->
+    <mat-sidenav-content>
+        <!-- Tool bar -->
+        <app-toolbar [navbarRef]="lefSideNav"></app-toolbar>
+
+        <!-- Main content of Other Screens -->
+        <div class="container-fluid">
+            <!-- <app-registration></app-registration>
+            <app-land-crop-details></app-land-crop-details> -->
+            <!-- <app-generate-forms></app-generate-forms> -->
+            <router-outlet></router-outlet>
+        </div>
+
+    </mat-sidenav-content>
+
+</mat-sidenav-container>

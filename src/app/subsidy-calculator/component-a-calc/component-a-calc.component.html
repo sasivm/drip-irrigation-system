@@ -1,0 +1,48 @@
+<form [formGroup]="controlUnitForm">
+    <div class="row">
+        <table mat-table [dataSource]="dataSource" formArrayName="unitItems" class="w-100 mat-elevation-z8">
+            <ng-container matColumnDef="sno">
+                <th mat-header-cell *matHeaderCellDef> SI.No </th>
+                <td mat-cell *matCellDef="let element" class="col-2"> {{element.sno}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="component">
+                <th mat-header-cell *matHeaderCellDef> Component </th>
+                <td mat-cell *matCellDef="let element" class="col-6"> {{element.component}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unit">
+                <th mat-header-cell *matHeaderCellDef> Unit </th>
+                <td mat-cell *matCellDef="let element" class="col-2"> {{element.unit}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="rate">
+                <th mat-header-cell *matHeaderCellDef> Unit Rate </th>
+                <td mat-cell *matCellDef="let element" class="col-2"> {{element.unitRate}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="qty">
+                <th mat-header-cell *matHeaderCellDef> Qty </th>
+                <td mat-cell *matCellDef="let element; let idx = index" [formGroupName]="idx" class="col-1">
+                    <input type="text" name="qty" id="qty" formControlName="qty" (focusout)="updateTotalUnit(idx)" />
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total </th>
+                <td mat-cell *matCellDef="let element; let idx = index" [formGroupName]="idx" class="col-2">
+                    {{getTotalOfItems(idx)}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectedRowIdx = row.sno"
+                [ngClass]="{ 'tr-highlight': row.sno === selectedRowIdx }"></tr>
+        </table>
+    </div>
+
+    <div class="offset-6 col py-2">
+        <label class=""> Total Control Unit Amount (RS) </label>
+        <span class="col"> {{controlUnitForm.get(TOTAL_AMT_FIELD)?.value}} </span>
+    </div>
+</form>

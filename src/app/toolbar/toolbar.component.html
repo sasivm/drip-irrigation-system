@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+
+    <button mat-icon-button (click)="navbarRef.toggle()">
+        <mat-icon> menu </mat-icon>
+    </button>
+
+    <span class="px-3">
+        <h1> <b> {{app_title}} </b> </h1>
+    </span>
+
+    <div class="ml-auto px-3">
+        <mat-nav-list>
+            <mat-icon id="user-icon"> account_circle </mat-icon>
+        </mat-nav-list>
+    </div>
+</mat-toolbar>

@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="border">
+        <div class="row p-3">
+            <div class="col">
+                <h3> Upload Applicant details using Excel Sheet </h3>
+
+                <div>
+                    <input type="file" name="uploadFile" id="uploadFile" (change)="uploadedFile($event)" accept=".xlsx">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row p-3">
+            <div class="ml-auto">
+                <p> Or Register new Curstomer details </p>
+                <div>
+                    <button matStepperNext type="button" class="btn-sm btn-theme-primary px-3"> Start </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

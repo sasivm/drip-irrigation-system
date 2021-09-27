@@ -7,7 +7,7 @@ import { CommonList } from 'src/app/common/models/common-types';
   templateUrl: './mi-land-details.component.html',
   styleUrls: ['./mi-land-details.component.scss']
 })
-export class MiLandDetailsComponent implements OnInit {
+export class MiLandDetailsComponent {
 
   cropTypeList: CommonList[] = GlobalConstants.CROP_CropTypeList;
 
@@ -16,8 +16,5 @@ export class MiLandDetailsComponent implements OnInit {
   miTypeList: CommonList[] = GlobalConstants.CROP_MITypeList;
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

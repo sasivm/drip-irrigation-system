@@ -8,7 +8,7 @@ import { CommonList } from 'src/app/common/models/common-types';
   templateUrl: './land-crop-details.component.html',
   styleUrls: ['./land-crop-details.component.scss']
 })
-export class LandCropDetailsComponent implements OnInit {
+export class LandCropDetailsComponent {
 
   totalIrrigationArea: number = 0;
   totalCropIrrigationArea: number = 0;
@@ -34,9 +34,6 @@ export class LandCropDetailsComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-  }
 
   get surveyDetails(): FormArray {
     return this.surveyDetailsForm.get('surveyDetails') as FormArray;

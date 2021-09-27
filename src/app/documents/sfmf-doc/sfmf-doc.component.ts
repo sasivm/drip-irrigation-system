@@ -1,5 +1,4 @@
-import { style } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -11,7 +10,7 @@ import { TDocumentDefinitions, Content, StyleDictionary, Style, Table, ContentTa
   templateUrl: './sfmf-doc.component.html',
   styleUrls: ['./sfmf-doc.component.scss']
 })
-export class SfmfDocComponent implements OnInit {
+export class SfmfDocComponent {
 
   DOC_STYLE_HEADER_TITLE_NAME: string = 'docHeadTitle';
   DOC_STYLE_NORMAL_LINE_NAME: string = 'normalTextLine';
@@ -180,9 +179,6 @@ export class SfmfDocComponent implements OnInit {
   }
 
   constructor() { }
-
-  ngOnInit(): void {
-  }
 
   downloadPDFFile() {
     this.generatePDF();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ExcelReaderService } from 'src/app/services/excel-reader.services';
 
 @Component({
@@ -6,14 +6,11 @@ import { ExcelReaderService } from 'src/app/services/excel-reader.services';
   templateUrl: './upload-cust-data.component.html',
   styleUrls: ['./upload-cust-data.component.scss']
 })
-export class UploadCustDataComponent implements OnInit {
+export class UploadCustDataComponent {
 
   excelArray: any = [];
 
   constructor(private _excelReader: ExcelReaderService) { }
-
-  ngOnInit(): void {
-  }
 
   uploadedFile(uploadedFileEvent: any) {
     console.log(uploadedFileEvent);

@@ -15,6 +15,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,6 +36,10 @@ import { ComponentACalcComponent } from './subsidy-calculator/component-a-calc/c
 import { DocsViewComponent } from './documents/docs-view.component';
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
+import { BulkRegistorComponent } from './registration/bulk-registor/bulk-registor.component';
+import { RegTypeComponent } from './registration/reg-type/reg-type.component';
+import { CustTableComponent } from './cust-table/cust-table.component';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +59,10 @@ import { VerificationDocComponent } from './documents/verification-doc/verificat
     ComponentACalcComponent,
     DocsViewComponent,
     SfmfDocComponent,
-    VerificationDocComponent
+    VerificationDocComponent,
+    BulkRegistorComponent,
+    RegTypeComponent,
+    CustTableComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +71,7 @@ import { VerificationDocComponent } from './documents/verification-doc/verificat
     ReactiveFormsModule, FormsModule,
     MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule,
     MatListModule, MatTabsModule, MatRadioModule, MatCheckboxModule, MatStepperModule,
-    MatTableModule, MatTooltipModule
+    MatTableModule, MatPaginatorModule, MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

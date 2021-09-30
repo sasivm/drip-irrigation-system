@@ -290,4 +290,8 @@ export class GlobalConstants {
 
     readonly baseAppUrl: string = 'http://localhost:57431/';
     readonly baseAPIUrl: string = 'https://api.github.com/';
+    public static readonly FILE_UPLOAD_CANCEL_ERROR_MESSAGE: string = 'Please upload a file';
+    public static readonly FILE_UPLOAD_SUCCESS_MESSAGE: string = 'File data exctacted successfully.';
+    public static readonly FILE_UPLOAD_NO_DATA: string = 'Customer Details not present';
+
 }

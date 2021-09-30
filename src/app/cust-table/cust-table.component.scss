@@ -1,0 +1,35 @@
+table td,
+table th {
+    padding: 2px 10px;
+}
+
+/* Column Widths */
+.mat-header-cell {
+    min-width: 100px;
+}
+
+.mat-column-Srl-No {
+    min-width: 60px;
+}
+
+.mat-column-Application-Id,
+.mat-column-Farmer-Name,
+.mat-column-Father-Name {
+    min-width: 280px;
+}
+
+.mat-column-Survey-No---Subdivision-No,
+.mat-column-MI-Company,
+.mat-column-Dealer-Name,
+.mat-column-Current-Status,
+.mat-column-Current-Status-Remarks {
+    min-width: 200px;
+}
+
+.mat-column-MI-Referrence-No {
+    min-width: 150px;
+}
+
+.mat-column-Current-Status-Date {
+    min-width: 110px;
+}

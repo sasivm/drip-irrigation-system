@@ -1,0 +1,10 @@
+<div class="container-fluid">
+    <div class="card mt-4 p-4">
+        <h2 class="text-center"> Bulk Register </h2>
+        <app-upload-cust-data (excelData)="loadExcelData($event)"> </app-upload-cust-data>
+    </div>
+
+    <div class="card mt-4" >
+        <app-cust-table [custDataArray]="customerData"></app-cust-table>
+    </div>
+</div>

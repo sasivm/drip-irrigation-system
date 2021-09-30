@@ -140,4 +140,9 @@ export class RegistrationComponent implements OnInit {
     this.formStateEnabled = false;
   }
 
+  submitApplicantForm() {
+    console.log(this.registrationForm.value);
+    console.log(this.registrationForm.getRawValue());    
+  }
+
 }

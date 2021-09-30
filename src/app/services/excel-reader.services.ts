@@ -28,27 +28,28 @@ export class ExcelReaderService {
         try {
             const jsonExcelArr = await this.readExcel(target.files[0]);
             return jsonExcelArr;
-        } catch (error) {
-            console.log('error ocurred - ', error);
-            return error;
+        } catch (err) {
+            throw err;
         }
     }
 
     readExcel(excelFile: File) {
         console.log('file-name', excelFile.name);
         console.log('size', excelFile.size);
-
         return new Promise<AOA>((resolve, reject) => {
             const reader = new FileReader();
 
             reader.onload = (event: any) => {
                 const bstr: string = event.target.result;
-                const workbook: XLSX.WorkBook = XLSX.read(bstr, this.XLSX_ParsingType);
-
-                const workSheetName: string = workbook.SheetNames[0];
-                const workSheet: XLSX.WorkSheet = workbook.Sheets[workSheetName];
-                const ExcelJSON = <AOA>(XLSX.utils.sheet_to_json(workSheet, this.JSON_ParsingType));
-                resolve(ExcelJSON);
+                try {
+                    const workbook: XLSX.WorkBook = XLSX.read(bstr, this.XLSX_ParsingType);
+                    const workSheetName: string = workbook.SheetNames[0];
+                    const workSheet: XLSX.WorkSheet = workbook.Sheets[workSheetName];
+                    const ExcelJSON = <AOA>(XLSX.utils.sheet_to_json(workSheet, this.JSON_ParsingType));
+                    resolve(ExcelJSON);
+                } catch (error) {
+                    reject(error);
+                }
             };
             reader.readAsBinaryString(excelFile);
         });

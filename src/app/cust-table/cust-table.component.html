@@ -1,25 +1,54 @@
 <div class="container">
-    <div id="cust-table" class="card row my-3">
+    <div class="d-flex flex-column row my-3">
+        <div *ngIf="sucessMessage" class="alert alert-success">
+            {{sucessMessage}}
+        </div>
 
+        <div *ngIf="errorMessage.message">
+            <div class="alert alert-danger">
+                <b> {{errorMessage.message}} </b>
+                <br>
+                <span *ngIf="errorMessage.desc">
+                    {{errorMessage.desc}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div id="cust-table" class="card row my-3">
         <table mat-table [dataSource]="custDataSource" class="w-100 mat-elevation-z8">
 
-            <ng-container *ngFor="let colName of displayedColumns; let idx = index" [matColumnDef]="colName">
-                <th mat-header-cell *matHeaderCellDef> {{colName}} </th>
-                <td mat-cell *matCellDef="let element"> {{element[COL_NAME_TO_FIELD_NAME[colName]]}} </td>
+            <ng-container *ngFor="let colName of displayedColumns; let idx = index; first as isFirst"
+                [matColumnDef]="colName">
+                <div *ngIf="isFirst; then btnTemp else cellTemp"></div>
+
+                <ng-template #btnTemp>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="saveCustRecReq(element.applicationId)"
+                            mat-flat-button color="primary" type="button"> view </button>
+                    </td>
+                </ng-template>
+
+                <ng-template #cellTemp>
+                    <th mat-header-cell *matHeaderCellDef> {{colName}} </th>
+                    <td mat-cell *matCellDef="let element"> {{element[COL_NAME_TO_FIELD_NAME[colName]]}} </td>
+                </ng-template>
+
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx = index;" (click)="selectedRow(idx)">
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx = index;">
             </tr>
         </table>
     </div>
 
     <div class="row justify-content-between">
         <div>
-            <button class="btn btn-theme-primary"> Register All </button>
+            <button class="btn btn-theme-primary" (click)="bulkRegister()"> Register All </button>
             <button class="btn btn-theme-secondary mx-3"> Selected Only </button>
         </div>
-        
+
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
 </div>

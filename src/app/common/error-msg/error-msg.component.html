@@ -1,0 +1,15 @@
+<div class="d-flex flex-column my-3">
+    <div *ngIf="sucessMessage" class="alert alert-success">
+        {{sucessMessage}}
+    </div>
+
+    <div *ngIf="errorMessage.message">
+        <div class="alert alert-danger">
+            <b> {{errorMessage.message}} </b>
+            <br>
+            <span *ngIf="errorMessage.desc">
+                {{errorMessage.desc}}
+            </span>
+        </div>
+    </div>
+</div>

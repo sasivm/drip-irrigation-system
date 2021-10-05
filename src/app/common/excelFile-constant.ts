@@ -49,13 +49,14 @@ export class ExcelFileConstants {
         "Current Status Remarks"
     ];
 
-    public static readonly EXCEL_HEADERS_FIELD_NAME: string[] = [
+    public static readonly EXCEL_HEADERS_FIELD_NAME: string[] = [ 
+        // To map excel column(th) data to particular UI field name (index to field)
         "sNo",
         "year",
         "applicationId",
         "farmerName",
         "fatherName",
-        "caste",
+        "socialStatus",
         "mobileNo",
         "workOrderDate",
         "workOrderNo",
@@ -105,7 +106,7 @@ export class ExcelFileConstants {
         "Application Id": "applicationId",
         "Farmer Name": "farmerName",
         "Father Name": "fatherName",
-        "Caste": "caste",
+        "Caste": "socialStatus",
         "Mobile": "mobileNo",
         "Work Order Date": "workOrderDate",
         "Work Order No": "workOrderNo",
@@ -150,7 +151,8 @@ export class ExcelFileConstants {
     };
 
     public static readonly CUST_TABLE_VISIBLE_HEADERS: string[] = [
-        // below fields are related to EXCEL_FILE_HEADERS variable
+        // below fields are related to Excel File columns as array
+        "action",
         "Srl No",
         "Year",
         "Application Id",

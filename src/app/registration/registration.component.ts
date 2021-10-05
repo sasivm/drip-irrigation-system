@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { GlobalConstants } from '../common/app.global-constant';
-import { CommonList } from '../common/models/common-types';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
+import { TableErrorMessage } from '../common/models/common-types';
+import { ApplicantReqData, CustomerResponse } from '../common/models/customer';
+import { CustServiceService } from '../services/cust-service.service';
 
 @Component({
   selector: 'app-registration',
@@ -10,139 +12,36 @@ import { CommonList } from '../common/models/common-types';
 })
 export class RegistrationComponent implements OnInit {
 
-  formerTypeList: CommonList[] = GlobalConstants.APPLICATION_FormerTypeList;
+  @ViewChild('stepper') private myStepper!: MatStepper;
 
-  registeredByList: CommonList[] = GlobalConstants.APPLICATION_RegisteredByList;
+  constructor() { }
 
-  departmentList: CommonList[] = GlobalConstants.APPLICATION_DepartmentList;
+  customerRecord: any[] = [];
 
-  miCompanyList: CommonList[] = GlobalConstants.APPLICATION_MICompanyList;
+  ngOnInit() {
+    setTimeout(() => this.checkForUserRequest(), 500);
+  }
 
-  genderList: CommonList[] = GlobalConstants.APPLICATION_GenderList;
+  goForwardOnStepper() {
+    this.myStepper.next();
+  }
 
-  socialStatusList: CommonList[] = GlobalConstants.APPLICATION_SocialStatusList;
 
-  fieldNameRef: any = {
-    applicationId: 'Application Id',
-    farmerType: 'Farmer Type',
-    department: 'Department',
-    miCompany: 'MI Company',
-    district: 'District',
-    block: 'Block',
-    village: 'Village',
-    farmerName: 'Farmer Name',
-    mobileNo: 'Mobile',
-    socialStatus: 'Caste',
-  };
-
-  dropDownFieldsList = ['farmerType', 'department', 'miCompany', 'socialStatus'];
-
-  registrationForm: FormGroup = this.fb.group({
-    applicationId: [''],
-    aadhaarNo: [''],
-    farmerType: ['Select Farmer Type'],
-    registeredBy: ['Self / Farmer'],
-    department: ['Select Department'],
-    miCompany: ['Select MI Company'],
-    landOwnership: [''],
-    district: [''],
-    block: [''],
-    village: [''],
-    farmerName: [''],
-    mobileNo: [''],
-    gender: ['Select Gender'],
-    rationCardNo: [''],
-    socialStatus: ['Select Caste'],
-    landOwnSon: ['']
-  });
-
-  savedFormData: any = {};
-
-  MISSED_FIELDS: string[] = ['aadhaarNo', 'landOwnership', 'landOwnSon', 'gender'];
-  REG_GENDER_FIELD: string = 'gender';
-
-  formStateEnabled: boolean = true;
-
-  constructor(private fb: FormBuilder) { }
-
-  createNewUserDetails(user_details: any[], fieldInfo: Map<string, number>) {
-    const newDetails: any = {};
-    for (const controlName in this.fieldNameRef) {
-      const excelColName = this.fieldNameRef[controlName];
-      if (fieldInfo.has(excelColName)) {
-        const dataIndex: number = fieldInfo.get(excelColName) || -1;
-        if (dataIndex >= 0) {
-          newDetails[controlName] = user_details[dataIndex];
-        }
-      }
+  checkForUserRequest() {
+    const userReqStr: string | null = sessionStorage.getItem('user-req');
+    if (userReqStr) {
+      this.goForwardOnStepper();
     }
-    console.log(newDetails);
-    newDetails[this.REG_GENDER_FIELD] = 1;
-    this.registrationForm.patchValue(newDetails);
   }
 
-  ngOnInit(): void {
-    this.loadInitUserData();
-  }
+  selectionChange(event: StepperSelectionEvent) {
+    console.log(event.selectedStep.label);
+    let stepLabel = event.selectedStep.label
 
-  loadInitUserData() {
-    const str = localStorage.getItem('user-data') || '';
-    const userRecord: any[] = JSON.parse(str);
-
-    const header: string[] = userRecord.shift();
-    const fieldInfo: Map<string, number> = this.findFieldIndex(header);
-    const user_details = userRecord[1];
-
-    this.createNewUserDetails(user_details, fieldInfo);
-    this.saveInitForm();
-    this.disableFullForm();
-  }
-
-  saveInitForm() {
-    this.savedFormData = this.registrationForm.getRawValue();
-  }
-
-  findFieldIndex(header: string[]) {
-    const fieldIdxInfo: Map<string, number> = new Map();
-    header.forEach((field: string, idx: number) => {
-      fieldIdxInfo.set(field, idx);
-    });
-    return fieldIdxInfo;
-  }
-
-  setFormInitState(): void {
-    this.registrationForm.setValue(this.savedFormData);
-  }
-
-  resetFormData(): void {
-    this.setFormInitState();
-  }
-
-  get isFullFormEnabled(): boolean {
-    const isEnabled = this.registrationForm.disabled;
-    console.log(this.registrationForm);
-    
-    return isEnabled;
-  }
-
-  enableFullForm(): void {
-    this.registrationForm.enable();
-    this.formStateEnabled = true;
-  }
-
-  disableFullForm(): void {
-    this.setFormInitState();
-
-    this.registrationForm.disable();
-    for (let fieldName of this.MISSED_FIELDS) {
-      this.registrationForm.get(fieldName)?.enable();
+    if (stepLabel == "Applicant Registration") {
+      // this.checkForUserRequest();
     }
-    this.formStateEnabled = false;
-  }
 
-  submitApplicantForm() {
-    console.log(this.registrationForm.value);
-    console.log(this.registrationForm.getRawValue());    
   }
 
 }

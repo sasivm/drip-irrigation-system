@@ -1,4 +1,4 @@
-import { CommonList } from "./models/common-types";
+import { CommonList, GenderList } from "./models/common-types";
 
 export class GlobalConstants {
 
@@ -25,11 +25,11 @@ export class GlobalConstants {
         { option: 'Vedanta Irrigation system Pvt Ltd.', value: 1 },
     ];
 
-    public static APPLICATION_GenderList: CommonList[] = [
-        { option: 'Select Gender', value: -1 },
-        { option: 'Male', value: 1 },
-        { option: 'Female', value: 2 },
-        { option: 'Transgender', value: 3 }
+    public static APPLICATION_GenderList: GenderList[] = [
+        { option: 'Select Gender', value: '' },
+        { option: 'Male', value: 'M' },
+        { option: 'Female', value: 'F' },
+        { option: 'Transgender', value: "O" }
     ];
 
     public static APPLICATION_SocialStatusList: CommonList[] = [
@@ -290,8 +290,13 @@ export class GlobalConstants {
 
     readonly baseAppUrl: string = 'http://localhost:57431/';
     readonly baseAPIUrl: string = 'https://api.github.com/';
+
+    /* Excel File upload consts*/
     public static readonly FILE_UPLOAD_CANCEL_ERROR_MESSAGE: string = 'Please upload a file';
     public static readonly FILE_UPLOAD_SUCCESS_MESSAGE: string = 'File data exctacted successfully.';
     public static readonly FILE_UPLOAD_NO_DATA: string = 'Customer Details not present';
+
+    /* Excel File upload - customer table consts*/
+    public static readonly CUST_TABLE_EMPTY: string = 'customers data is not present.';
 
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 // Angular material modules
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -39,6 +40,8 @@ import { VerificationDocComponent } from './documents/verification-doc/verificat
 import { BulkRegistorComponent } from './registration/bulk-registor/bulk-registor.component';
 import { RegTypeComponent } from './registration/reg-type/reg-type.component';
 import { CustTableComponent } from './cust-table/cust-table.component';
+import { ApplicantRegComponent } from './registration/applicant-reg/applicant-reg.component';
+import { ErrorMsgComponent } from './common/error-msg/error-msg.component';
 
 
 @NgModule({
@@ -62,13 +65,15 @@ import { CustTableComponent } from './cust-table/cust-table.component';
     VerificationDocComponent,
     BulkRegistorComponent,
     RegTypeComponent,
-    CustTableComponent
+    CustTableComponent,
+    ApplicantRegComponent,
+    ErrorMsgComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule, FormsModule,
+    ReactiveFormsModule, FormsModule, HttpClientModule,
     MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule,
     MatListModule, MatTabsModule, MatRadioModule, MatCheckboxModule, MatStepperModule,
     MatTableModule, MatPaginatorModule, MatTooltipModule

@@ -1,3 +1,28 @@
-<div class="container-fluid">
-    <app-verification-doc></app-verification-doc>
+<div class="container-fluid px-0">
+    <div class="row">
+
+        <div class="col-2 px-0">
+            <mat-list>
+                <ng-container *ngFor="let document of docList">
+                    <mat-list-item [matTooltip]="document.desc" class="doc-list-item">
+                        <mat-icon mat-list-icon>folder</mat-icon>
+                        <div mat-line> {{document.name}} </div>
+                    </mat-list-item>
+                </ng-container>
+            </mat-list>
+        </div>
+
+        <div class="col card border-left">
+            <app-sfmf-doc></app-sfmf-doc>
+        </div>
+
+        <div class="col-2 card border-left">
+            <div class="d-flex flex-column">
+                <button class="btn btn-theme-primary my-2"> Download </button>
+                <button class="btn btn-theme-primary my-2"> Open </button>
+                <button class="btn btn-theme-secondary my-2"> Print </button>
+            </div>
+        </div>
+    </div>
+
 </div>

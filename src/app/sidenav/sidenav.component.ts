@@ -13,9 +13,8 @@ export class SidenavComponent {
 
   navListItems: any[] = [
     { scrName: 'Register', link: '/register', icon: 'dashboard' },
-    { scrName: 'Bulk Register', link: '/bulk-register', icon: 'dashboard' },
-    { scrName: 'Land / Crop Details', link: '/', icon: 'account_circle' },
-    { scrName: 'Quotasion', link: '/', icon: 'assignment' },
+    { scrName: 'Bulk Register', link: 'register/bulk-register', icon: 'assignment' },
+    { scrName: 'Search', link: '/search', icon: 'person_search' },
     { scrName: 'Subsidy Calc', link: '/subs-calc', icon: 'calculate' },
     { scrName: 'Docments', link: '/docs', icon: 'menu_book' },
   ];

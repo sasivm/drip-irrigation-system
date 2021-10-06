@@ -123,6 +123,11 @@ $table-row-highlight: #ffeed6!important;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(17, 24, 39, 0.075);
 }
 
+.reset-btn {
+  background: transparent !important;
+  color: grey !important;
+}
+
 mat-toolbar {
   @include secondary-theme();
 }

@@ -1,6 +1,8 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
+import { Subject } from 'rxjs';
+import { CustomerConstants } from '../common/customer-constant';
 import { TableErrorMessage } from '../common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from '../common/models/customer';
 import { CustServiceService } from '../services/cust-service.service';
@@ -14,11 +16,17 @@ export class RegistrationComponent implements OnInit {
 
   @ViewChild('stepper') private myStepper!: MatStepper;
 
+  isCustRecordReq: boolean = false;
+
   constructor() { }
+
+  selectedStepperSubject: Subject<any> = new Subject();
 
   customerRecord: any[] = [];
 
-  ngOnInit() {
+  stepperLabels: any = CustomerConstants.STEPPER_LABLES;
+
+  ngOnInit() {    
     setTimeout(() => this.checkForUserRequest(), 500);
   }
 
@@ -26,20 +34,27 @@ export class RegistrationComponent implements OnInit {
     this.myStepper.next();
   }
 
-
   checkForUserRequest() {
     const userReqStr: string | null = sessionStorage.getItem('user-req');
-    if (userReqStr) {
+    this.isCustRecordReq = !!userReqStr;
+    if (this.isCustRecordReq) {
       this.goForwardOnStepper();
     }
   }
 
   selectionChange(event: StepperSelectionEvent) {
-    console.log(event.selectedStep.label);
-    let stepLabel = event.selectedStep.label
+    console.log(event);
+    const stepLabel = event.selectedStep.label;
 
-    if (stepLabel == "Applicant Registration") {
-      // this.checkForUserRequest();
+    if (this.isCustRecordReq) {
+      this.selectedStepperSubject.next({
+        isCustRecReq: this.isCustRecordReq,
+        stepName: stepLabel
+      });
+      if (stepLabel == "Applicant Registration") {
+        // this.checkForUserRequest();
+
+      }
     }
 
   }

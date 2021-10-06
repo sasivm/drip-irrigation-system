@@ -3,6 +3,11 @@ export interface CommonList {
     option: string;
 }
 
+export interface OptionList {
+    value: string;
+    option: string;
+}
+
 export interface GenderList {
     value: string;
     option: string;   

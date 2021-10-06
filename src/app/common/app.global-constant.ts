@@ -1,4 +1,4 @@
-import { CommonList, GenderList } from "./models/common-types";
+import { CommonList, GenderList, OptionList } from "./models/common-types";
 
 export class GlobalConstants {
 
@@ -39,24 +39,24 @@ export class GlobalConstants {
         { option: 'Other Caste', value: 3 }
     ];
 
-    public static CROP_CropTypeList: CommonList[] = [
-        { option: 'Select Crop Type', value: -1 },
-        { option: 'Agriculture / Private SugarMill', value: 1 },
-        { option: 'Horticulture', value: 2 },
-        { option: 'Sugarcane / Cooperative SugarMill', value: 3 }
+    public static CROP_CropTypeList: OptionList[] = [
+        { option: 'Select Crop Type', value: '' },
+        { option: 'Agriculture / Private SugarMill', value: 'Agriculture' },
+        { option: 'Horticulture', value: 'Horticulture' },
+        { option: 'Sugarcane / Cooperative SugarMill', value: 'Sugarcane' }
     ];
 
-    public static CROP_CropLandTypeList: CommonList[] = [
-        { option: 'Select Crop / Land Type', value: -1 },
-        { option: 'One crop and one survey', value: 1 },
-        { option: 'Several crops and one survey', value: 2 },
-        { option: 'One crop and several survey', value: 3 }
+    public static CROP_CropLandTypeList: OptionList[] = [
+        { option: 'Select Crop / Land Type', value: '' },
+        { option: 'One crop and one survey', value: 'One crop and one survey' },
+        { option: 'Several crops and one survey', value: 'Several crops and one survey' },
+        { option: 'One crop and several survey', value: 'One crop and several survey' }
     ];
 
-    public static CROP_MITypeList: CommonList[] = [
-        { option: 'Select MI Type', value: -1 },
-        { option: 'Drip', value: 1 },
-        { option: 'Sprinkler', value: 2 },
+    public static CROP_MITypeList: OptionList[] = [
+        { option: 'Select MI Type', value: '' },
+        { option: 'Drip', value: 'Drip' },
+        { option: 'Sprinkler', value: 'Sprinkler' },
     ];
 
     public static CROP_PrimaryCropList: CommonList[] = [

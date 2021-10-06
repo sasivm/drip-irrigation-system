@@ -265,7 +265,7 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
 
       const surveyCropRec: any = {};
       surveyCropRec['surveyNo'] = surveyNoList;
-      surveyCropRec['Subdivision'] = subDivList;
+      surveyCropRec['subDivisionNo'] = subDivList;
       surveyCropRec['totalArea'] = custRec.totalArea;
       surveyCropRec['appliedArea'] = custRec.appliedArea;
       surveyCropRec['crop'] = custRec.crop;

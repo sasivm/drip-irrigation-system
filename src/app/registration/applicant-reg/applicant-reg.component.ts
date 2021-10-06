@@ -1,6 +1,8 @@
 import { AfterContentChecked, AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
+import { CustomerConstants } from 'src/app/common/customer-constant';
 import { CommonList, GenderList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
@@ -11,6 +13,8 @@ import { CustServiceService } from 'src/app/services/cust-service.service';
   styleUrls: ['./applicant-reg.component.scss']
 })
 export class ApplicantRegComponent implements OnInit {
+
+  @Input() selectedStepper: Subject<any> = new Subject();
 
   @Input() custRecError: string = '';
 
@@ -61,7 +65,7 @@ export class ApplicantRegComponent implements OnInit {
     _id: ['']
   });
 
-  custRecFormData: any = {};
+  custRecFormData: any[] = [];
 
   ENABLED_FIELDS: string[] = ['aadhaarNo', 'landOwnership', 'landOwnSon', 'gender'];
 
@@ -75,7 +79,15 @@ export class ApplicantRegComponent implements OnInit {
   constructor(private fb: FormBuilder, private _custService: CustServiceService) { }
 
   ngOnInit() {
-    this.checkForUserRequest();
+    this.selectedStepper.subscribe(data => {
+      if (data.isCustRecReq && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+        this.disableFullForm();
+        console.log('data chanaging in applicant reg', data);
+        if (this.custRecFormData.length === 0) { // only if record not stored in session
+          this.checkForUserRequest();
+        }
+      }
+    });
   }
 
   checkForUserRequest() {
@@ -116,12 +128,11 @@ export class ApplicantRegComponent implements OnInit {
   }
 
   loadInitUserData() {
-    const custRecord: string | null = sessionStorage.getItem('cust-rec');
+    const custRecord: string | null = this._custService.getCustomerRecordFromSession();
     if (custRecord) {
       this.custRecFormData = [JSON.parse(custRecord)];
       this.registrationForm.patchValue(this.custRecFormData[0]);
       if (this.custRecFormData.length > 0) {
-        this.disableFullForm();
         this.sucessMessage = 'Customer data loaded successfully';
       } else {
         // this.errorMessage.message = 'customer data not loaded';
@@ -169,7 +180,7 @@ export class ApplicantRegComponent implements OnInit {
 
   submitApplicantForm() {
     this.clearMesgBanner();
-    
+
     const updateableFields = this.registrationForm.value; // Gives only enabled field values
     updateableFields['_id'] = this.registrationForm.get('_id')?.value;
     console.log(updateableFields);

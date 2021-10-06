@@ -7,3 +7,9 @@ export interface CustomerResponse {
 export interface ApplicantReqData {
     applicationId: string
 };
+
+export interface MILandRecord {
+    cropType: string,
+    miType: string,
+    cropLandType?: string,
+};

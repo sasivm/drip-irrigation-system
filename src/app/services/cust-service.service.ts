@@ -22,4 +22,14 @@ export class CustServiceService {
     return this._http.post<CustomerResponse>(customerUpdate, custRecord);
   }
 
+  getCustomerRecordFromSession() {
+    const custRecord: string | null = sessionStorage.getItem('cust-rec');
+    return custRecord;
+  }
+
+  getLoadedCustomerRecord(): any[] {
+    const custRecord = JSON.parse(sessionStorage.getItem('cust-rec') || '');
+    return [custRecord] || [];
+  }
+
 }

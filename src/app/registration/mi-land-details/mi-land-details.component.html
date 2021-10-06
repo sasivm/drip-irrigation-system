@@ -1,11 +1,11 @@
 <div>
     <h2 class="text-center"> MI LAND DETAILS </h2>
 
-    <form class="card p-4">
+    <form class="card p-4" [formGroup]="miLandForm">
         <div class="row py-2">
             <div class="col">
                 <label for="croptType" class="col-5"> Crop Type </label>
-                <select name="croptType" id="croptType" class="col-7 form-control">
+                <select name="croptType" id="croptType" formControlName="cropType" class="col-7 form-control">
                     <option *ngFor="let type of cropTypeList" [value]="type.value">
                         {{type.option}}
                     </option>
@@ -14,7 +14,7 @@
 
             <div class="col">
                 <label for="croplandtype" class="col-5"> Crop / Land Type </label>
-                <select name="croplandtype" id="croplandtype" class="col-7 form-control">
+                <select name="croplandtype" id="croplandtype" formControlName="cropLandType" class="col-7 form-control">
                     <option *ngFor="let type of cropLandTypeList" [value]="type.value">
                         {{type.option}}
                     </option>
@@ -25,12 +25,20 @@
         <div class="row py-2">
             <div class="col-6">
                 <label for="mitype" class="col-5"> MI Type </label>
-                <select name="mitype" id="mitype" class="col-7 form-control">
+                <select name="mitype" id="mitype" formControlName="miType" class="col-7 form-control">
                     <option *ngFor="let type of miTypeList" [value]="type.value">
                         {{type.option}}
                     </option>
                 </select>
             </div>
         </div>
+
+        <div class="row justify-content-end py-2 px-4">
+            <button type="submit" class="btn btn-theme-primary px-4 mx-3" (click)="submitLandForm()"> Submit
+            </button>
+            <button type="button" class="btn btn-theme-primary reset-btn px-4" (click)="resetFormData()"> Reset
+            </button>
+        </div>
+
     </form>
 </div>

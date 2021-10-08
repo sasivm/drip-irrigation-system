@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { GlobalConstants } from '../common/app.global-constant';
 import { ExcelFileConstants } from '../common/excelFile-constant';
 import { TableErrorMessage } from '../common/models/common-types';
+import { CustServiceService } from '../services/cust-service.service';
 import { CustTableBulkService } from '../services/cust-table-bulk.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
 
   @Input() custDataArray: any[] = [];
 
-  constructor(private _bulkService: CustTableBulkService, private router: Router) { }
+  constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router) { }
 
   COL_NAME_TO_FIELD_NAME: any = ExcelFileConstants.EXCEL_FILE_COL_AND_FIELD_MAP;
 
@@ -183,7 +184,7 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
   };
 
   ngOnInit() {
-    this.custDataArray = this.dummyData;
+    // this.custDataArray = this.dummyData;
     this.loadCustomerDetailsToTable();
   }
 
@@ -192,9 +193,8 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
   }
 
   saveCustRecReq(applicationId: string) {
-    if (applicationId) {
-      const userReqString: string = JSON.stringify({ 'applicationId': applicationId });
-      sessionStorage.setItem('user-req', userReqString);
+    const isReqSaved: boolean = this._custService.setCustomerReqOnSession(applicationId);
+    if (isReqSaved) {
       this.router.navigate(['/register']);
     }
   }

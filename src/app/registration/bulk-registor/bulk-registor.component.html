@@ -5,7 +5,7 @@
     </div>
 
     <!-- <div class="card mt-4" *ngIf="customerData.length > 1"> -->
-    <div class="card mt-4">
+    <div class="card mt-4" *ngIf="customerData.length > 1">
         <app-cust-table [custDataArray]="customerData"></app-cust-table>
     </div>
 </div>

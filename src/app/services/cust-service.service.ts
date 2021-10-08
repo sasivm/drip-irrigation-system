@@ -22,9 +22,18 @@ export class CustServiceService {
     return this._http.post<CustomerResponse>(customerUpdate, custRecord);
   }
 
-  searchCustomersDetails(customerQuery: any): Observable<any[]> {
+  searchCustomersDetails(customerQuery: any): Observable<CustomerResponse> {
     const customerSearch: string = this.REST_API_SERVER + '/SearchCustomers';
-    return this._http.post<any[]>(customerSearch, customerQuery);
+    return this._http.post<CustomerResponse>(customerSearch, customerQuery);
+  }
+
+  setCustomerReqOnSession(applicationId: string) {
+    if (applicationId) {
+      const userReqString: string = JSON.stringify({ 'applicationId': applicationId });
+      sessionStorage.setItem('user-req', userReqString);
+      return true;
+    }
+    return false;
   }
 
   getCustomerRecordFromSession() {

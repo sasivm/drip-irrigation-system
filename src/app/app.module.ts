@@ -42,6 +42,7 @@ import { RegTypeComponent } from './registration/reg-type/reg-type.component';
 import { CustTableComponent } from './cust-table/cust-table.component';
 import { ApplicantRegComponent } from './registration/applicant-reg/applicant-reg.component';
 import { ErrorMsgComponent } from './common/error-msg/error-msg.component';
+import { CustSearchComponent } from './cust-search/cust-search.component';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import { ErrorMsgComponent } from './common/error-msg/error-msg.component';
     RegTypeComponent,
     CustTableComponent,
     ApplicantRegComponent,
-    ErrorMsgComponent
+    ErrorMsgComponent,
+    CustSearchComponent
   ],
   imports: [
     BrowserModule,

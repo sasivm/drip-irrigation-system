@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
-import { CommonList, GenderList, TableErrorMessage } from 'src/app/common/models/common-types';
+import { CommonList, GenderList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 
@@ -18,11 +18,11 @@ export class ApplicantRegComponent implements OnInit {
 
   @Input() custRecError: string = '';
 
-  formerTypeList: CommonList[] = GlobalConstants.APPLICATION_FormerTypeList;
+  formerTypeList: OptionList[] = GlobalConstants.APPLICATION_FormerTypeList;
 
-  registeredByList: CommonList[] = GlobalConstants.APPLICATION_RegisteredByList;
+  registeredByList: OptionList[] = GlobalConstants.APPLICATION_RegisteredByList;
 
-  departmentList: CommonList[] = GlobalConstants.APPLICATION_DepartmentList;
+  departmentList: OptionList[] = GlobalConstants.APPLICATION_DepartmentList;
 
   miCompanyList: CommonList[] = GlobalConstants.APPLICATION_MICompanyList;
 
@@ -48,9 +48,9 @@ export class ApplicantRegComponent implements OnInit {
   registrationForm: FormGroup = this.fb.group({
     applicationId: [''],
     aadhaarNo: [''],
-    farmerType: ['Select Farmer Type'],
-    registeredBy: ['Self / Farmer'],
-    department: ['Select Department'],
+    farmerType: [''],
+    registeredBy: [''],
+    department: [''],
     miCompany: ['Select MI Company'],
     landOwnership: [''],
     district: [''],

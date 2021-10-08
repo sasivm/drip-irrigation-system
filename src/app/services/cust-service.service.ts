@@ -22,6 +22,11 @@ export class CustServiceService {
     return this._http.post<CustomerResponse>(customerUpdate, custRecord);
   }
 
+  searchCustomersDetails(customerQuery: any): Observable<any[]> {
+    const customerSearch: string = this.REST_API_SERVER + '/SearchCustomers';
+    return this._http.post<any[]>(customerSearch, customerQuery);
+  }
+
   getCustomerRecordFromSession() {
     const custRecord: string | null = sessionStorage.getItem('cust-rec');
     return custRecord;

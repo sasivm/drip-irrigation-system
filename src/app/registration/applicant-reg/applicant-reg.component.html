@@ -36,7 +36,7 @@
                 <div class="col">
                     <label for="farmerType" class="col-5"> Farmer Type </label>
                     <select name="farmertype" formControlName="farmerType" id="farmerType" class="col-7 form-control">
-                        <option *ngFor="let type of formerTypeList" [value]="type.option">
+                        <option *ngFor="let type of formerTypeList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
@@ -48,7 +48,7 @@
                     <label for="registeredBy" class="col-5"> Registered By </label>
                     <select name="registeredby" formControlName="registeredBy" id="registeredBy"
                         class="col-7 form-control">
-                        <option *ngFor="let type of registeredByList" [value]="type.option">
+                        <option *ngFor="let type of registeredByList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
@@ -57,7 +57,7 @@
                 <div class="col">
                     <label for="department" class="col-5"> Department </label>
                     <select name="department" formControlName="department" id="department" class="col-7 form-control">
-                        <option *ngFor="let type of departmentList" [value]="type.option">
+                        <option *ngFor="let type of departmentList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>

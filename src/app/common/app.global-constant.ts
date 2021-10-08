@@ -2,22 +2,22 @@ import { CommonList, GenderList, OptionList } from "./models/common-types";
 
 export class GlobalConstants {
 
-    public static APPLICATION_FormerTypeList: CommonList[] = [
-        { option: 'Select Farmer Type', value: -1 },
-        { option: 'SF / MF', value: 1 },
-        { option: 'Others', value: 2 },
+    public static APPLICATION_FormerTypeList: OptionList[] = [
+        { option: 'Select Farmer Type', value: '' },
+        { option: 'SF / MF', value: 'SF / MF' },
+        { option: 'Others', value: 'Others' },
     ];
 
-    public static APPLICATION_RegisteredByList: CommonList[] = [
-        { option: 'Self / Farmer', value: 1 },
-        { option: 'Department', value: 2 },
-        { option: 'MI Company', value: 3 },
+    public static APPLICATION_RegisteredByList: OptionList[] = [
+        { option: 'Self / Farmer', value: '' },
+        { option: 'Department', value: 'Department' },
+        { option: 'MI Company', value: 'MI Company' },
     ];
 
-    public static APPLICATION_DepartmentList: CommonList[] = [
-        { option: 'Select Department', value: -1 },
-        { option: 'Horticulture', value: 2 },
-        { option: 'Agriculture', value: 1 },
+    public static APPLICATION_DepartmentList: OptionList[] = [
+        { option: 'Select Department', value: '' },
+        { option: 'Horticulture', value: 'Horticulture' },
+        { option: 'Agriculture', value: 'Agriculture' },
     ];
 
     public static APPLICATION_MICompanyList: CommonList[] = [

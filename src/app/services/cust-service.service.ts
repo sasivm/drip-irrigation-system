@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { GlobalConstants } from '../common/app.global-constant';
 import { CustomerResponse } from '../common/models/customer';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { CustomerResponse } from '../common/models/customer';
 })
 export class CustServiceService {
 
-  private REST_API_SERVER = 'http://localhost:3000';
+  private REST_API_SERVER = GlobalConstants.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 

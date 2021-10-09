@@ -1,3 +1,4 @@
+import { environment } from "src/environments/environment";
 import { CommonList, GenderList, OptionList } from "./models/common-types";
 
 export class GlobalConstants {
@@ -290,6 +291,7 @@ export class GlobalConstants {
 
     readonly baseAppUrl: string = 'http://localhost:57431/';
     readonly baseAPIUrl: string = 'https://api.github.com/';
+    public static readonly BASE_API_URL = environment.baseUrl;
 
     /* Excel File upload consts*/
     public static readonly FILE_UPLOAD_CANCEL_ERROR_MESSAGE: string = 'Please upload a file';

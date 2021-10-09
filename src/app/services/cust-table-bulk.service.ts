@@ -3,13 +3,14 @@ import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { GlobalConstants } from '../common/app.global-constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustTableBulkService {
 
-  private REST_API_SERVER = 'http://localhost:3000';
+  private REST_API_SERVER = GlobalConstants.BASE_API_URL;
 
   constructor(private _http: HttpClient) { }
 

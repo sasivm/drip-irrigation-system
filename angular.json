@@ -76,7 +76,9 @@
               "browserTarget": "drip-irrigation-system:build:production"
             },
             "development": {
-              "browserTarget": "drip-irrigation-system:build:development"
+              "browserTarget": "drip-irrigation-system:build:development",
+              "host": "ec2-52-15-160-38.us-east-2.compute.amazonaws.com",
+              "port": 80
             }
           },
           "defaultConfiguration": "development"

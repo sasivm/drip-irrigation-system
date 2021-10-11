@@ -3,9 +3,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { CustomerConstants } from '../common/customer-constant';
-import { TableErrorMessage } from '../common/models/common-types';
+import { StepperStepState, TableErrorMessage } from '../common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from '../common/models/customer';
 import { CustServiceService } from '../services/cust-service.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-registration',
@@ -14,11 +15,11 @@ import { CustServiceService } from '../services/cust-service.service';
 })
 export class RegistrationComponent implements OnInit {
 
-  @ViewChild('stepper') private myStepper!: MatStepper;
+  @ViewChild(MatStepper) private myStepper!: MatStepper;
 
   isCustRecordReq: boolean = false;
 
-  constructor() { }
+  constructor(private _dataServ: DataService) { }
 
   selectedStepperSubject: Subject<any> = new Subject();
 
@@ -26,7 +27,7 @@ export class RegistrationComponent implements OnInit {
 
   stepperLabels: any = CustomerConstants.STEPPER_LABLES;
 
-  ngOnInit() {    
+  ngOnInit() {
     setTimeout(() => this.checkForUserRequest(), 500);
   }
 
@@ -43,20 +44,50 @@ export class RegistrationComponent implements OnInit {
   }
 
   selectionChange(event: StepperSelectionEvent) {
-    console.log(event);
     const stepLabel = event.selectedStep.label;
 
-    if (this.isCustRecordReq) {
+    const stepState: StepperStepState | null = this._dataServ.getCompletionState();
+
+    if (stepLabel === this.stepperLabels.step1Label) {
+      event.selectedStep.completed = true;
+      return;
+    } else if (stepLabel === this.stepperLabels.step2Label) {
+      if (stepState) {
+        event.selectedStep.completed = stepState.step2;
+      } else {
+        event.selectedStep.completed = false;
+      }
+
       this.selectedStepperSubject.next({
         isCustRecReq: this.isCustRecordReq,
         stepName: stepLabel
       });
-      if (stepLabel == "Applicant Registration") {
-        // this.checkForUserRequest();
+      return;
+    }
 
+    if (!stepState) {
+      event.selectedStep.completed = false;
+      return;
+    }
+
+    /* moves to selected step only if prev step is completed(true) */
+
+    if (stepLabel === this.stepperLabels.step3Label) {
+      if (stepState) {
+        event.selectedStep.completed = stepState.step3;
+      }
+    } else if (stepLabel === this.stepperLabels.step4Label) {
+      if (stepState) {
+        event.selectedStep.completed = stepState.step4;
       }
     }
 
+    // if (this.isCustRecordReq) {
+    this.selectedStepperSubject.next({
+      isCustRecReq: this.isCustRecordReq,
+      stepName: stepLabel
+    });
+    // }
   }
 
 }

@@ -83,8 +83,7 @@ $theme-secondary-border-color: #f0bc74 !important;
 
 $table-odd-row: rgba(255, 255, 255);
 $table-even-row: rgba(247, 248, 250);
-$table-row-highlight: #ffeed6!important;
-
+$table-row-highlight: #ffeed6 !important;
 
 @mixin primary-theme {
   color: $theme-primary-color;
@@ -125,7 +124,12 @@ $table-row-highlight: #ffeed6!important;
 
 .reset-btn {
   background: transparent !important;
-  color: grey !important;
+  color: #005 !important;
+}
+
+.disabled-btn {
+  background-color: rgba(0, 0, 0, 0.54);
+  color: #fff !important;
 }
 
 mat-toolbar {
@@ -159,6 +163,10 @@ mat-sidenav-content {
 }
 
 .form-control:focus {
+  @include form-control-primary-focus();
+}
+
+.btn:focus {
   @include form-control-primary-focus();
 }
 

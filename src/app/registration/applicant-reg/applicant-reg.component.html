@@ -2,7 +2,7 @@
     <h2 class="text-center"> New MI Subsidy Registration </h2>
 
     <form [formGroup]="registrationForm" class="card">
-        <div class="d-flex flex-column my-3">
+        <div class="d-flex flex-column">
             <div *ngIf="sucessMessage" class="alert alert-success">
                 {{sucessMessage}}
             </div>
@@ -16,12 +16,18 @@
                     </span>
                 </div>
             </div>
+
+            <div *ngIf="errorMessageList.length > 0" class="alert alert-danger">
+                <div *ngFor="let message of errorMessageList" class="error-list-msg py-1">
+                    <b> {{message}} </b>
+                </div>
+            </div>
         </div>
 
         <div class="p-3">
 
             <div class="row py-2">
-                <div class="col-6 pt-4">
+                <div class="col-6">
                     <label for="applicationId" class="col-5"> Application Id </label>
                     <input type="text" formControlName="applicationId" id="applicationId" class="col-7 form-control">
                 </div>
@@ -34,6 +40,13 @@
                 </div>
 
                 <div class="col">
+                    <label for="farmerName" class="col-5"> Farmer Name </label>
+                    <input type="text" formControlName="farmerName" id="farmerName" class="col-7 form-control">
+                </div>
+            </div>
+
+            <div class="row py-2">
+                <div class="col">
                     <label for="farmerType" class="col-5"> Farmer Type </label>
                     <select name="farmertype" formControlName="farmerType" id="farmerType" class="col-7 form-control">
                         <option *ngFor="let type of formerTypeList" [value]="type.value">
@@ -41,9 +54,7 @@
                         </option>
                     </select>
                 </div>
-            </div>
 
-            <div class="row py-2">
                 <div class="col">
                     <label for="registeredBy" class="col-5"> Registered By </label>
                     <select name="registeredby" formControlName="registeredBy" id="registeredBy"
@@ -53,7 +64,9 @@
                         </option>
                     </select>
                 </div>
+            </div>
 
+            <div class="row py-2">
                 <div class="col">
                     <label for="department" class="col-5"> Department </label>
                     <select name="department" formControlName="department" id="department" class="col-7 form-control">
@@ -62,45 +75,26 @@
                         </option>
                     </select>
                 </div>
-            </div>
 
-            <div class="row py-2">
                 <div class="col">
                     <label for="miCompany" class="col-5"> MI Company </label>
                     <select name="miCompany" formControlName="miCompany" id="miCompany" class="col-7 form-control">
-                        <option *ngFor="let type of miCompanyList" [value]="type.option">
+                        <option *ngFor="let type of miCompanyList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
                 </div>
+            </div>
 
+            <div class="row py-2">
                 <div class="col">
                     <label for="landOwnership" class="col-5"> Land Ownership </label>
                     <input type="text" formControlName="landOwnership" id="landOwnership" class="col-7 form-control">
                 </div>
-            </div>
 
-            <div class="row py-2">
-                <div class="col">
-                    <label for="district" class="col-5"> District </label>
-                    <input type="text" formControlName="district" id="district" class="col-7 form-control">
-                </div>
-
-                <div class="col">
-                    <label for="block" class="col-5"> Block </label>
-                    <input type="text" formControlName="block" id="block" class="col-7 form-control">
-                </div>
-            </div>
-
-            <div class="row py-2">
-                <div class="col">
-                    <label for="village" class="col-5"> Village </label>
-                    <input type="text" formControlName="village" id="village" class="col-7 form-control">
-                </div>
-
-                <div class="col">
-                    <label for="farmerName" class="col-5"> Farmer Name </label>
-                    <input type="text" formControlName="farmerName" id="farmerName" class="col-7 form-control">
+                <div class="col-6">
+                    <label for="landOwnSon" class="col-5"> (Lease / Land owner) S/O or W/O Name </label>
+                    <input type="text" formControlName="landOwnSon" id="landOwnSon" class="col-7 form-control">
                 </div>
             </div>
 
@@ -122,29 +116,34 @@
 
             <div class="row py-2">
                 <div class="col">
-                    <label for="rationCardNo" class="col-5"> Ration Card Number </label>
-                    <input type="text" formControlName="rationCardNo" id="rationCardNo" class="col-7 form-control">
+                    <label for="block" class="col-5"> Block </label>
+                    <input type="text" formControlName="block" id="block" class="col-7 form-control">
+                </div>
+
+                <div class="col">
+                    <label for="village" class="col-5"> Village </label>
+                    <input type="text" formControlName="village" id="village" class="col-7 form-control">
+                </div>
+            </div>
+
+            <div class="row py-2">
+                <div class="col">
+                    <label for="district" class="col-5"> District </label>
+                    <input type="text" formControlName="district" id="district" class="col-7 form-control">
                 </div>
 
                 <div class="col">
                     <label for="socialStatus" class="col-5"> Social Status </label>
                     <select name="socialStatus" formControlName="socialStatus" id="socialStatus"
                         class="col-7 form-control">
-                        <option *ngFor="let type of socialStatusList" [value]="type.option">
+                        <option *ngFor="let type of socialStatusList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
                 </div>
             </div>
 
-            <div class="row py-2">
-                <div class="col-6">
-                    <label for="landOwnSon" class="col-5"> (Lease / Land owner) S/O or W/O Name </label>
-                    <input type="text" formControlName="landOwnSon" id="landOwnSon" class="col-7 form-control">
-                </div>
-            </div>
-
-            <div class="row justify-content-end py-2 px-4">
+            <div class="row justify-content-end py-4 px-4">
                 <button type="submit" class="btn btn-theme-primary px-4 mx-3" (click)="submitApplicantForm()"> Submit
                 </button>
                 <button type="button" class="btn btn-theme-primary reset-btn px-4" (click)="resetFormData()"> Reset
@@ -152,5 +151,11 @@
             </div>
         </div>
     </form>
+
+    <div class="d-flex justify-content-around pt-3">
+        <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
+        <button mat-button matStepperNext
+            [ngClass]="enableNextBtn ? 'btn-theme-secondary' : 'disabled-btn'">Next</button>
+    </div>
 
 </div>

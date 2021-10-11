@@ -10,10 +10,17 @@ export interface OptionList {
 
 export interface GenderList {
     value: string;
-    option: string;   
+    option: string;
 }
 
 export interface TableErrorMessage {
     message: string,
     desc: string
+}
+
+export interface StepperStepState {
+    step1: boolean,
+    step2: boolean,
+    step3: boolean,
+    step4: boolean,
 }

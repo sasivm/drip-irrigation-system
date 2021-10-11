@@ -1,20 +1,16 @@
-<mat-horizontal-stepper #stepper (selectionChange)="selectionChange($event)">
+<mat-horizontal-stepper linear id="myStepper" (selectionChange)="selectionChange($event)">
     <!-- Process Type -->
     <mat-step [label]=stepperLabels?.step1Label>
         <app-reg-type></app-reg-type>
     </mat-step>
 
     <!-- Process 1 -->
-    <mat-step [label]=stepperLabels?.step2Label>
+    <mat-step [label]=stepperLabels?.step2Label >
         <app-applicant-reg [selectedStepper]="selectedStepperSubject"> </app-applicant-reg>
-        <div class="d-flex justify-content-around pt-3">
-            <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
-            <button mat-button matStepperNext class="btn-theme-secondary">Next</button>
-        </div>
     </mat-step>
 
     <!-- Process 2 -->
-    <mat-step [label]=stepperLabels?.step3Label>
+    <mat-step [label]=stepperLabels?.step3Label >
         <app-mi-land-details [selectedStepper]="selectedStepperSubject"></app-mi-land-details>
         <div class="d-flex justify-content-around pt-3">
             <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
@@ -23,7 +19,7 @@
     </mat-step>
 
     <!-- Process 3 -->
-    <mat-step [label]=stepperLabels?.step4Label>
+    <mat-step [label]=stepperLabels?.step4Label >
         <app-land-crop-details [selectedStepper]="selectedStepperSubject"></app-land-crop-details>
         <div class="d-flex justify-content-around pt-3">
             <button mat-button matStepperPrevious class="btn-theme-secondary">Back</button>

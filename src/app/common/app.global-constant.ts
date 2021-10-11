@@ -10,7 +10,8 @@ export class GlobalConstants {
     ];
 
     public static APPLICATION_RegisteredByList: OptionList[] = [
-        { option: 'Self / Farmer', value: '' },
+        { option: 'Select Register', value: '' },
+        { option: 'Self / Farmer', value: 'Self' },
         { option: 'Department', value: 'Department' },
         { option: 'MI Company', value: 'MI Company' },
     ];
@@ -21,9 +22,9 @@ export class GlobalConstants {
         { option: 'Agriculture', value: 'Agriculture' },
     ];
 
-    public static APPLICATION_MICompanyList: CommonList[] = [
-        { option: 'Select MI Company', value: -1 },
-        { option: 'Vedanta Irrigation system Pvt Ltd.', value: 1 },
+    public static APPLICATION_MICompanyList: OptionList[] = [
+        { option: 'Select MI Company', value: '' },
+        { option: 'Vedanta Irrigation system Pvt Ltd.', value: 'Vedanta Irrigation system Pvt Ltd.' },
     ];
 
     public static APPLICATION_GenderList: GenderList[] = [
@@ -33,11 +34,11 @@ export class GlobalConstants {
         { option: 'Transgender', value: "O" }
     ];
 
-    public static APPLICATION_SocialStatusList: CommonList[] = [
-        { option: 'Select Caste', value: -1 },
-        { option: 'Scheduled Caste', value: 1 },
-        { option: 'Scheduled Tribe', value: 2 },
-        { option: 'Other Caste', value: 3 }
+    public static APPLICATION_SocialStatusList: OptionList[] = [
+        { option: 'Select Caste', value: '' },
+        { option: 'Scheduled Caste', value: 'SC' },
+        { option: 'Scheduled Tribe', value: 'ST' },
+        { option: 'Other Caste', value: 'Others' }
     ];
 
     public static CROP_CropTypeList: OptionList[] = [

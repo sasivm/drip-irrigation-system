@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
-import { CommonList, GenderList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
+import { CommonList, GenderList, OptionList, StepperStepState, TableErrorMessage } from 'src/app/common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-applicant-reg',
@@ -24,11 +25,11 @@ export class ApplicantRegComponent implements OnInit {
 
   departmentList: OptionList[] = GlobalConstants.APPLICATION_DepartmentList;
 
-  miCompanyList: CommonList[] = GlobalConstants.APPLICATION_MICompanyList;
+  miCompanyList: OptionList[] = GlobalConstants.APPLICATION_MICompanyList;
 
   genderList: GenderList[] = GlobalConstants.APPLICATION_GenderList;
 
-  socialStatusList: CommonList[] = GlobalConstants.APPLICATION_SocialStatusList;
+  socialStatusList: OptionList[] = GlobalConstants.APPLICATION_SocialStatusList;
 
   fieldNameRef: any = {
     applicationId: 'Application Id',
@@ -51,16 +52,15 @@ export class ApplicantRegComponent implements OnInit {
     farmerType: [''],
     registeredBy: [''],
     department: [''],
-    miCompany: ['Select MI Company'],
+    miCompany: [''],
     landOwnership: [''],
     district: [''],
     block: [''],
     village: [''],
     farmerName: [''],
     mobileNo: [''],
-    gender: ['M'],
-    rationCardNo: [''],
-    socialStatus: ['Select Caste'],
+    gender: [''],
+    socialStatus: [''],
     landOwnSon: [''],
     _id: ['']
   });
@@ -68,6 +68,12 @@ export class ApplicantRegComponent implements OnInit {
   custRecFormData: any[] = [];
 
   ENABLED_FIELDS: string[] = ['aadhaarNo', 'landOwnership', 'landOwnSon', 'gender'];
+  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'registeredBy', 'department', 'miCompany',
+    'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
+  NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'registeredBy', 'department', 'miCompany',
+    'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
+
+  isNewRegForm: boolean = true;
 
   /* Message variables */
   sucessMessage: string = '';
@@ -76,18 +82,68 @@ export class ApplicantRegComponent implements OnInit {
     desc: ''
   };
 
-  constructor(private fb: FormBuilder, private _custService: CustServiceService) { }
+  errorMessageList: string[] = [];
+  enableNextBtn: boolean = false;
+
+  isNewReqDataLoaded: boolean = false;
+
+  constructor(private fb: FormBuilder, private _custService: CustServiceService, private _dataServ: DataService) { }
 
   ngOnInit() {
     this.selectedStepper.subscribe(data => {
-      if (data.isCustRecReq && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+      this.isNewRegForm = !(data.isCustRecReq);
+      if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+        console.log('loading cust req data');
+        this.registrationForm.reset();
         this.disableFullForm();
         console.log('data chanaging in applicant reg', data);
         if (this.custRecFormData.length === 0) { // only if record not stored in session
           this.checkForUserRequest();
         }
+      } else {
+        if(!this.isNewReqDataLoaded) {
+          this.loadInitDataForNewReq();
+          console.log('loading new data');
+          this.isNewReqDataLoaded = true;
+        }
       }
     });
+  }
+
+  loadInitDataForNewReq() {
+    const initData: any = {
+      farmerType: 'SF / MF',
+      registeredBy: 'MI Company',
+      department: 'Agriculture',
+      miCompany: 'Vedanta Irrigation system Pvt Ltd.',
+      district: 'Tiruppur',
+      gender: 'M',
+      socialStatus: 'Others'
+    };
+    this.registrationForm.patchValue(initData);
+  }
+
+  validateForm(): boolean {
+    this.errorMessageList = [];
+
+    if (this.isNewRegForm) {
+      const reqFieldCount: number = this.NEW_REG_MANDATRY_FIELDS.length;
+      for (let i = 0; i < reqFieldCount; i++) {
+        const fieldName: string = this.NEW_REG_MANDATRY_FIELDS[i];
+        const value = this.registrationForm.get(fieldName)?.value;
+        if (!value) {
+          const errorMsg: string = `${fieldName} is required`;
+          this.errorMessageList.push(errorMsg);
+        }
+      }
+    }
+
+    if (this.errorMessageList.length > 0) {
+
+      return false;
+    }
+
+    return true;
   }
 
   checkForUserRequest() {
@@ -95,6 +151,14 @@ export class ApplicantRegComponent implements OnInit {
     if (userReqStr) {
       const userReqObject: ApplicantReqData = JSON.parse(userReqStr);
       this.getApplicantDetails(userReqObject.applicationId);
+    }
+  }
+
+  changeStepState(state: boolean) {
+    const stepState: StepperStepState | null = this._dataServ.getCompletionState();
+    if (stepState) {
+      stepState.step2 = state;
+      this._dataServ.setCompletionState(stepState);
     }
   }
 
@@ -149,22 +213,23 @@ export class ApplicantRegComponent implements OnInit {
   }
 
   resetFormData(): void {
-    for (let fieldName of this.ENABLED_FIELDS) {
-      this.registrationForm.controls[fieldName]?.reset();
+    if (this.isNewRegForm) {
+      for (let field of this.NEW_REG_FIELDS) {
+        this.registrationForm.controls[field]?.reset('');
+      }
+    } else {
+      for (let fieldName of this.ENABLED_FIELDS) {
+        this.registrationForm.controls[fieldName]?.reset('');
+      }
     }
+
     this.clearMesgBanner();
   }
 
   clearMesgBanner() {
     this.sucessMessage = '';
     this.errorMessage = { message: '', desc: '' };
-  }
-
-  get isFullFormEnabled(): boolean {
-    const isEnabled = this.registrationForm.disabled;
-    console.log(this.registrationForm);
-
-    return isEnabled;
+    this.errorMessageList = [];
   }
 
   enableFullForm(): void {
@@ -180,15 +245,27 @@ export class ApplicantRegComponent implements OnInit {
 
   submitApplicantForm() {
     this.clearMesgBanner();
+    const isValidForm: boolean = this.validateForm();
+    console.log(isValidForm);
+    if (!isValidForm) {
+      return;
+    }
 
     const updateableFields = this.registrationForm.value; // Gives only enabled field values
     updateableFields['_id'] = this.registrationForm.get('_id')?.value;
     console.log(updateableFields);
-    this._custService.updateCustomer(updateableFields).subscribe((response: CustomerResponse) => {
+
+    this.updateCustomerRecord(updateableFields);
+  }
+
+  updateCustomerRecord(prepareReq: any) {
+    this._custService.updateCustomer(prepareReq).subscribe((response: CustomerResponse) => {
       console.log(response);
       console.log('updated successfully');
       if (response.isSuccess) {
         this.sucessMessage = response.message;
+        this.enableNextBtn = true;
+        this.changeStepState(true);
       } else {
         this.errorMessage.message = 'Failed during updating customer details';
         this.errorMessage.desc = response.message;

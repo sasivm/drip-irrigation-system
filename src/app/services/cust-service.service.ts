@@ -23,6 +23,11 @@ export class CustServiceService {
     return this._http.post<CustomerResponse>(customerUpdate, custRecord);
   }
 
+  updateMILandRecord(miLandRecord: any): Observable<CustomerResponse> {
+    const customerUpdate: string = this.REST_API_SERVER + '/customer/updateMILand';
+    return this._http.post<CustomerResponse>(customerUpdate, miLandRecord);
+  }
+
   searchCustomersDetails(customerQuery: any): Observable<CustomerResponse> {
     const customerSearch: string = this.REST_API_SERVER + '/SearchCustomers';
     return this._http.post<CustomerResponse>(customerSearch, customerQuery);

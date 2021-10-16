@@ -2,6 +2,22 @@
     <h2 class="text-center"> MI LAND DETAILS </h2>
 
     <form class="card p-4" [formGroup]="miLandForm">
+        <div class="d-flex flex-column">
+            <div *ngIf="sucessMessage" class="alert alert-success">
+                {{sucessMessage}}
+            </div>
+
+            <div *ngIf="errorMessage.message">
+                <div class="alert alert-danger">
+                    <b> {{errorMessage.message}} </b>
+                    <br>
+                    <span *ngIf="errorMessage.desc">
+                        {{errorMessage.desc}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
         <div class="row py-2">
             <div class="col">
                 <label for="croptType" class="col-5"> Crop Type </label>
@@ -41,4 +57,12 @@
         </div>
 
     </form>
+
+    <div class="d-flex justify-content-around pt-3">
+        <button mat-button matStepperPrevious class="btn-theme-secondary mx-3"> Back </button>
+        <button mat-button matStepperNext [ngClass]="enableNextBtn ? 'btn-theme-secondary' : 'disabled-btn'"
+            [disabled]="!enableNextBtn" (click)="nextBtnSelected()"> Next
+        </button>
+    </div>
+
 </div>

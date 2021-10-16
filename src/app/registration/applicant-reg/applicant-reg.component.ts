@@ -91,20 +91,20 @@ export class ApplicantRegComponent implements OnInit {
 
   ngOnInit() {
     this.selectedStepper.subscribe(data => {
-      this.isNewRegForm = !(data.isCustRecReq);
-      if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
-        console.log('loading cust req data');
-        this.registrationForm.reset();
-        this.disableFullForm();
-        console.log('data chanaging in applicant reg', data);
-        if (this.custRecFormData.length === 0) { // only if record not stored in session
+      if (this.custRecFormData.length === 0) { // only if first time coming to screen
+        this.isNewRegForm = !(data.isCustRecReq);
+        if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+          console.log('loading cust req data');
+          this.registrationForm.reset();
+          this.disableFullForm();
+          console.log('data chanaging in applicant reg', data);
           this.checkForUserRequest();
-        }
-      } else {
-        if(!this.isNewReqDataLoaded) {
-          this.loadInitDataForNewReq();
-          console.log('loading new data');
-          this.isNewReqDataLoaded = true;
+        } else {
+          if (!this.isNewReqDataLoaded) {
+            this.loadInitDataForNewReq();
+            console.log('loading new data');
+            this.isNewReqDataLoaded = true;
+          }
         }
       }
     });
@@ -154,14 +154,6 @@ export class ApplicantRegComponent implements OnInit {
     }
   }
 
-  changeStepState(state: boolean) {
-    const stepState: StepperStepState | null = this._dataServ.getCompletionState();
-    if (stepState) {
-      stepState.step2 = state;
-      this._dataServ.setCompletionState(stepState);
-    }
-  }
-
   getApplicantDetails(applicationId: string) {
     this._custService.getCustomerData(applicationId).subscribe((data: CustomerResponse) => {
       if (data && data.isSuccess && data.custRec.length > 0) {
@@ -195,9 +187,15 @@ export class ApplicantRegComponent implements OnInit {
     const custRecord: string | null = this._custService.getCustomerRecordFromSession();
     if (custRecord) {
       this.custRecFormData = [JSON.parse(custRecord)];
+      if (!this.custRecFormData[0]?.gender) {
+        this.custRecFormData[0].gender = 'M';
+      }
       this.registrationForm.patchValue(this.custRecFormData[0]);
       if (this.custRecFormData.length > 0) {
         this.sucessMessage = 'Customer data loaded successfully';
+        if (this.custRecFormData[0]?.isCompleted) {
+          this.enableNextBtn = true;
+        }
       } else {
         // this.errorMessage.message = 'customer data not loaded';
       }
@@ -250,7 +248,7 @@ export class ApplicantRegComponent implements OnInit {
     if (!isValidForm) {
       return;
     }
-
+    this.enableNextBtn = false;
     const updateableFields = this.registrationForm.value; // Gives only enabled field values
     updateableFields['_id'] = this.registrationForm.get('_id')?.value;
     console.log(updateableFields);
@@ -264,8 +262,9 @@ export class ApplicantRegComponent implements OnInit {
       console.log('updated successfully');
       if (response.isSuccess) {
         this.sucessMessage = response.message;
-        this.enableNextBtn = true;
-        this.changeStepState(true);
+        if (response.custRec[0]?.isCompleted) {
+          this.enableNextBtn = true;
+        }
       } else {
         this.errorMessage.message = 'Failed during updating customer details';
         this.errorMessage.desc = response.message;
@@ -275,6 +274,14 @@ export class ApplicantRegComponent implements OnInit {
       console.log(err);
       this.errorMessage.message = err.message;
       this.errorMessage.desc = err.error ?? '';
+    }, () => this.enableNextBtn = true);
+  }
+
+  nextBtnSelected() {
+    console.log('next btn clicked');
+    this.selectedStepper.next({
+      isCompleted: true,
+      stepName: CustomerConstants.STEPPER_LABLES.step2Label
     });
   }
 

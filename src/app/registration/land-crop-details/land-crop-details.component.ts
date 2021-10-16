@@ -35,7 +35,8 @@ export class LandCropDetailsComponent implements OnInit {
   cropDetailsForm: FormGroup = this.fb.group({
     cropDetails: this.fb.array([
       // this.cropFormFields() // it return initial form group object to show
-    ])
+    ]),
+    totalCropIrrigationArea: [0]
   });
 
   get surveyDetails(): FormArray {
@@ -57,9 +58,26 @@ export class LandCropDetailsComponent implements OnInit {
         if (customerRec.length === 1) {
           const surveyCropRec: any = customerRec[0].surveyCropRec;
           this.loadSurveyLandDetails(surveyCropRec);
+          this.loadCropDetails(surveyCropRec);
         }
       }
     });
+  }
+
+  loadCropDetails(cropRec: any) {
+    const { crop, spacing, appliedArea } = cropRec;
+    if (crop && spacing) {
+      const cropControls = this.cropDetails.controls;
+      cropControls.push(this.cropFormFields());
+      cropControls[0].get('primaryCrop')?.setValue(crop);
+      cropControls[0].get('interCrop')?.setValue(crop);
+      cropControls[0].get('miCrop')?.setValue(crop);
+      cropControls[0].get('cropSpacing')?.setValue(spacing);
+
+      if (appliedArea > 0) {
+        this.cropDetailsForm.get('totalCropIrrigationArea')?.setValue(appliedArea);
+      }
+    }
   }
 
   loadSurveyLandDetails(surveyRec: any) {
@@ -109,12 +127,12 @@ export class LandCropDetailsComponent implements OnInit {
 
   cropFormFields(): FormGroup {
     return this.fb.group({
-      primaryCrop: [-1],
-      interCrop: [-1],
-      miCrop: [-1],
-      cropSpacing: [-1],
-      miAreaSplitup: []
+      primaryCrop: [''],
+      interCrop: [''],
+      miCrop: [''],
+      cropSpacing: [''],
+      miAreaSplitup: ['']
     });
   }
-  
+
 }

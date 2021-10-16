@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, throwError } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
-import { CommonList, OptionList } from 'src/app/common/models/common-types';
-import { MILandRecord } from 'src/app/common/models/customer';
+import { CommonList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
+import { CustomerResponse, MILandRecord } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 
 @Component({
@@ -25,8 +25,18 @@ export class MiLandDetailsComponent implements OnInit {
   miLandForm: FormGroup = this.fb.group({
     cropType: [{ value: '', disabled: true }],
     miType: [{ value: '', disabled: true }],
-    cropLandType: ['']
+    cropLandType: [''],
+    _id: ['']
   });
+
+  /* Message variables */
+  sucessMessage: string = '';
+  errorMessage: TableErrorMessage = {
+    message: '',
+    desc: ''
+  };
+
+  enableNextBtn: boolean = false;
 
   constructor(private fb: FormBuilder, private _custService: CustServiceService) { }
 
@@ -37,7 +47,9 @@ export class MiLandDetailsComponent implements OnInit {
         console.log('cust rec', customerRec);
         if (customerRec.length === 1) {
           const miLandRec: MILandRecord = customerRec[0].miLandRec;
+          miLandRec._id = customerRec[0]._id;
           this.loadLandDetails(miLandRec);
+          this.sucessMessage = 'Mi Land deatils Loaded Successfully';
         }
       }
     });
@@ -46,10 +58,42 @@ export class MiLandDetailsComponent implements OnInit {
   loadLandDetails(landRecord: MILandRecord) {
     console.log('mi rec', landRecord);
     this.miLandForm.patchValue(landRecord);
+    if (landRecord.cropLandType) {
+      this.enableNextBtn = true;
+    }
   }
 
   submitLandForm() {
-    console.log(this.miLandForm.value);
+    this.clearMesgBanner();
+    this.enableNextBtn = false;
+
+    const miLandRec = this.miLandForm.value;
+    console.log(miLandRec);
+
+    this._custService.updateMILandRecord(miLandRec).subscribe((response: CustomerResponse) => {
+      if (response.isSuccess) {
+        this.sucessMessage = response.message;
+      } else {
+        this.errorMessage.message = 'Failed during updation';
+        this.errorMessage.desc = response.message;
+      }
+    }, err => {
+      console.log('error : ', err)
+      this.errorMessage.message = 'Failed during updation';
+      this.errorMessage.desc = err?.error;
+    }, () => this.enableNextBtn = true);
+  }
+
+  nextBtnSelected() {
+    this.selectedStepper.next({
+      isCompleted: true,
+      stepName: CustomerConstants.STEPPER_LABLES.step3Label
+    });
+  }
+
+  clearMesgBanner() {
+    this.sucessMessage = '';
+    this.errorMessage = { message: '', desc: '' };
   }
 
   resetFormData() {

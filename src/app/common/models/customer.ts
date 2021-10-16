@@ -4,6 +4,12 @@ export interface CustomerResponse {
     custRec: any[]
 };
 
+export interface BulkCustomerResponse {
+    message: string,
+    isSuccess: boolean,
+    invalidRecordAt: number
+};
+
 export interface ApplicantReqData {
     applicationId: string
 };
@@ -11,5 +17,6 @@ export interface ApplicantReqData {
 export interface MILandRecord {
     cropType: string,
     miType: string,
-    cropLandType?: string,
+    _id: string,
+    cropLandType?: string
 };

@@ -28,18 +28,22 @@
                     </div>
 
                     <div class="col">
-                        <input type="text" id="{{'subDivisionNo' + i}}" formControlName="subDivisionNo" class="col form-control">
+                        <input type="text" id="{{'subDivisionNo' + i}}" formControlName="subDivisionNo"
+                            class="col form-control">
                     </div>
 
                     <div class="col">
-                        <input type="text" id="{{'totalLandArea' + i}}" formControlName="totalLandArea" class="col form-control">
+                        <input type="text" id="{{'totalLandArea' + i}}" formControlName="totalLandArea"
+                            class="col form-control">
                     </div>
 
                     <div class="col">
-                        <input type="text" id="{{'plannedMIArea' + i}}" formControlName="plannedMIArea" class="col form-control">
+                        <input type="text" id="{{'plannedMIArea' + i}}" formControlName="plannedMIArea"
+                            class="col form-control">
                     </div>
 
-                    <div id="survey-delete" *ngIf="surveyDetails.length > 1" (click)="removeSurveyField(i)" matTooltip="Delete Record">
+                    <div id="survey-delete" *ngIf="surveyDetails.length > 1" (click)="removeSurveyField(i)"
+                        matTooltip="Delete Record">
                         <mat-icon color="warn"> delete </mat-icon>
                     </div>
                 </div>
@@ -51,7 +55,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button type="button" (click)="AddLandDetails()" class="btn-sm btn-theme-primary"> Add More Land Details </button>
+                <button type="button" (click)="AddLandDetails()" class="btn-sm btn-theme-primary"> Add More Land Details
+                </button>
             </div>
         </form>
     </div>
@@ -88,7 +93,7 @@
                     <div class="col">
                         <select id="{{'primaryCrop' + i}}" id="{{'primaryCrop' + i}}" formControlName="primaryCrop"
                             class="col form-control">
-                            <option *ngFor="let list of primaryCropList" [value]="list.value">
+                            <option *ngFor="let list of primaryCropList" [value]="list.option">
                                 {{list.option}}
                             </option>
                         </select>
@@ -97,14 +102,15 @@
                     <div class="col">
                         <select id="{{'interCrop' + i}}" id="{{'interCrop' + i}}" formControlName="interCrop"
                             class="col form-control">
-                            <option *ngFor="let list of interCropList" [value]="list.value">
+                            <option *ngFor="let list of interCropList" [value]="list.option">
                                 {{list.option}}
                             </option>
                         </select>
                     </div>
 
                     <div class="col">
-                        <select id="{{'miCrop' + i}}" id="{{'miCrop' + i}}" formControlName="miCrop" class="col form-control">
+                        <select id="{{'miCrop' + i}}" id="{{'miCrop' + i}}" formControlName="miCrop"
+                            class="col form-control">
                             <option *ngFor="let list of miCropList" [value]="list.value">
                                 {{list.option}}
                             </option>
@@ -114,17 +120,19 @@
                     <div class="col">
                         <select id="{{'cropSpacing' + i}}" id="{{'cropSpacing' + i}}" formControlName="cropSpacing"
                             class="col form-control">
-                            <option *ngFor="let list of cropSpacingList" [value]="list.value">
+                            <option *ngFor="let list of cropSpacingList" [value]="list.option">
                                 {{list.option}}
                             </option>
                         </select>
                     </div>
 
                     <div class="col">
-                        <input type="text" id="{{'miAreaSplitup' + i}}" formControlName="miAreaSplitup" class="col form-control">
+                        <input type="text" id="{{'miAreaSplitup' + i}}" formControlName="miAreaSplitup"
+                            class="col form-control">
                     </div>
 
-                    <div id="survey-delete" *ngIf="cropDetails.length > 1" (click)="removeCropFieldDetails(i)" matTooltip="Delete Record">
+                    <div id="survey-delete" *ngIf="cropDetails.length > 1" (click)="removeCropFieldDetails(i)"
+                        matTooltip="Delete Record">
                         <mat-icon color="warn"> delete </mat-icon>
                     </div>
                 </div>
@@ -132,11 +140,13 @@
 
             <div class="row py-3">
                 <span class="offset-8"> Total </span>
-                <span class="offset-2"> {{totalCropIrrigationArea}} </span>
+                <span class="offset-2">
+                    {{cropDetailsForm.get('totalCropIrrigationArea')?.value}} </span>
             </div>
 
             <div class="d-flex justify-content-end">
-                <button type="button" (click)="AddCropFieldDetails()" class="btn-sm btn-theme-primary"> Add More Crop Details </button>
+                <button type="button" (click)="AddCropFieldDetails()" class="btn-sm btn-theme-primary"> Add More Crop
+                    Details </button>
             </div>
         </form>
     </div>

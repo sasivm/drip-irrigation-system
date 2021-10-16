@@ -8,14 +8,8 @@ export class DataService {
 
   constructor() { }
 
-  getCompletionState() {
-    const local: string = sessionStorage.getItem('stepperState') || 'null';
-    const state: StepperStepState | null = JSON.parse(local) || null;
-    return state;
-  }
-
-  setCompletionState(state: StepperStepState) {
-    const stateStr: string = JSON.stringify(state);
-    sessionStorage.setItem('stepperState', stateStr);
+  updateFrameSrc(result: string) {
+    const pdfFrameEle: HTMLIFrameElement | null = document.getElementById('printPdf') as HTMLIFrameElement;
+    pdfFrameEle.src = result;
   }
 }

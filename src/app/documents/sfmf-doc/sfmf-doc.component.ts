@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { AfterContentInit, Component, OnInit } from '@angular/core';
 
-import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as _pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { TDocumentDefinitions, Content, StyleDictionary, Style, Table, ContentTable } from 'pdfmake/interfaces';
-(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+import { PDFMakeConstants } from 'src/app/common/pdfMake-constants';
+import { DataService } from 'src/app/services/data.service';
+
+(_pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-sfmf-doc',
   templateUrl: './sfmf-doc.component.html',
   styleUrls: ['./sfmf-doc.component.scss']
 })
-export class SfmfDocComponent {
+export class SfmfDocComponent implements AfterContentInit {
 
   DOC_STYLE_HEADER_TITLE_NAME: string = 'docHeadTitle';
   DOC_STYLE_NORMAL_LINE_NAME: string = 'normalTextLine';
@@ -146,43 +149,7 @@ export class SfmfDocComponent {
     this.LINE5_CONTENT, this.LINE6_CONTENT
   ];
 
-  DOC_STYLES: StyleDictionary = {
-    docHeadTitle: {
-      fontSize: 16,
-      alignment: 'center',
-      decoration: 'underline',
-      bold: true,
-      margin: [0, 0, 0, 0]
-    },
-    firstLineContent: {
-      alignment: 'right',
-    },
-    fillTextContent: {
-      alignment: 'center',
-      bold: true
-    },
-    rowLineContent: {
-      margin: [0, 5]
-    },
-    textCenter: {
-      alignment: 'center'
-    },
-    textJustify: {
-      alignment: 'justify'
-    },
-    footerSignature: {
-      alignment: 'center',
-      bold: true,
-      fontSize: 16,
-      margin: [0, 140]
-    }
-  }
 
-  constructor() { }
-
-  downloadPDFFile() {
-    this.generatePDF();
-  }
 
   DOC_BODY_CONTENTS = [
     this.BODY_CONTENT
@@ -192,14 +159,25 @@ export class SfmfDocComponent {
     this.DOC_HEADER_CONTENT, this.DOC_BODY_CONTENTS, this.DOC_FOOTER_CONTENT
   ];
 
+  constructor(private _dataServ: DataService) { }
+
   generatePDF() {
     let docDefinition: TDocumentDefinitions = {
       content: this.FULL_DOC_CONTENT_ARRAY,
-      styles: this.DOC_STYLES
+      styles: PDFMakeConstants.DOC_STYLES
     };
 
-    pdfMake.createPdf(docDefinition).open();
+    const documentPDF: _pdfMake.TCreatedPdf = _pdfMake.createPdf(docDefinition);
+    documentPDF.getDataUrl(this._dataServ.updateFrameSrc);
   }
 
+  updateFrameSrc(result: string) {
+    const pdfFrameEle: HTMLIFrameElement | null = document.getElementById('printPdf') as HTMLIFrameElement;
+    pdfFrameEle.src = result;
+  }
+
+  ngAfterContentInit() {
+    this.generatePDF();
+  }
 }
 

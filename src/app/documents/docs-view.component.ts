@@ -10,12 +10,12 @@ export class DocsViewComponent {
   constructor() { }
 
   docList: any[] = [
-    { name: 'SFMF', desc: 'Small and Marginal Farmer Verification Certificate' },
-    { name: 'VERIFICATION', desc: 'verification Certificate' },
-    { name: 'PRE', desc: 'Pre Inspection Report' },
-    { name: 'WORK COMPLETION', desc: 'Work Completion Certificate' },
-    { name: 'ABSTRACT', desc: 'Abstract' },
-    { name: 'JVR', desc: 'Joint Verification Report' }
+    { name: 'SFMF', link: 'sfmf', desc: 'Small and Marginal Farmer Verification Certificate' },
+    { name: 'VERIFICATION', link: 'verification', desc: 'Verification Certificate' },
+    { name: 'PRE', link: 'pre', desc: 'Pre Inspection Report' },
+    { name: 'WORK COMPLETION', link: 'wrk-compl', desc: 'Work Completion Certificate' },
+    { name: 'ABSTRACT', link: '', desc: 'Abstract' },
+    { name: 'JVR', link: 'jvr', desc: 'Joint Verification Report' }
   ];
 
 }

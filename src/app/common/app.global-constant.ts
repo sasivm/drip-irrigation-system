@@ -36,9 +36,9 @@ export class GlobalConstants {
 
     public static APPLICATION_SocialStatusList: OptionList[] = [
         { option: 'Select Caste', value: '' },
-        { option: 'Scheduled Caste', value: 'SC' },
-        { option: 'Scheduled Tribe', value: 'ST' },
-        { option: 'Other Caste', value: 'Others' }
+        { option: 'Scheduled Caste', value: 'Scheduled Caste' },
+        { option: 'Scheduled Tribe', value: 'Scheduled Tribe' },
+        { option: 'Other Caste', value: 'Other Caste' }
     ];
 
     public static CROP_CropTypeList: OptionList[] = [
@@ -281,7 +281,7 @@ export class GlobalConstants {
         { value: 21, option: '2.5m*0.6m' },
         { value: 22, option: '9m*9m' },
         { value: 23, option: '12m*12m' },
-        { value: 25, option: '&lt;1.2m*0.6m' },
+        { value: 25, option: '<1.2m*0.6m' },
         { value: 26, option: '1.5m*0.6m' },
         { value: 27, option: '1.8m*1.8m' },
         { value: 28, option: '7m*7m' },

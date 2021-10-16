@@ -153,9 +153,14 @@
     </form>
 
     <div class="d-flex justify-content-around pt-3">
-        <button mat-button matStepperPrevious class="btn-theme-secondary mx-3">Back</button>
-        <button mat-button matStepperNext
-            [ngClass]="enableNextBtn ? 'btn-theme-secondary' : 'disabled-btn'">Next</button>
+        <button mat-button matStepperPrevious class="btn-theme-secondary mx-3"> Back </button>
+        <button mat-button matStepperNext [ngClass]="enableNextBtn ? 'btn-theme-secondary' : 'disabled-btn'"
+            [disabled]="!enableNextBtn" (click)="nextBtnSelected()"> Next
+        </button>
+
+        <a routerLink="/docs" class="btn btn-sm btn-theme-secondary mx-3">
+            View Docs
+        </a>
     </div>
 
 </div>

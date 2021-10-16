@@ -3,8 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
 import { CustomerConstants } from '../common/customer-constant';
-import { StepperStepState, TableErrorMessage } from '../common/models/common-types';
-import { ApplicantReqData, CustomerResponse } from '../common/models/customer';
+import { StepperStepState } from '../common/models/common-types';
 import { CustServiceService } from '../services/cust-service.service';
 import { DataService } from '../services/data.service';
 
@@ -19,75 +18,87 @@ export class RegistrationComponent implements OnInit {
 
   isCustRecordReq: boolean = false;
 
-  constructor(private _dataServ: DataService) { }
+  constructor(private _custServc: CustServiceService) { }
 
   selectedStepperSubject: Subject<any> = new Subject();
 
   customerRecord: any[] = [];
 
-  stepperLabels: any = CustomerConstants.STEPPER_LABLES;
+  completedState: StepperStepState = {
+    step1: true,
+    step2: false,
+    step3: false,
+    step4: false,
+  };
+
+  stepperLabels = CustomerConstants.STEPPER_LABLES;
 
   ngOnInit() {
+    this.selectedStepperSubject.subscribe(data => {
+      if (data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+        console.log('Reg event triggered');
+        if (data?.isCompleted) {
+          console.log('next step', data?.isCompleted);
+          this.completedState.step2 = true;
+          this.goForwardOnStepper();
+        }
+      }
+      else if (data.stepName === CustomerConstants.STEPPER_LABLES.step3Label) {
+        console.log('Reg event triggered');
+        if (data?.isCompleted) {
+          console.log('next step', data?.isCompleted);
+          this.completedState.step3 = true;
+          this.goForwardOnStepper();
+        }
+      }
+    });
     setTimeout(() => this.checkForUserRequest(), 500);
   }
 
   goForwardOnStepper() {
-    this.myStepper.next();
+    setTimeout(() => this.myStepper.next(), 0);
   }
 
   checkForUserRequest() {
     const userReqStr: string | null = sessionStorage.getItem('user-req');
     this.isCustRecordReq = !!userReqStr;
     if (this.isCustRecordReq) {
+      this.checkForCompleteionState();
       this.goForwardOnStepper();
+    }
+  }
+
+  checkForCompleteionState() {
+    const customerRecArr: any[] = this._custServc.getLoadedCustomerRecord();
+    if (customerRecArr.length === 1) {
+      const custRec = customerRecArr[0];
+      if (custRec?.isCompleted) {
+        this.completedState.step2 = true;
+      }
+
+      if (custRec?.miLandRec?.cropLandType) {
+        this.completedState.step3 = true;
+      }
     }
   }
 
   selectionChange(event: StepperSelectionEvent) {
     const stepLabel = event.selectedStep.label;
 
-    const stepState: StepperStepState | null = this._dataServ.getCompletionState();
+    console.log('selected Step :', stepLabel);
 
-    if (stepLabel === this.stepperLabels.step1Label) {
-      event.selectedStep.completed = true;
-      return;
-    } else if (stepLabel === this.stepperLabels.step2Label) {
-      if (stepState) {
-        event.selectedStep.completed = stepState.step2;
-      } else {
-        event.selectedStep.completed = false;
-      }
-
-      this.selectedStepperSubject.next({
-        isCustRecReq: this.isCustRecordReq,
-        stepName: stepLabel
-      });
-      return;
-    }
-
-    if (!stepState) {
-      event.selectedStep.completed = false;
-      return;
-    }
-
-    /* moves to selected step only if prev step is completed(true) */
-
-    if (stepLabel === this.stepperLabels.step3Label) {
-      if (stepState) {
-        event.selectedStep.completed = stepState.step3;
-      }
-    } else if (stepLabel === this.stepperLabels.step4Label) {
-      if (stepState) {
-        event.selectedStep.completed = stepState.step4;
-      }
-    }
-
-    // if (this.isCustRecordReq) {
-    this.selectedStepperSubject.next({
+    const selectedStepState = {
       isCustRecReq: this.isCustRecordReq,
       stepName: stepLabel
-    });
-    // }
+    };
+
+    if (stepLabel === CustomerConstants.STEPPER_LABLES.step2Label) {
+      this.selectedStepperSubject.next(selectedStepState);
+    } else if (stepLabel === CustomerConstants.STEPPER_LABLES.step3Label) {
+      this.selectedStepperSubject.next(selectedStepState);
+    } else if (stepLabel === CustomerConstants.STEPPER_LABLES.step4Label) {
+      this.selectedStepperSubject.next(selectedStepState);
+    }
   }
 
 }

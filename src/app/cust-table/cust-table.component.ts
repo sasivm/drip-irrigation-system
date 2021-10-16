@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { GlobalConstants } from '../common/app.global-constant';
 import { ExcelFileConstants } from '../common/excelFile-constant';
 import { TableErrorMessage } from '../common/models/common-types';
+import { BulkCustomerResponse } from '../common/models/customer';
 import { CustServiceService } from '../services/cust-service.service';
 import { CustTableBulkService } from '../services/cust-table-bulk.service';
 
@@ -283,11 +284,13 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
     if (this.custDataSource.data.length > 0) {
       this.resetMessages();
       const custRequest: any[] = this.prepareCustomerRecords();
-      this._bulkService.sendBulkCustData(custRequest).subscribe((data: any) => {
+      this._bulkService.sendBulkCustData(custRequest).subscribe((data: BulkCustomerResponse) => {
         if (data.isSuccess) {
           this.sucessMessage = data.message;
         } else {
-          this.errorMessage.message = data.message;
+          const resposeMessage: string = data.message || 'Failed while saving...'
+          this.errorMessage.message = resposeMessage;
+          
           if (data.invalidRecordAt > 0) {
             this.errorMessage.desc = `Record at ${data.invalidRecordAt} is not valid...`;
           }

@@ -35,14 +35,14 @@ import { SubsidyCalculatorComponent } from './subsidy-calculator/subsidy-calcula
 import { ComponentBCalcComponent } from './subsidy-calculator/component-b-calc/component-b-calc.component';
 import { ComponentACalcComponent } from './subsidy-calculator/component-a-calc/component-a-calc.component';
 import { DocsViewComponent } from './documents/docs-view.component';
-import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
-import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
 import { BulkRegistorComponent } from './registration/bulk-registor/bulk-registor.component';
 import { RegTypeComponent } from './registration/reg-type/reg-type.component';
 import { CustTableComponent } from './cust-table/cust-table.component';
 import { ApplicantRegComponent } from './registration/applicant-reg/applicant-reg.component';
 import { ErrorMsgComponent } from './common/error-msg/error-msg.component';
 import { CustSearchComponent } from './cust-search/cust-search.component';
+import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
+import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 
 
 @NgModule({

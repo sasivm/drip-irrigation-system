@@ -4,25 +4,20 @@
         <div class="col-2 px-0">
             <mat-list>
                 <ng-container *ngFor="let document of docList">
-                    <mat-list-item [matTooltip]="document.desc" class="doc-list-item">
-                        <mat-icon mat-list-icon>folder</mat-icon>
+                    <a mat-list-item [routerLink]="document.link" [matTooltip]="document.desc"
+                        class="btn btn-sm doc-list-item">
+                        <mat-icon mat-list-icon class="folder-icon"> folder </mat-icon>
                         <div mat-line> {{document.name}} </div>
-                    </mat-list-item>
+                    </a>
                 </ng-container>
             </mat-list>
         </div>
 
-        <div class="col card border-left">
-            <app-sfmf-doc></app-sfmf-doc>
-        </div>
-
-        <div class="col-2 card border-left">
-            <div class="d-flex flex-column">
-                <button class="btn btn-theme-primary my-2"> Download </button>
-                <button class="btn btn-theme-primary my-2"> Open </button>
-                <button class="btn btn-theme-secondary my-2"> Print </button>
-            </div>
+        <div class="col card border-left vh-100">
+            <!-- <app-sfmf-doc></app-sfmf-doc> -->
+            <!-- <app-verification-doc></app-verification-doc> -->
+            <iframe id="printPdf" name="printPdf" height="700" class="col"></iframe>
+            <router-outlet></router-outlet>
         </div>
     </div>
-
 </div>

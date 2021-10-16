@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { GlobalConstants } from '../common/app.global-constant';
+import { BulkCustomerResponse } from '../common/models/customer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,9 @@ export class CustTableBulkService {
 
   constructor(private _http: HttpClient) { }
 
-  getSrever() {
-    return this._http.get(this.REST_API_SERVER + '/demo')
-  }
-
-  sendBulkCustData(payload: any[]) {
+  sendBulkCustData(payload: any[]): Observable<BulkCustomerResponse> {
     const bulk_api = `${this.REST_API_SERVER}/bulkRegister`;
-    return this._http.post(bulk_api, payload);
+    return this._http.post<BulkCustomerResponse>(bulk_api, payload);
   }
 
   handleError(error: HttpErrorResponse) {

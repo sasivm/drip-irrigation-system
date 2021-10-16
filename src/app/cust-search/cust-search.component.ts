@@ -44,7 +44,7 @@ export class CustSearchComponent implements AfterViewInit {
 
   custDataSource: MatTableDataSource<any> = new MatTableDataSource();
 
-  displayedColumns: string[] = ['action', 'applicationId', 'farmerName', 'farmerType', 'department']; // 'registeredBy', 'village', 'block', 'landOwnSon'
+  displayedColumns: string[] = ['view', 'action', 'applicationId', 'farmerName', 'farmerType', 'department']; // 'registeredBy', 'village', 'block', 'landOwnSon'
 
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
@@ -68,16 +68,33 @@ export class CustSearchComponent implements AfterViewInit {
         this.errorMessage.message = response.message;
       }
     }, err => {
-      console.log('error ', err.error); // For error message
-      this.errorMessage.message = err.error;
+      console.log('error ', err); // For error message
+      if (err.name === 'HttpErrorResponse') {
+        this.errorMessage.message = err.message;
+        this.errorMessage.desc = err.statusText;
+      } else {
+        this.errorMessage.message = err.message;
+      }
     });
   }
 
+  viewCustRecReq(applicationId: string) {
+    const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
+    if (isSaved) {
+      this.router.navigate(['/docs']);
+    }
+  }
+
   saveCustRecReq(applicationId: string) {
-    const isReqSaved: boolean = this._custService.setCustomerReqOnSession(applicationId);
-    if (isReqSaved) {
+    const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
+    if (isSaved) {
       this.router.navigate(['/register']);
     }
+  }
+
+  setCustomerReqInStorage(applicationId: string) {
+    const isReqSaved: boolean = this._custService.setCustomerReqOnSession(applicationId);
+    return isReqSaved;
   }
 
   clearMessageBanner() {

@@ -42,14 +42,14 @@ export class CustServiceService {
     return false;
   }
 
-  getCustomerRecordFromSession() {
-    const custRecord: string | null = sessionStorage.getItem('cust-rec');
-    return custRecord;
-  }
-
   getLoadedCustomerRecord(): any[] {
-    const custRecord = JSON.parse(sessionStorage.getItem('cust-rec') || '');
-    return [custRecord] || [];
+    const custRecStr: string | null = sessionStorage.getItem('cust-rec');
+    if (!custRecStr) return [];
+
+    const custRecord = JSON.parse(custRecStr);
+    if (!custRecord) return [];
+
+    return custRecord;
   }
 
 }

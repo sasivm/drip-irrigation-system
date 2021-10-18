@@ -35,12 +35,12 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.selectedStepperSubject.subscribe(data => {
+      const moveToNext: boolean = data.isNext ?? false;
       if (data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
         console.log('Reg event triggered');
         if (data?.isCompleted) {
           console.log('next step', data?.isCompleted);
           this.completedState.step2 = true;
-          this.goForwardOnStepper();
         }
       }
       else if (data.stepName === CustomerConstants.STEPPER_LABLES.step3Label) {
@@ -48,11 +48,14 @@ export class RegistrationComponent implements OnInit {
         if (data?.isCompleted) {
           console.log('next step', data?.isCompleted);
           this.completedState.step3 = true;
-          this.goForwardOnStepper();
         }
       }
+      // if (moveToNext) {
+      //   // this.goForwardOnStepper();
+      // }
     });
-    setTimeout(() => this.checkForUserRequest(), 500);
+
+    setTimeout(() => this.checkForUserRequest(), 0);
   }
 
   goForwardOnStepper() {
@@ -63,7 +66,6 @@ export class RegistrationComponent implements OnInit {
     const userReqStr: string | null = sessionStorage.getItem('user-req');
     this.isCustRecordReq = !!userReqStr;
     if (this.isCustRecordReq) {
-      this.checkForCompleteionState();
       this.goForwardOnStepper();
     }
   }
@@ -85,7 +87,7 @@ export class RegistrationComponent implements OnInit {
   selectionChange(event: StepperSelectionEvent) {
     const stepLabel = event.selectedStep.label;
 
-    console.log('selected Step :', stepLabel);
+    console.log('selected Step :', stepLabel, 'cust-re', this.isCustRecordReq);
 
     const selectedStepState = {
       isCustRecReq: this.isCustRecordReq,

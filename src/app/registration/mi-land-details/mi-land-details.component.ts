@@ -50,6 +50,9 @@ export class MiLandDetailsComponent implements OnInit {
           miLandRec._id = customerRec[0]._id;
           this.loadLandDetails(miLandRec);
           this.sucessMessage = 'Mi Land deatils Loaded Successfully';
+          if (miLandRec?.cropLandType) {
+            this.nextBtnSelected();
+          }
         }
       }
     });

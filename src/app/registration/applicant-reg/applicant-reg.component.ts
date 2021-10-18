@@ -1,9 +1,9 @@
-import { AfterContentChecked, AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
-import { CommonList, GenderList, OptionList, StepperStepState, TableErrorMessage } from 'src/app/common/models/common-types';
+import { GenderList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { ApplicantReqData, CustomerResponse } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 import { DataService } from 'src/app/services/data.service';
@@ -178,27 +178,28 @@ export class ApplicantRegComponent implements OnInit {
 
   storeCustomerDetailsOnSession() {
     if (this.custRecFormData.length === 1) {
-      sessionStorage.setItem('cust-rec', JSON.stringify(this.custRecFormData[0]));
+      sessionStorage.setItem('cust-rec', JSON.stringify(this.custRecFormData));
       this.loadInitUserData();
     }
   }
 
   loadInitUserData() {
-    const custRecord: string | null = this._custService.getCustomerRecordFromSession();
-    if (custRecord) {
-      this.custRecFormData = [JSON.parse(custRecord)];
+    const custRecord: any[] = this._custService.getLoadedCustomerRecord();
+    if (custRecord.length === 1 && custRecord[0]._id) {
+      this.custRecFormData = custRecord;
+
       if (!this.custRecFormData[0]?.gender) {
         this.custRecFormData[0].gender = 'M';
       }
       this.registrationForm.patchValue(this.custRecFormData[0]);
-      if (this.custRecFormData.length > 0) {
-        this.sucessMessage = 'Customer data loaded successfully';
-        if (this.custRecFormData[0]?.isCompleted) {
-          this.enableNextBtn = true;
-        }
-      } else {
-        // this.errorMessage.message = 'customer data not loaded';
+
+      this.sucessMessage = 'Customer data loaded successfully';
+      if (this.custRecFormData[0]?.isCompleted) {
+        this.enableNextBtn = true;
+        this.nextBtnSelected();
       }
+    } else {
+      // this.errorMessage.message = 'customer data not loaded';
     }
   }
 
@@ -264,6 +265,7 @@ export class ApplicantRegComponent implements OnInit {
         this.sucessMessage = response.message;
         if (response.custRec[0]?.isCompleted) {
           this.enableNextBtn = true;
+          this.nextBtnSelected();
         }
       } else {
         this.errorMessage.message = 'Failed during updating customer details';

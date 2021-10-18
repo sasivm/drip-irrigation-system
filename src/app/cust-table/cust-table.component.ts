@@ -15,7 +15,7 @@ import { CustTableBulkService } from '../services/cust-table-bulk.service';
   templateUrl: './cust-table.component.html',
   styleUrls: ['./cust-table.component.scss']
 })
-export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
+export class CustTableComponent implements AfterViewInit, OnChanges {
 
   @ViewChild(MatPaginator) paginator: any;
 
@@ -24,156 +24,6 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
   constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router) { }
 
   COL_NAME_TO_FIELD_NAME: any = ExcelFileConstants.EXCEL_FILE_COL_AND_FIELD_MAP;
-
-  dummyData = [
-    [
-      "Srl No",
-      "Year",
-      "Application Id",
-      "Farmer Name",
-      "Father Name",
-      "Caste",
-      "Mobile",
-      "Work Order Date",
-      "Work Order No",
-      "District",
-      "Block",
-      "Village",
-      "Crop",
-      "Spacing",
-      "Survey No / Subdivision No",
-      "Total Area (Ha)",
-      "Applied Area (Ha)",
-      "Department",
-      "Irrigation Type",
-      "Sprinkler Type",
-      "Sprinkler Spacing",
-      "Sugar Mill",
-      "Sugar Drip Type",
-      "Sugar Well Type",
-      "MI Company",
-      "MI Referrence No",
-      "Dealer Name",
-      "Farmer Type",
-      "Quotation Subsidy Amount (Rs) 100%",
-      "Farmer Contribution (Rs) 25%",
-      "Invoice Date",
-      "Invoice Amount (Rs) 100%",
-      "State Restricted Amount (Rs) 100%",
-      "First Fund Released (Lakhs)",
-      "Proceeding No",
-      "First Fund UTR No",
-      "First Fund UTR Date",
-      "AE Restricted Amount (Rs) 100%",
-      "Bank Gaurantee Deducted (%)",
-      "Bank Gaurantee Deducted Amount",
-      "Second Fund Released (Lakhs)",
-      "Second Fund UTR No",
-      "Second Fund UTR Date",
-      "Total Fund Released (Lakhs)",
-      "Current Status",
-      "Current Status Date",
-      "Current Status Remarks"
-    ],
-    [
-      1,
-      "2021-2022",
-      "A-TPR-gdm-6815035675-2021-22",
-      "Selvaraj",
-      "Mayilsamy",
-      "Other Caste",
-      9976542473,
-      null,
-      null,
-      "Tiruppur",
-      "Gudimangalam",
-      "Moongiltholuvu",
-      "maize",
-      "<1.2m*0.6m",
-      "",
-      1.69,
-      1.6,
-      "Agriculture",
-      "Drip",
-      null,
-      null,
-      null,
-      null,
-      null,
-      "Vedanta Irrigation system Pvt Ltd.",
-      "VED-gdm-4-2021",
-      "Sakthi Velavan Agencies",
-      "SF / MF",
-      171739.51,
-      294,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "Pre Inspection Approved",
-      "17-08-2021 02:37:05 PM",
-      "Approved"
-    ],
-    [
-      2,
-      "2021-2022",
-      "A-TPR-gdm-4121435605-2021-22",
-      "SAKTHIVEL AND PECHIAMMAL",
-      "KALIYAPPAGOUNDER",
-      "Other Caste",
-      6379768677,
-      44406,
-      "TPR/gdm/408337/2021-22",
-      "Tiruppur",
-      "Gudimangalam",
-      "Thottampatti",
-      "maize",
-      "1.2m*0.6m",
-      "192/3C , 192/3E",
-      1.09,
-      1.04,
-      "Agriculture",
-      "Drip",
-      null,
-      null,
-      null,
-      null,
-      null,
-      "Vedanta Irrigation system Pvt Ltd.",
-      21,
-      "Bharathi Drips",
-      "SF / MF",
-      117164.08,
-      34368.22,
-      44435,
-      117164.08,
-      0,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      "First Fund Release Recommended by District Office",
-      "13-09-2021 01:27:30 PM",
-      "REVERTED WRONGLY ENTERED BVL AREA"
-    ]
-  ];
 
   custDataSource: MatTableDataSource<any> = new MatTableDataSource();
   displayedColumns: string[] = ExcelFileConstants.CUST_TABLE_VISIBLE_HEADERS;
@@ -184,10 +34,9 @@ export class CustTableComponent implements AfterViewInit, OnInit, OnChanges {
     desc: ''
   };
 
-  ngOnInit() {
-    // this.custDataArray = this.dummyData;
-    this.loadCustomerDetailsToTable();
-  }
+  // ngOnInit() {
+  //   this.loadCustomerDetailsToTable();
+  // }
 
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;

@@ -1,11 +1,11 @@
 <div class="container-fluid px-0">
     <div class="row">
 
-        <div class="col-2 px-0">
+        <div class="col-2 px-0 border-right">
             <mat-list>
                 <ng-container *ngFor="let document of docList">
-                    <a mat-list-item [routerLink]="document.link" [matTooltip]="document.desc"
-                        class="btn btn-sm doc-list-item">
+                    <a mat-list-item [routerLink]="document.link" [matTooltip]="document.desc" routerLinkActive="hl-doc-active"
+                        class="doc-list-item">
                         <mat-icon mat-list-icon class="folder-icon"> folder </mat-icon>
                         <div mat-line> {{document.name}} </div>
                     </a>
@@ -13,10 +13,10 @@
             </mat-list>
         </div>
 
-        <div class="col card border-left vh-100">
+        <div class="col vh-100 px-0">
             <!-- <app-sfmf-doc></app-sfmf-doc> -->
             <!-- <app-verification-doc></app-verification-doc> -->
-            <iframe id="printPdf" name="printPdf" height="700" class="col"></iframe>
+            <iframe id="printPdf" name="printPdf" height="700" class="col px-0"></iframe>
             <router-outlet></router-outlet>
         </div>
     </div>

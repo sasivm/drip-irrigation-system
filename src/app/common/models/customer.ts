@@ -20,3 +20,10 @@ export interface MILandRecord {
     _id: string,
     cropLandType?: string
 };
+
+export interface PostMark {
+    createdBy: string,
+    createdAt: string,
+    updatedBy?: string,
+    updatedAt?: string
+};

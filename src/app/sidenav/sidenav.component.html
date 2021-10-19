@@ -9,7 +9,8 @@
 
             <ng-container *ngFor="let item of navListItems">
                 <mat-nav-list>
-                    <a mat-list-item [routerLink]="item.link" routerLinkActive="hl-active" (click)="lefSideNav.close()">
+                    <a mat-list-item [routerLink]="item.link" routerLinkActive="hl-active" [routerLinkActiveOptions]="{exact: true}"
+                    (click)="lefSideNav.close()">
                         <mat-icon> {{item.icon}} </mat-icon> <span class="px-3"> {{item.scrName}} </span>
                     </a>
                 </mat-nav-list>

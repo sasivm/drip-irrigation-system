@@ -1,8 +1,20 @@
 .doc-list-item {
+    text-decoration: none;
     cursor: pointer;
     text-align: left !important;
 }
 
+.hl-doc-active, .hl-doc-active:hover {
+    background-color: #fff !important;
+    .mat-line {
+        font-weight: 600 !important;
+    }
+}
+
 .doc-list-item:hover {
     background-color: #e0dfdf;
+}
+
+iframe {
+    border: none;
 }

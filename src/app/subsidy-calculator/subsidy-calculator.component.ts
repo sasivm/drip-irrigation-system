@@ -13,11 +13,11 @@ export class SubsidyCalculatorComponent implements OnInit {
     lateralSpace: [''],
     dripperSpace: [''],
     sysArea: [''],
-    govtSubAmt: [184853],
-    percentAge: [75],
+    govtSubAmt: [{ value: 184853, disabled: true }],
+    percentAge: [{ value: 10, disabled: true }],
     subsAmt: [0],
-    gstTax: [''],
-    totalSubsidy: [0]
+    gstTax: [{ value: 0, disabled: true }],
+    totalSubsidy: [{ value: 0, disabled: true }]
   });
 
   GST_PERCET: number = 12;

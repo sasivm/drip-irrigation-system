@@ -13,7 +13,7 @@ import { CustServiceService } from '../services/cust-service.service';
   templateUrl: './cust-search.component.html',
   styleUrls: ['./cust-search.component.scss']
 })
-export class CustSearchComponent implements AfterViewInit {
+export class CustSearchComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
@@ -24,9 +24,9 @@ export class CustSearchComponent implements AfterViewInit {
     farmerName: [''],
     farmerType: [''],
     registeredBy: [''],
-    department: [''],
+    department: ['Agriculture'],
     block: [''],
-    village: ['Thottampatti']
+    village: ['']
   });
 
   /* Message variables */
@@ -46,6 +46,9 @@ export class CustSearchComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['view', 'action', 'applicationId', 'farmerName', 'farmerType', 'department']; // 'registeredBy', 'village', 'block', 'landOwnSon'
 
+  ngOnInit() {
+    this.searchCustomers();
+  }
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
   }

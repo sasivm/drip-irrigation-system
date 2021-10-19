@@ -26,7 +26,6 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { QuotationComponent } from './quotation/quotation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { GenerateFormsComponent } from './generate-forms/generate-forms.component';
 import { LoginComponent } from './login/login.component';
 import { LandCropDetailsComponent } from './registration/land-crop-details/land-crop-details.component';
 import { MiLandDetailsComponent } from './registration/mi-land-details/mi-land-details.component';
@@ -43,6 +42,7 @@ import { ErrorMsgComponent } from './common/error-msg/error-msg.component';
 import { CustSearchComponent } from './cust-search/cust-search.component';
 import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
+import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
 
 
 @NgModule({
@@ -53,7 +53,6 @@ import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
     RegistrationComponent,
     QuotationComponent,
     DashboardComponent,
-    GenerateFormsComponent,
     LoginComponent,
     LandCropDetailsComponent,
     MiLandDetailsComponent,
@@ -69,7 +68,8 @@ import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
     CustTableComponent,
     ApplicantRegComponent,
     ErrorMsgComponent,
-    CustSearchComponent
+    CustSearchComponent,
+    PreDocComponent
   ],
   imports: [
     BrowserModule,

@@ -70,10 +70,10 @@ export class ComponentACalcComponent implements OnInit {
 
   loadFieldUnits() {
     const fieldControl = this.unitItemsFormArray;
-    this.dataSource.forEach((fields) => {
+    for (let i = 0; i < this.dataSource.length; i++) {
       const fieldFromGroup: FormGroup = this.setUnitFieldsFormArray();
       fieldControl.push(fieldFromGroup);
-    });
+    }
   }
 
   setUnitFieldsFormArray() {

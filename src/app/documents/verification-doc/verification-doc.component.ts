@@ -1,11 +1,10 @@
-import { AfterContentInit, Component, OnInit } from '@angular/core';
+import { AfterContentInit, Component } from '@angular/core';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 
 import * as _pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content } from 'pdfmake/interfaces';
 import { PDFMakeConstants } from 'src/app/common/pdfMake-constants';
-import { style } from '@angular/animations';
 import { DataService } from 'src/app/services/data.service';
 (_pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -270,13 +269,7 @@ export class VerificationDocComponent implements AfterContentInit {
   ];
 
   generatePDF() {
-    let docDefinition: TDocumentDefinitions = {
-      content: this.FULL_DOC_CONTENT_ARRAY,
-      styles: PDFMakeConstants.DOC_STYLES
-    };
-
-    const documentPDF: _pdfMake.TCreatedPdf = _pdfMake.createPdf(docDefinition);
-    documentPDF.getDataUrl(this._dataServ.updateFrameSrc);
+    this._dataServ.createPDFTemplate(this.FULL_DOC_CONTENT_ARRAY);
   }
 
 

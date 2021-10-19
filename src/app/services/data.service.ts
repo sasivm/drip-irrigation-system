@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { StepperStepState } from '../common/models/common-types';
+
+import * as _pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { PDFMakeConstants } from 'src/app/common/pdfMake-constants';
+(_pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +12,16 @@ import { StepperStepState } from '../common/models/common-types';
 export class DataService {
 
   constructor() { }
+
+  createPDFTemplate(docContentArray: Content[]) {
+    const docDefinition: TDocumentDefinitions = {
+      content: docContentArray,
+      styles: PDFMakeConstants.DOC_STYLES
+    };
+
+    const documentPDF: _pdfMake.TCreatedPdf = _pdfMake.createPdf(docDefinition);
+    documentPDF.getDataUrl(this.updateFrameSrc);
+  }
 
   updateFrameSrc(result: string) {
     const pdfFrameEle: HTMLIFrameElement | null = document.getElementById('printPdf') as HTMLIFrameElement;

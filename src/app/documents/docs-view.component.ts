@@ -14,7 +14,7 @@ export class DocsViewComponent {
     { name: 'VERIFICATION', link: 'verification', desc: 'Verification Certificate' },
     { name: 'PRE', link: 'pre', desc: 'Pre Inspection Report' },
     { name: 'WORK COMPLETION', link: 'wrk-compl', desc: 'Work Completion Certificate' },
-    { name: 'ABSTRACT', link: '', desc: 'Abstract' },
+    { name: 'ABSTRACT', link: 'abstract', desc: 'Abstract' },
     { name: 'JVR', link: 'jvr', desc: 'Joint Verification Report' }
   ];
 

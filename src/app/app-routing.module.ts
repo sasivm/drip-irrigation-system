@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CustSearchComponent } from './cust-search/cust-search.component';
 import { DocsViewComponent } from './documents/docs-view.component';
+import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
 import { BulkRegistorComponent } from './registration/bulk-registor/bulk-registor.component';
@@ -18,7 +19,7 @@ const routes: Routes = [
     path: 'docs', component: DocsViewComponent, children: [
       { path: 'sfmf', component: SfmfDocComponent },
       { path: 'verification', component: VerificationDocComponent },
-      { path: 'pre', component: SubsidyCalculatorComponent }
+      { path: 'pre', component: PreDocComponent }
     ]
   },
 

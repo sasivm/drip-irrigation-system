@@ -41,6 +41,9 @@ export class PDFMakeConstants {
             bold: true,
             fontSize: 16,
             margin: [0, 140]
+        },
+        preFooter: {
+            margin: [0, 50]
         }
     }
 }

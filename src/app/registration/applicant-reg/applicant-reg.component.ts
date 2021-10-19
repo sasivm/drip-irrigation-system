@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
 import { GenderList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
-import { ApplicantReqData, CustomerResponse } from 'src/app/common/models/customer';
+import { ApplicantReqData, CustomerResponse, PostMark } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -86,6 +86,13 @@ export class ApplicantRegComponent implements OnInit {
   enableNextBtn: boolean = false;
 
   isNewReqDataLoaded: boolean = false;
+
+  postMarkSection: PostMark = {
+    createdBy: '',
+    createdAt: '',
+    updatedBy: '',
+    updatedAt: ''
+  }
 
   constructor(private fb: FormBuilder, private _custService: CustServiceService, private _dataServ: DataService) { }
 
@@ -192,14 +199,24 @@ export class ApplicantRegComponent implements OnInit {
         this.custRecFormData[0].gender = 'M';
       }
       this.registrationForm.patchValue(this.custRecFormData[0]);
-
+      this.updatePostMark(this.custRecFormData[0]);
       this.sucessMessage = 'Customer data loaded successfully';
+
       if (this.custRecFormData[0]?.isCompleted) {
         this.enableNextBtn = true;
         this.nextBtnSelected();
       }
     } else {
       // this.errorMessage.message = 'customer data not loaded';
+    }
+  }
+
+  updatePostMark(custRec: any) {
+    this.postMarkSection = {
+      createdBy: custRec?.createdBy,
+      createdAt: custRec?.createdAt,
+      updatedBy: custRec?.updatedBy,
+      updatedAt: custRec?.updatedAt
     }
   }
 
@@ -263,10 +280,12 @@ export class ApplicantRegComponent implements OnInit {
       console.log('updated successfully');
       if (response.isSuccess) {
         this.sucessMessage = response.message;
+        this.custRecFormData = response.custRec;
         if (response.custRec[0]?.isCompleted) {
           this.enableNextBtn = true;
           this.nextBtnSelected();
         }
+        this.updatePostMark(this.custRecFormData[0]);
       } else {
         this.errorMessage.message = 'Failed during updating customer details';
         this.errorMessage.desc = response.message;

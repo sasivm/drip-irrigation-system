@@ -132,6 +132,11 @@ $table-row-highlight: #ffeed6 !important;
   color: #fff !important;
 }
 
+.hl-active, .hl-active:hover {
+  color: #000 !important;
+  background-color: #f5f5f5 !important;
+}
+
 mat-toolbar {
   @include secondary-theme();
 }

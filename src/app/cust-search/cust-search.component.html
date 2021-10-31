@@ -87,12 +87,16 @@
                     </button>
                     <button type="button" class="btn btn-theme-primary reset-btn px-4" (click)="resetForm()"> Reset
                     </button>
+                    <div class="px-5" *ngIf="loadProgresser">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 
     <div id="cust-srch-table-container" class="my-5">
+        <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
         <table mat-table [dataSource]="custDataSource" class="w-100 mat-elevation-z8">
             <ng-container matColumnDef="view">
                 <th mat-header-cell *matHeaderCellDef></th>

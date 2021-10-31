@@ -14,6 +14,9 @@ export class PDFMakeConstants {
             bold: true,
             margin: [0, 0, 0, 0] // R T L B
         },
+        bottom_margin: {
+            margin: [0, 0, 0, -8] // R T L B
+        },
         firstLineContent: {
             alignment: 'right',
         },
@@ -21,14 +24,25 @@ export class PDFMakeConstants {
             alignment: 'center',
             bold: true
         },
+        populatedTextEng: { // for english words in tamil doc
+            alignment: 'center',
+            bold: true,
+            fontSize: 10
+        },
         rowLineContent: {
             margin: [0, 5]
+        },
+        rowLineContentTamilDoc: {
+            margin: [0, 2]
         },
         subLineBefore: {
             margin: [0, 0, 0, 50]
         },
         textCenter: {
             alignment: 'center'
+        },
+        textRight: {
+            alignment: 'right'
         },
         textJustify: {
             alignment: 'justify'
@@ -42,8 +56,32 @@ export class PDFMakeConstants {
             fontSize: 16,
             margin: [0, 140]
         },
+        footerSignWorkComp: {
+            bold: true,
+            fontSize: 16,
+            margin: [0, 120]
+        },
+        componyNameMarker: {
+            bold: true,
+            fontSize: 10
+        },
+        newParaghraph: {
+            margin: [0, 20, 0, 0]
+        },
         preFooter: {
             margin: [0, 50]
+        },
+        docTamil: {
+            font: 'Baloo2'
+        },
+        docTamil2: {
+            // font: 'Baamini'
+            font: 'Baloo2',
+            fontSize: 9
+        },
+        companyMarker: {
+            bold: true,
+            fontSize: 10
         }
     }
 }

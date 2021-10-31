@@ -17,6 +17,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,6 +45,7 @@ import { CustSearchComponent } from './cust-search/cust-search.component';
 import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
+import { WorkCompleteComponent } from './documents/work-complete/work-complete.component';
 
 
 @NgModule({
@@ -69,7 +72,8 @@ import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
     ApplicantRegComponent,
     ErrorMsgComponent,
     CustSearchComponent,
-    PreDocComponent
+    PreDocComponent,
+    WorkCompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +82,7 @@ import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
     ReactiveFormsModule, FormsModule, HttpClientModule,
     MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule,
     MatListModule, MatTabsModule, MatRadioModule, MatCheckboxModule, MatStepperModule,
-    MatTableModule, MatPaginatorModule, MatTooltipModule
+    MatTableModule, MatPaginatorModule, MatTooltipModule, MatProgressSpinnerModule, MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

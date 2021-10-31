@@ -46,6 +46,8 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
 
   displayedColumns: string[] = ['view', 'action', 'applicationId', 'farmerName', 'farmerType', 'department']; // 'registeredBy', 'village', 'block', 'landOwnSon'
 
+  loadProgresser: boolean = false;
+
   ngOnInit() {
     this.searchCustomers();
   }
@@ -57,6 +59,8 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
     this.clearMessageBanner();
     const searchRequest: any = this.customerSearch.value;
     console.log(searchRequest);
+
+    this.loadProgresser = true;
     this._custService.searchCustomersDetails(searchRequest).subscribe((response: CustomerResponse) => {
       console.log('Res came', response);
       if (response.isSuccess) {
@@ -70,7 +74,9 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
       } else {
         this.errorMessage.message = response.message;
       }
+      this.loadProgresser = false;
     }, err => {
+      this.loadProgresser = false;
       console.log('error ', err); // For error message
       if (err.name === 'HttpErrorResponse') {
         this.errorMessage.message = err.message;
@@ -78,6 +84,7 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
       } else {
         this.errorMessage.message = err.message;
       }
+      this.loadProgresser = false;
     });
   }
 

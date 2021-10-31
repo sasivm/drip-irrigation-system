@@ -132,7 +132,8 @@ $table-row-highlight: #ffeed6 !important;
   color: #fff !important;
 }
 
-.hl-active, .hl-active:hover {
+.hl-active,
+.hl-active:hover {
   color: #000 !important;
   background-color: #f5f5f5 !important;
 }
@@ -217,4 +218,21 @@ tr.mat-row:nth-child(even) {
 .folder-icon {
   background: #dbdfe4;
   color: #fccc77;
+}
+
+.mat-progress-bar {
+  height: 10px;
+  padding: 10px 0;
+}
+.mat-progress-bar .mat-progress-bar-buffer {
+  @include secondary-theme();
+}
+
+.mat-progress-bar-fill::after {
+  background-color: $theme-primary-bgcolor;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: $theme-secondary-bgcolor;
 }

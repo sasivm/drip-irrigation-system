@@ -251,7 +251,7 @@ export class VerificationDocComponent implements AfterContentInit {
         [
           { text: 'AHO/AAO' },
           { text: 'HO/AO' },
-          { text: 'ADH/ADA' },
+          { text: 'ADH/ADA' }
         ]
       ],
       widths: ['*', '*', '*']

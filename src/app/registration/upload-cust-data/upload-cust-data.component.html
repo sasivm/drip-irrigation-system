@@ -1,11 +1,17 @@
 <div class="container">
     <div class="row">
         <div class="col text-center">
-            <P> Upload applicants deails of Excel file with correct format </P>
+            <h3> Upload applicants deails of Excel file with correct format </h3>
 
-            <div>
-                <input type="file" name="uploadFile" id="uploadFile" (change)="uploadedFile($event)" accept=".xlsx">
+            <div class="input-group mb-3 offset-2 col-7">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="uploadFileCustData" (change)="uploadedFile($event)"
+                        accept=".xlsx">
+                    <label class="custom-file-label" for="uploadFileCustData"
+                        aria-describedby="inputGroupFileAddon02">Choose file</label>
+                </div>
             </div>
+
         </div>
     </div>
 

@@ -1,1 +1,51 @@
-<p>login works!</p>
+<div class="container-fluid">
+    <div class="row vh-100">
+        <!-- Left half -->
+        <div class="col-sm-7 col-xs border-right">
+            <img src="/assets/images/Login_Left.png" class="img-fluid" alt="Project login template image">
+        </div>
+
+        <!-- Right half -->
+        <div class="col py-5">
+            <div id="right-side-container" class="py-4">
+                <div class="text-center">
+                    <h2> Welcome to Drip Irrigation System </h2>
+                    <h3> BHARATHI DRIPS </h3>
+                </div>
+
+                <form class="p-4">
+
+                    <!-- Email input -->
+                    <div class="py-4">
+                        <label for="email"> Email </label>
+                        <input type="email" id="email" class="form-control" />
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="py-4">
+                        <label for="password"> Password </label>
+                        <input type="password" id="password" class="form-control" />
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center py-3">
+                        <!-- Checkbox -->
+                        <div class="form-check mb-0">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
+                            <label class="form-check-label" for="form2Example3">
+                                Remember me
+                            </label>
+                        </div>
+                        <a href="#!">Forgot password?</a>
+                    </div>
+
+                    <div class="row justify-content-center py-4">
+                        <button mat-raised-button type="submit" color="default" (click)="validateLogin()"
+                            class="col-8 btn-login rounded-pill p-1 btn-theme-primary">
+                            Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

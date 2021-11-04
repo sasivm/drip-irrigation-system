@@ -18,7 +18,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +47,11 @@ import { VerificationDocComponent } from './documents/verification-doc/verificat
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
 import { WorkCompleteComponent } from './documents/work-complete/work-complete.component';
+import { AdminSearchComponent } from './admin/admin-search/admin-search.component';
+import { LoggedMenuInfoComponent } from './admin/logged-menu-info/logged-menu-info.component';
+import { AccountSettingComponent } from './admin/account-setting/account-setting.component';
+import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
+import { PermissionManagerComponent } from './admin/permission-manager/permission-manager.component';
 
 
 @NgModule({
@@ -73,7 +79,12 @@ import { WorkCompleteComponent } from './documents/work-complete/work-complete.c
     ErrorMsgComponent,
     CustSearchComponent,
     PreDocComponent,
-    WorkCompleteComponent
+    WorkCompleteComponent,
+    AdminSearchComponent,
+    LoggedMenuInfoComponent,
+    AccountSettingComponent,
+    AdminProfileComponent,
+    PermissionManagerComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +93,8 @@ import { WorkCompleteComponent } from './documents/work-complete/work-complete.c
     ReactiveFormsModule, FormsModule, HttpClientModule,
     MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule,
     MatListModule, MatTabsModule, MatRadioModule, MatCheckboxModule, MatStepperModule,
-    MatTableModule, MatPaginatorModule, MatTooltipModule, MatProgressSpinnerModule, MatProgressBarModule
+    MatTableModule, MatPaginatorModule, MatTooltipModule, MatProgressSpinnerModule,
+    MatProgressBarModule, MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,110 @@
+<div class="container-fluid">
+    <div id="form-container">
+        <form [formGroup]="adminSearch" class="card">
+            <h3 class="px-3 pt-3"> <b> Admin Search </b> </h3>
+
+            <div class="d-flex flex-column">
+                <div *ngIf="sucessMessage" class="alert alert-success">
+                    {{sucessMessage}}
+                </div>
+
+                <div *ngIf="errorMessage.message">
+                    <div class="alert alert-danger">
+                        <b> {{errorMessage.message}} </b>
+                        <br>
+                        <span *ngIf="errorMessage.desc">
+                            {{errorMessage.desc}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3">
+
+                <div class="row py-2">
+                    <div class="col">
+                        <label for="adminId" class="col-5"> Admin Id </label>
+                        <input type="text" formControlName="adminId" id="adminId" class="col-7 form-control" autofocus>
+                    </div>
+
+                    <div class="col">
+                        <label for="firstName" class="col-5"> First Name </label>
+                        <input type="text" formControlName="firstName" id="firstName" class="col-7 form-control">
+                    </div>
+                </div>
+
+                <div class="row py-2">
+                    <div class="col-6">
+                        <label for="adminRole" class="col-5"> Admin Role </label>
+                        <select name="adminRole" formControlName="adminRole" id="adminRole" class="col-7 form-control">
+                            <option *ngFor="let type of adminRoleList" [value]="type.value">
+                                {{type.option}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row py-2 px-4 py-3">
+                    <button type="submit" class="btn btn-theme-primary px-4 mx-3" (click)="searchAdmins()"> Search
+                    </button>
+                    <button type="button" class="btn btn-theme-primary reset-btn px-4" (click)="resetForm()"> Reset
+                    </button>
+                    <div class="px-5" *ngIf="loadProgresser">
+                        <mat-spinner diameter="40"></mat-spinner>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="cust-srch-table-container" class="my-5">
+        <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
+        <table mat-table [dataSource]="adminDataSource" class="w-100 mat-elevation-z8">
+            <ng-container matColumnDef="view">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-flat-button (click)="viewAdminRec(element.applicationId)" color="primary" type="button" class="btn">
+                        view </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-flat-button (click)="viewAdminRec(element.applicationId)" color="primary" type="button" class="btn">
+                        Change Permission </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="adminId">
+                <th mat-header-cell *matHeaderCellDef> Admin Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.adminId}} </td>
+            </ng-container>
+            <ng-container matColumnDef="firstName">
+                <th mat-header-cell *matHeaderCellDef> First Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+            </ng-container>
+            <ng-container matColumnDef="adminRole">
+                <th mat-header-cell *matHeaderCellDef> Admin Role </th>
+                <td mat-cell *matCellDef="let element"> {{element.adminRole}} </td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon color="warn" matTooltip="Delete Admin" class="del-icon"> delete </mat-icon>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;let idx = index;">
+            </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

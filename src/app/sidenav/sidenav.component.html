@@ -1,21 +1,23 @@
 <mat-sidenav-container class="vh-100">
     <!-- Side Nav -->
     <mat-sidenav #lefSideNav mode="side">
-        <mat-nav-list id="left-side-nav">
-
-            <div class="d-flex justify-content-around">
-                <h3 mat-list-item class="py-3"> {{userName}} </h3>
+        <mat-nav-list id="left-side-nav" class="pt-0">
+            <div class="bg-white">
+                <div class="d-flex justify-content-center">
+                    <img class="rounded-circle" width="100px" alt="image-not-found"
+                        src="assets/images/avatar_profile.jpg">
+                </div>
+                <h3 class="text-center user-title py-3"> {{userName}} </h3>
             </div>
 
             <ng-container *ngFor="let item of navListItems">
                 <mat-nav-list>
-                    <a mat-list-item [routerLink]="item.link" routerLinkActive="hl-active" [routerLinkActiveOptions]="{exact: true}"
-                    (click)="lefSideNav.close()">
+                    <a mat-list-item [routerLink]="item.link" routerLinkActive="hl-active"
+                        [routerLinkActiveOptions]="{exact: true}" (click)="lefSideNav.close()">
                         <mat-icon> {{item.icon}} </mat-icon> <span class="px-3"> {{item.scrName}} </span>
                     </a>
                 </mat-nav-list>
             </ng-container>
-
         </mat-nav-list>
     </mat-sidenav>
 

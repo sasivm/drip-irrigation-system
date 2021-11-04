@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row  pt-3">
+
+        <div class="col-sm-2">
+            <h2> <b> Account Settings </b> </h2>
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <a routerLink="view"> My Account </a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a routerLink="search"> Admin Search </a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a routerLink="per-manage"> Permission </a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a routerLink="new-reg"> Add new Admin </a>
+                </mat-list-item>
+            </mat-list>
+        </div>
+
+        <!-- Admin Account Info -->
+        <div class="col-sm">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

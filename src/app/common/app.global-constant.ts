@@ -288,7 +288,11 @@ export class GlobalConstants {
         { value: 29, option: '1.2m*0.6m(ONLINE)' }
     ];
 
-
+    public static ADMIN_ROLELIST: OptionList[] = [
+        { option: 'Select Admin Role', value: '' },
+        { option: 'Admin 2', value: 'admin2' },
+        { option: 'Admin 3', value: 'admin3' }
+    ];
 
     readonly baseAppUrl: string = 'http://localhost:57431/';
     readonly baseAPIUrl: string = 'https://api.github.com/';

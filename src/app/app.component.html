@@ -1,1 +1,9 @@
-<app-sidenav></app-sidenav>
+<div *ngIf="isUserLoggedIn; then homeTemplate else loginTemplate"></div>
+
+<ng-template #loginTemplate>
+    <app-login (isUserLogged)="checkUserState($event)"></app-login>
+</ng-template>
+
+<ng-template #homeTemplate>
+    <app-sidenav></app-sidenav>
+</ng-template>

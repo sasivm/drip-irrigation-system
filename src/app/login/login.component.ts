@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,6 +8,13 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
-  constructor() { }
+  @Output() isUserLogged: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  constructor(private router: Router) { }
+
+  validateLogin() {
+    this.router.navigate(['/register']);
+    this.isUserLogged.emit(true);
+  }
 
 }

@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar id="toolbar-container" color="primary">
 
     <button mat-icon-button (click)="navbarRef.toggle()">
         <mat-icon> menu </mat-icon>
@@ -9,8 +9,13 @@
     </span>
 
     <div class="ml-auto px-3">
-        <mat-nav-list>
-            <mat-icon id="user-icon"> account_circle </mat-icon>
-        </mat-nav-list>
+        <button mat-button [matMenuTriggerFor]="menu">
+            <mat-icon> account_circle </mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu" class="admin-menu">
+            <app-logged-menu-info></app-logged-menu-info>
+        </mat-menu>
     </div>
+
 </mat-toolbar>

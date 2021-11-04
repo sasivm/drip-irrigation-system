@@ -161,11 +161,11 @@ mat-sidenav-content {
 }
 
 @mixin form-control-primary-focus {
-  color: #6b7280;
-  background-color: #fff;
-  border-color: #4d6689;
-  outline: 0;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 0 0 0.18rem rgba(31, 41, 55, 0.25);
+  color: #6b7280 !important;
+  background-color: #fff !important;
+  border-color: #4d6689 !important;
+  outline: 0 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 0 0 0.18rem rgba(31, 41, 55, 0.25) !important;
 }
 
 .form-control:focus {
@@ -235,4 +235,22 @@ tr.mat-row:nth-child(even) {
 .mat-progress-spinner circle,
 .mat-spinner circle {
   stroke: $theme-secondary-bgcolor;
+}
+
+.admin-menu {
+  width: 25vw !important;
+  a {
+    text-decoration: none !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+  }
+
+  .mat-menu-item:hover {
+    a, .mat-list-icon {
+      color: #000 !important;
+    }
+  }
+}
+
+.disabled-text {
+  color: #d6d8db !important;
 }

@@ -1,0 +1,91 @@
+<div class="container rounded bg-white">
+    <h3 class="py-3"> <b> Admin Profile </b> </h3>
+
+    <div class="row">
+        <div class="col-xs col-sm-4">
+            <div class="row justify-content-center">
+                <div>
+                    <img class="rounded-circle" width="150px" alt="image-not-found" [src]="imageURL">
+                    <br>
+                    <div class="text-center">
+                        <span class="font-weight-bold"> {{user_profile.firstName}} </span>
+                        <br>
+                        <span class="text-black-50"> {{user_profile.email}} </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="py-4" *ngIf="isSubAdminLogged">
+                <button mat-raised-button class="col btn-theme-primary mt-4"> Request for password Change </button>
+            </div>
+        </div>
+
+        <div class="col-12 d-sm-none d-xs-block">
+            <div class="border-bottom py-3"></div>
+        </div>
+
+        <div class="col-xs col-sm-8 px-5">
+            <form [formGroup]="adminProfile">
+                <div class="row">
+                    <div class="col-8">
+                        <label for="adminId"> Admin Id </label>
+                        <input type="text" formControlName="adminId" class="form-control" id="adminId">
+                    </div>
+                </div>
+
+                <div class="row py-3">
+                    <div class="col col-sm-8">
+                        <label for="email"> Email Address </label>
+                        <input type="text" formControlName="email" class="form-control" id="email">
+                    </div>
+                    <div class="ml-auto mt-auto" *ngIf="!isSubAdminLogged">
+                        <button mat-raised-button class="col btn-theme-secondary"> <b> {{pswdBtnDesc}} </b> </button>
+                    </div>
+                </div>
+
+                <div class="row py-3">
+                    <div class="col">
+                        <label for="firstname"> First Name </label>
+                        <input type="text" formControlName="firstName" class="form-control" id="firstname">
+                    </div>
+                    <div class="col">
+                        <label for="lastname"> Last Name </label>
+                        <input type="text" formControlName="lastName" class="form-control" id="lastname">
+                    </div>
+                </div>
+
+                <ng-container *ngIf="!isSubAdminLogged && isNewRequest; then newRoleSelection; else viewRole">
+                </ng-container>
+
+                <ng-template #viewRole>
+                    <div class="row py-3">
+                        <div class="col-6">
+                            <label for="adminRole"> Admin Role </label>
+                            <input type="text" formControlName="role" class="form-control" id="adminRole">
+                        </div>
+                    </div>
+                </ng-template>
+
+                <ng-template #newRoleSelection>
+                    <div class="row py-3">
+                        <div class="col-8 px-0">
+                            <label for="adminRole" class="col-4"> Admin Role </label>
+                            <select name="adminRole" formControlName="role" id="adminRole" class="col-7 form-control">
+                                <option *ngFor="let type of adminRoleList" [value]="type.value">
+                                    {{type.option}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col mt-auto d-flex justify-content-end">
+                            <button *ngIf="!isNewRequest" mat-raised-button class="btn-theme-primary"> Save changes
+                            </button>
+                            <button *ngIf="isNewRequest" mat-raised-button class="btn-theme-primary"> Add new admin
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+            </form>
+        </div>
+    </div>
+</div>

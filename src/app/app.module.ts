@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Angular material modules
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,6 +20,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -52,6 +53,8 @@ import { LoggedMenuInfoComponent } from './admin/logged-menu-info/logged-menu-in
 import { AccountSettingComponent } from './admin/account-setting/account-setting.component';
 import { AdminProfileComponent } from './admin/admin-profile/admin-profile.component';
 import { PermissionManagerComponent } from './admin/permission-manager/permission-manager.component';
+import { PmksyDocComponent } from './documents/pmksy-doc/pmksy-doc.component';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 
 @NgModule({
@@ -84,7 +87,8 @@ import { PermissionManagerComponent } from './admin/permission-manager/permissio
     LoggedMenuInfoComponent,
     AccountSettingComponent,
     AdminProfileComponent,
-    PermissionManagerComponent
+    PermissionManagerComponent,
+    PmksyDocComponent
   ],
   imports: [
     BrowserModule,
@@ -94,9 +98,11 @@ import { PermissionManagerComponent } from './admin/permission-manager/permissio
     MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule,
     MatListModule, MatTabsModule, MatRadioModule, MatCheckboxModule, MatStepperModule,
     MatTableModule, MatPaginatorModule, MatTooltipModule, MatProgressSpinnerModule,
-    MatProgressBarModule, MatMenuModule
+    MatProgressBarModule, MatMenuModule, ClipboardModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

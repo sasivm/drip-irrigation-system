@@ -14,6 +14,12 @@ export class PDFMakeConstants {
             bold: true,
             margin: [0, 0, 0, 0] // R T L B
         },
+        docHeadTitle_Normal: {
+            fontSize: 16,
+            alignment: 'center',
+            bold: true,
+            margin: [0, 0, 0, 0] // R T L B
+        },
         bottom_margin: {
             margin: [0, 0, 0, -8] // R T L B
         },
@@ -61,6 +67,12 @@ export class PDFMakeConstants {
             fontSize: 16,
             margin: [0, 120]
         },
+        pmksyFooter: {
+            alignment: 'center',
+            bold: true,
+            fontSize: 12,
+            margin: [0, 100]
+        },
         componyNameMarker: {
             bold: true,
             fontSize: 10
@@ -70,6 +82,15 @@ export class PDFMakeConstants {
         },
         preFooter: {
             margin: [0, 50]
+        },
+        redText: {
+            color: 'red'
+        },
+        blueText: {
+            color: 'blue'
+        },
+        AbstractCol3: {
+            alignment: 'center'
         },
         docTamil: {
             font: 'Baloo2'

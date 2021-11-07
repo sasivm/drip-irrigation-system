@@ -47,8 +47,4 @@ export class UploadCustDataComponent {
     });
   }
 
-  saveDetails(userData: any[]) {
-    localStorage.setItem('user-data', JSON.stringify(userData));
-  }
-
 }

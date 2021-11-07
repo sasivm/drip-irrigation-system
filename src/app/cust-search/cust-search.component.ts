@@ -66,7 +66,7 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
       if (response.isSuccess) {
         const customerRecords: any[] = response.custRec;
         if (customerRecords.length > 0) {
-          this.sucessMessage = 'Customer record(s) found';
+          this.sucessMessage = response.message;
           this.custDataSource.data = customerRecords;
         } else {
           this.errorMessage.message = 'No record found';

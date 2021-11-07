@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const userProfile = JSON.parse(sessionStorage.getItem('user-profile') || 'null');
-    this.isUserLoggedIn = !(userProfile);
+    this.isUserLoggedIn = !!(userProfile);
   }
 
   checkUserState(isLogged: boolean) {

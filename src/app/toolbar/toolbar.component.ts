@@ -12,9 +12,32 @@ export class ToolbarComponent implements OnInit {
 
   app_title: string = 'Drip Irrigation System | BHARATHI DRIPS';
 
+  app_theme: string = 'light';
+  app_theme_desc: string = 'Switch to dark mode';
+
   constructor() { }
 
   ngOnInit() {
     this.app_title += ` - (${environment?.envName})`;
+  }
+
+  changeAppTheme() {
+    try {
+      const body = document.getElementsByTagName('body')[0];
+      if (body) {
+        if (this.app_theme === 'light') {
+          body.style.filter = 'invert(1)';
+          this.app_theme_desc = `Switch to ${this.app_theme} mode`;
+          this.app_theme = 'dark';
+        } else {
+          body.style.filter = 'none';
+          this.app_theme_desc = `Switch to ${this.app_theme} mode`;
+          this.app_theme = 'light';
+        }
+      }
+    } catch (error) {
+      console.log('error occured while chnaging body style');
+      console.log('error ', error);
+    }
   }
 }

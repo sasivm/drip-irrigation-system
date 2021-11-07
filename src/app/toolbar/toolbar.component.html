@@ -13,6 +13,10 @@
             <mat-icon> account_circle </mat-icon>
         </button>
 
+        <button mat-button [matTooltip]="app_theme_desc" (click)="changeAppTheme()">
+            <mat-icon> dark_mode </mat-icon>
+        </button>
+
         <mat-menu #menu="matMenu" class="admin-menu">
             <app-logged-menu-info></app-logged-menu-info>
         </mat-menu>

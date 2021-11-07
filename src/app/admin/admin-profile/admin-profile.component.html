@@ -8,9 +8,9 @@
                     <img class="rounded-circle" width="150px" alt="image-not-found" [src]="imageURL">
                     <br>
                     <div class="text-center">
-                        <span class="font-weight-bold"> {{user_profile.firstName}} </span>
+                        <span class="font-weight-bold"> {{admin_profile.firstName || 'Admin Name'}} </span>
                         <br>
-                        <span class="text-black-50"> {{user_profile.email}} </span>
+                        <span class="text-black-50"> {{admin_profile.mail || 'Email Address'}} </span>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,23 @@
         </div>
 
         <div class="col-xs col-sm-8 px-5">
-            <form [formGroup]="adminProfile">
+            <div class="d-flex flex-column">
+                <div *ngIf="sucessMessage" class="alert alert-success">
+                    {{sucessMessage}}
+                </div>
+
+                <div *ngIf="errorMessage.message">
+                    <div class="alert alert-danger">
+                        <b> {{errorMessage.message}} </b>
+                        <br>
+                        <span *ngIf="errorMessage.desc">
+                            {{errorMessage.desc}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <form [formGroup]="adminProfileForm">
                 <div class="row">
                     <div class="col-8">
                         <label for="adminId"> Admin Id </label>
@@ -36,10 +52,11 @@
                 <div class="row py-3">
                     <div class="col col-sm-8">
                         <label for="email"> Email Address </label>
-                        <input type="text" formControlName="email" class="form-control" id="email">
+                        <input type="text" formControlName="mail" class="form-control" id="email">
                     </div>
                     <div class="ml-auto mt-auto" *ngIf="!isSubAdminLogged">
-                        <button mat-raised-button class="col btn-theme-secondary"> <b> {{pswdBtnDesc}} </b> </button>
+                        <button mat-raised-button (click)="openPasswordModal()" class="col btn-theme-secondary"> <b>
+                                {{pswdBtnDesc}} </b> </button>
                     </div>
                 </div>
 
@@ -54,7 +71,7 @@
                     </div>
                 </div>
 
-                <ng-container *ngIf="!isSubAdminLogged && isNewRequest; then newRoleSelection; else viewRole">
+                <ng-container *ngIf="!isSubAdminLogged; then newRoleSelection; else viewRole">
                 </ng-container>
 
                 <ng-template #viewRole>
@@ -68,7 +85,7 @@
 
                 <ng-template #newRoleSelection>
                     <div class="row py-3">
-                        <div class="col-8 px-0">
+                        <div class="col-7 px-0">
                             <label for="adminRole" class="col-4"> Admin Role </label>
                             <select name="adminRole" formControlName="role" id="adminRole" class="col-7 form-control">
                                 <option *ngFor="let type of adminRoleList" [value]="type.value">
@@ -77,14 +94,73 @@
                             </select>
                         </div>
 
-                        <div class="col mt-auto d-flex justify-content-end">
-                            <button *ngIf="!isNewRequest" mat-raised-button class="btn-theme-primary"> Save changes
+                        <div *ngIf="!showSaveCancelBtn" class="col mt-auto d-flex justify-content-end">
+                            <button *ngIf="!isNewRequest" mat-raised-button class="btn-theme-primary"
+                                (click)="updateAdminProfile()"> Update
                             </button>
-                            <button *ngIf="isNewRequest" mat-raised-button class="btn-theme-primary"> Add new admin
+                            <button *ngIf="isNewRequest && !this.adminRec.length" mat-raised-button
+                                class="btn-theme-primary" (click)="saveNewAdminProfile()"> Add new admin
                             </button>
+                        </div>
+
+                        <div *ngIf="showSaveCancelBtn" class="col mt-auto d-flex justify-content-end">
+                            <button mat-raised-button class="btn-theme-primary px-4 mx-2" (click)="updateAdminProfile()"> Save
+                            </button>
+                            <button mat-raised-button class="reset-btn px-4 mx-2" (click)="resetForm()"> Reset </button>
+                            <button mat-raised-button class="btn-theme-primary px-4" (click)="cancelUpdateForm()"> Cancel </button>
                         </div>
                     </div>
                 </ng-template>
+
+                <!-- Modal -->
+                <div *ngIf="showPswModal" class="modal showModal" id="pswConfirmModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h3> <b> Password Confirmation </b> </h3>
+                                <button type="button" class="close" (click)="showPswModal=false" data-dismiss="modal"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row alert alert-danger" *ngIf="modelMessage">
+                                    {{modelMessage}}
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="password"> Password </label>
+                                        <input type="password" id="password" formControlName="password"
+                                            class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="row py-3">
+                                    <div class="col">
+                                        <label for="con-password"> Confirm Password </label>
+                                        <input type="password" id="con-password" formControlName="conPassword"
+                                            class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="row pt-4 px-4">
+                                    <mat-icon> info </mat-icon>
+                                    <p class="pt-1"> Enter password with minimum 6 characters </p>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-theme-secondary px-4" (click)="validatePassword()">
+                                    Submit </button>
+                                <button type="button" class="btn btn-theme-primary px-4" (click)="showPswModal=false">
+                                    No </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>

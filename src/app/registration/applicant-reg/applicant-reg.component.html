@@ -31,6 +31,7 @@
                     <label for="applicationId" class="col-5"> Application Id </label>
                     <input type="text" formControlName="applicationId" id="applicationId" class="col-7 form-control">
                 </div>
+                <mat-icon matTooltip="Copy application id" [cdkCopyToClipboard]="clipboardCopy" class="pt-2 mat-icon-btn"> content_copy </mat-icon>
             </div>
 
             <div class="row py-2">
@@ -143,10 +144,28 @@
                 </div>
             </div>
 
-            <div class="row justify-content-end py-4 px-4">
-                <button type="submit" class="btn btn-theme-primary px-4 mx-3" (click)="submitApplicantForm()"> Submit
+            <div *ngIf="!enableSaveCancelBtn && !isNewRegForm" class="row justify-content-end py-4 px-4">
+                <button type="button" class="btn btn-theme-primary px-4 mx-3" (click)="selectedAction('update')"> Update
                 </button>
-                <button type="button" class="btn btn-theme-primary reset-btn px-4" (click)="resetFormData()"> Reset
+                <button type="button" class="btn btn-theme-primary px-4" (click)="showModal=true" data-toggle="modal"
+                    data-target="#deletionWarningModal"> Delete </button>
+            </div>
+
+            <div *ngIf="isNewRegForm" class="row justify-content-end py-4 px-4">
+                <button type="button" class="btn btn-theme-primary px-4 mx-3" (click)="selectedAction('new')"> Submit
+                </button>
+                <button type="button" class="btn btn-theme-primary reset-btn px-4 mx-3" (click)="resetFormData()"> Reset
+                </button>
+                <button *ngIf="this.custRecFormData.length" type="button" class="btn btn-theme-primary px-4"
+                    (click)="showModal=true" data-toggle="modal" data-target="#deletionWarningModal"> Delete </button>
+            </div>
+
+            <div *ngIf="enableSaveCancelBtn" class="row justify-content-end py-4 px-4">
+                <button type="submit" class="btn btn-theme-primary px-4 mx-3" (click)="submitApplicantForm()"> Save
+                </button>
+                <button type="button" class="btn btn-theme-primary reset-btn px-4 mx-3" (click)="resetFormData()"> Reset
+                </button>
+                <button type="button" class="btn btn-theme-primary px-4 mx-2" (click)="cancelFormAction()"> Cancel
                 </button>
             </div>
         </div>
@@ -171,9 +190,28 @@
             [disabled]="!enableNextBtn" (click)="nextBtnSelected()"> Next
         </button>
 
-        <a routerLink="/docs" class="btn btn-sm btn-theme-secondary mx-3">
+        <a routerLink="../docs" class="btn btn-sm btn-theme-secondary mx-3">
             View Docs
         </a>
     </div>
 
+    <!-- Modal -->
+    <div *ngIf="showModal" class="modal showModal" id="deletionWarningModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3> <b> Record Deletion Warning </b> </h3>
+                    <button type="button" class="close" (click)="showModal=false" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> {{deletionWarningMsg}} </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-theme-secondary px-4"> Yes</button>
+                    <button type="button" class="btn btn-theme-primary px-4" (click)="showModal=false"> No </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

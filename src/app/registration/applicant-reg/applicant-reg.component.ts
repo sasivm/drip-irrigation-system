@@ -81,8 +81,11 @@ export class ApplicantRegComponent implements OnInit {
     message: '',
     desc: ''
   };
-
   errorMessageList: string[] = [];
+
+  deletionWarningMsg: string = 'Are you sure you want to delete the record ?';
+  showModal: boolean = false;
+
   enableNextBtn: boolean = false;
 
   isNewReqDataLoaded: boolean = false;
@@ -92,7 +95,9 @@ export class ApplicantRegComponent implements OnInit {
     createdAt: '',
     updatedBy: '',
     updatedAt: ''
-  }
+  };
+
+  enableSaveCancelBtn: boolean = false;
 
   constructor(private fb: FormBuilder, private _custService: CustServiceService, private _dataServ: DataService) { }
 
@@ -101,7 +106,7 @@ export class ApplicantRegComponent implements OnInit {
       if (this.custRecFormData.length === 0) { // only if first time coming to screen
         this.isNewRegForm = !(data.isCustRecReq);
         if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
-          console.log('loading cust req data');
+          console.log('loading req cust data');
           this.registrationForm.reset();
           this.disableFullForm();
           console.log('data chanaging in applicant reg', data);
@@ -117,6 +122,53 @@ export class ApplicantRegComponent implements OnInit {
     });
   }
 
+  selectedAction(action: string) {
+    this.clearMesgBanner();
+
+    switch (action) {
+      case 'update':
+        this.updateFormState();
+        break;
+      case 'new':
+        this.submitNewApplication();
+        break;
+      default:
+        console.log('Action not defined :', action);
+        break;
+    }
+  }
+
+  submitNewApplication() {
+    if (this.isNewRegForm) {
+      const isFormValid = this.validateForm();
+      if (isFormValid) {
+
+      }
+    }
+  }
+
+  updateFormState() {
+    this.enableSaveCancelBtn = true;
+    this.enableOptionalFields();
+
+    if (!this.custRecFormData[0]?.gender) {
+      this.registrationForm.get('gender')?.setValue('M');
+    }
+  }
+
+  cancelFormAction() {
+    this.clearMesgBanner();
+    this.enableSaveCancelBtn = false;
+
+    this.resetFormData();
+    this.registrationForm.patchValue(this.custRecFormData[0]);
+    this.disableFullForm();
+  }
+
+  get clipboardCopy() {
+    return this.registrationForm.get('applicationId')?.value;
+  }
+
   loadInitDataForNewReq() {
     const initData: any = {
       farmerType: 'SF / MF',
@@ -125,9 +177,10 @@ export class ApplicantRegComponent implements OnInit {
       miCompany: 'Vedanta Irrigation system Pvt Ltd.',
       district: 'Tiruppur',
       gender: 'M',
-      socialStatus: 'Others'
+      socialStatus: 'Other Caste'
     };
     this.registrationForm.patchValue(initData);
+    this.registrationForm.get('applicationId')?.disable();
   }
 
   validateForm(): boolean {
@@ -168,9 +221,9 @@ export class ApplicantRegComponent implements OnInit {
         this.custRecFormData = data.custRec;
         this.storeCustomerDetailsOnSession();
       } else if (!data || !data.isSuccess) {
-        this.errorMessage.message = 'Error occured while getting data';
+        this.errorMessage.message = data.message || 'Error occured while getting data';
         console.log('Res is not scuccess', data.message);
-        this.errorMessage.desc = data.message;
+        // this.errorMessage.desc = '';
       }
     }, err => {
       console.log('cust error occured', err);
@@ -195,9 +248,6 @@ export class ApplicantRegComponent implements OnInit {
     if (custRecord.length === 1 && custRecord[0]._id) {
       this.custRecFormData = custRecord;
 
-      if (!this.custRecFormData[0]?.gender) {
-        this.custRecFormData[0].gender = 'M';
-      }
       this.registrationForm.patchValue(this.custRecFormData[0]);
       this.updatePostMark(this.custRecFormData[0]);
       this.sucessMessage = 'Customer data loaded successfully';
@@ -254,6 +304,9 @@ export class ApplicantRegComponent implements OnInit {
 
   disableFullForm(): void {
     this.registrationForm.disable();
+  }
+
+  enableOptionalFields() {
     for (let fieldName of this.ENABLED_FIELDS) {
       this.registrationForm.get(fieldName)?.enable();
     }
@@ -274,28 +327,51 @@ export class ApplicantRegComponent implements OnInit {
     this.updateCustomerRecord(updateableFields);
   }
 
+  // have to change network call
+  saveCustomerRecord(prepareReq: any) {
+    this._custService.updateCustomer(prepareReq).subscribe((response: CustomerResponse) => {
+      console.log(response);
+      console.log('saved successfully');
+      this.recordSavedSuccess(response);
+    }, err => {
+      console.log('Error while saving');
+      console.log(err);
+      this.saveRecordErrorHandling(err);
+    });
+  }
+
+  recordSavedSuccess(response: any) {
+    if (response.isSuccess) {
+      this.sucessMessage = response.message;
+      this.custRecFormData = response.custRec;
+      if (response.custRec[0]?.isCompleted) {
+        this.enableNextBtn = true;
+        this.nextBtnSelected();
+      }
+      this.updatePostMark(this.custRecFormData[0]);
+      this.disableFullForm();
+      this.enableSaveCancelBtn = false;
+    } else {
+      this.errorMessage.message = 'Failed during updating customer details';
+      this.errorMessage.desc = response.message;
+    }
+  }
+
   updateCustomerRecord(prepareReq: any) {
     this._custService.updateCustomer(prepareReq).subscribe((response: CustomerResponse) => {
       console.log(response);
       console.log('updated successfully');
-      if (response.isSuccess) {
-        this.sucessMessage = response.message;
-        this.custRecFormData = response.custRec;
-        if (response.custRec[0]?.isCompleted) {
-          this.enableNextBtn = true;
-          this.nextBtnSelected();
-        }
-        this.updatePostMark(this.custRecFormData[0]);
-      } else {
-        this.errorMessage.message = 'Failed during updating customer details';
-        this.errorMessage.desc = response.message;
-      }
+      this.recordSavedSuccess(response);
     }, err => {
       console.log('Error in update');
       console.log(err);
-      this.errorMessage.message = err.message;
-      this.errorMessage.desc = err.error ?? '';
+      this.saveRecordErrorHandling(err);
     }, () => this.enableNextBtn = true);
+  }
+
+  saveRecordErrorHandling(error: any) {
+    this.errorMessage.message = error.message;
+    this.errorMessage.desc = error.error ?? '';
   }
 
   nextBtnSelected() {

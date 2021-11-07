@@ -1,24 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit {
 
   // @Input() navbarRef: any = null;
 
-  userName: string = 'Sasi Kumar';
+  adminName: string = 'Sasi Kumar';
 
   navListItems: any[] = [
-    { scrName: 'Register', link: '/register', icon: 'dashboard' },
-    { scrName: 'Bulk Register', link: 'register/bulk-register', icon: 'assignment' },
-    { scrName: 'Search', link: '/search', icon: 'person_search' },
-    { scrName: 'Subsidy Calc', link: '/subs-calc', icon: 'calculate' },
-    { scrName: 'Docments', link: '/docs', icon: 'menu_book' },
+    { scrName: 'Register', link: 'register', icon: 'dashboard' },
+    { scrName: 'Bulk Register', link: 'bulk-register', icon: 'assignment' },
+    { scrName: 'Search', link: 'search', icon: 'person_search' },
+    { scrName: 'Subsidy Calc', link: 'subs-calc', icon: 'calculate' },
+    { scrName: 'Docments', link: 'docs', icon: 'menu_book' },
   ];
 
-  constructor() { }
+  constructor(private _auth: AuthService) { }
+
+  ngOnInit() {
+    const [{ firstName }] = this._auth.getAdminFromSession();
+    this.adminName = firstName;
+  }
 
 }

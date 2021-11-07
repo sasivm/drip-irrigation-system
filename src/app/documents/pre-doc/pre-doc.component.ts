@@ -2,7 +2,7 @@ import { AfterContentInit, Component } from '@angular/core';
 
 import * as _pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content } from 'pdfmake/interfaces';
 import { PDFMakeConstants } from 'src/app/common/pdfMake-constants';
 import { DataService } from 'src/app/services/data.service';
 (_pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
@@ -117,13 +117,20 @@ export class PreDocComponent implements AfterContentInit {
     }
   };
 
+  CompanyNameContent: Content = {
+    text: [
+      { text: 'Vedanta ', color: 'blue', style: 'boldText' },
+      { text: 'Irrigation Systems Pvt. Ltd.', style: 'boldText' },
+    ]
+  };
+
   LINE7_CONTENT: Content = {
     // layout: 'noBorders',
     style: ['rowLineContent'],
     table: {
       body: [
         [
-          { text: 'Vedanta Irrigation Systems Pvt. Ltd.', border: PDFMakeConstants.TABLE_CELL_NO_BORDER }
+          { text: this.CompanyNameContent, border: PDFMakeConstants.TABLE_CELL_NO_BORDER }
         ],
       ]
     }

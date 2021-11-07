@@ -2,12 +2,11 @@
     <!-- Side Nav -->
     <mat-sidenav #lefSideNav mode="side">
         <mat-nav-list id="left-side-nav" class="pt-0">
-            <div class="bg-white">
+            <div class="py-3">
                 <div class="d-flex justify-content-center">
-                    <img class="rounded-circle" width="100px" alt="image-not-found"
-                        src="assets/images/avatar_profile.jpg">
+                    <mat-icon class="profile-icon"> account_circle </mat-icon>
+                    <h3 class="px-4 pt-2"> {{adminName}} </h3>
                 </div>
-                <h3 class="text-center user-title py-3"> {{userName}} </h3>
             </div>
 
             <ng-container *ngFor="let item of navListItems">

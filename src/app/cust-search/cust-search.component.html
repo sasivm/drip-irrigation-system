@@ -1,11 +1,12 @@
 <div class="container-fluid">
-    <h2 class="text-center"> Customer Search </h2>
+    <div id="form-container" class="py-2">
 
-    <div id="form-container">
         <form [formGroup]="customerSearch" class="card">
 
-            <div class="d-flex flex-column my-3">
-                <div *ngIf="sucessMessage" class="alert alert-success">
+            <h3 class="px-3 pt-3"> <b> Customer Search </b> </h3>
+
+            <div class="d-flex flex-column">
+                <div *ngIf="sucessMessage" class="alert alert-success py-2">
                     {{sucessMessage}}
                 </div>
 

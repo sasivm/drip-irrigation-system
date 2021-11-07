@@ -80,6 +80,7 @@ $theme-primary-border-color: #1f2937 !important;
 $theme-secondary-bgcolor: #f0bc74 !important;
 $theme-secondary-color: #1f2937 !important;
 $theme-secondary-border-color: #f0bc74 !important;
+$reset-btn-color: #005 !important;
 
 $table-odd-row: rgba(255, 255, 255);
 $table-even-row: rgba(247, 248, 250);
@@ -124,7 +125,7 @@ $table-row-highlight: #ffeed6 !important;
 
 .reset-btn {
   background: transparent !important;
-  color: #005 !important;
+  color: $reset-btn-color;
 }
 
 .disabled-btn {
@@ -136,6 +137,10 @@ $table-row-highlight: #ffeed6 !important;
 .hl-active:hover {
   color: #000 !important;
   background-color: #f5f5f5 !important;
+}
+
+#login-container {
+  background-color: $bg-color-primary;
 }
 
 mat-toolbar {
@@ -168,12 +173,23 @@ mat-sidenav-content {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 0 0 0.18rem rgba(31, 41, 55, 0.25) !important;
 }
 
+@mixin btn-primary-focus {
+  color: $theme-primary-color;
+  border-color: #4d6689 !important;
+  outline: 0 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07), 0 0 0 0.18rem rgba(31, 41, 55, 0.25) !important;
+}
+
 .form-control:focus {
   @include form-control-primary-focus();
 }
 
 .btn:focus {
-  @include form-control-primary-focus();
+  @include btn-primary-focus();
+}
+
+.reset-btn:focus {
+  color: $reset-btn-color;
 }
 
 // For Tables
@@ -220,6 +236,11 @@ tr.mat-row:nth-child(even) {
   color: #fccc77;
 }
 
+.mat-icon-btn {
+  cursor: pointer;
+  color: #6b7280; // dont put important, it will affect custom color
+}
+
 .mat-progress-bar {
   height: 10px;
   padding: 10px 0;
@@ -245,7 +266,8 @@ tr.mat-row:nth-child(even) {
   }
 
   .mat-menu-item:hover {
-    a, .mat-list-icon {
+    a,
+    .mat-list-icon {
       color: #000 !important;
     }
   }
@@ -254,3 +276,9 @@ tr.mat-row:nth-child(even) {
 .disabled-text {
   color: #d6d8db !important;
 }
+
+.showModal {
+  display: block;
+  backdrop-filter: contrast(0.5);
+}
+

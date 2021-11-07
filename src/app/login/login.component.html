@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div id="login-container" class="container-fluid">
     <div class="row vh-100">
         <!-- Left half -->
         <div class="col-sm-7 col-xs border-right">
@@ -6,25 +6,40 @@
         </div>
 
         <!-- Right half -->
-        <div class="col py-5">
+        <div class="col">
             <div id="right-side-container" class="py-4">
                 <div class="text-center">
                     <h2> Welcome to Drip Irrigation System </h2>
                     <h3> BHARATHI DRIPS </h3>
                 </div>
 
-                <form class="p-4">
+                <div class="d-flex flex-column">
+                    <div *ngIf="errorMessage">
+                        <div class="alert alert-danger">
+                            <b> {{errorMessage}} </b>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="p-4" [formGroup]="loginForm">
 
                     <!-- Email input -->
                     <div class="py-4">
                         <label for="email"> Email </label>
-                        <input type="email" id="email" class="form-control" />
+                        <input type="email" formControlName="mail" id="email" class="form-control" />
                     </div>
 
                     <!-- Password input -->
                     <div class="py-4">
                         <label for="password"> Password </label>
-                        <input type="password" id="password" class="form-control" />
+                        <div class="input-group">
+                            <input [type]="(isPwdVisible) ? 'text' : 'password'" formControlName="password"
+                                id="password" class="form-control" />
+                            <button class="border d-flex px-1 py-0 m-0" [matTooltip]="isPwdVisible ? 'Hide Password' : 'Show Password'" (click)="isPwdVisible = !isPwdVisible">
+                                <mat-icon class="align-self-center"> {{isPwdVisible ? 'visibility_off' : 'visibility'}}
+                                </mat-icon>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-3">

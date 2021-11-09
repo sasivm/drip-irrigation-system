@@ -13,7 +13,7 @@
                     <h3> BHARATHI DRIPS </h3>
                 </div>
 
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column px-4 pt-4">
                     <div *ngIf="errorMessage">
                         <div class="alert alert-danger">
                             <b> {{errorMessage}} </b>
@@ -21,10 +21,10 @@
                     </div>
                 </div>
 
-                <form class="p-4" [formGroup]="loginForm">
+                <form class="px-4" [formGroup]="loginForm">
 
                     <!-- Email input -->
-                    <div class="py-4">
+                    <div class="pb-4">
                         <label for="email"> Email </label>
                         <input type="email" formControlName="mail" id="email" class="form-control" />
                     </div>
@@ -35,7 +35,9 @@
                         <div class="input-group">
                             <input [type]="(isPwdVisible) ? 'text' : 'password'" formControlName="password"
                                 id="password" class="form-control" />
-                            <button class="border d-flex px-1 py-0 m-0" [matTooltip]="isPwdVisible ? 'Hide Password' : 'Show Password'" (click)="isPwdVisible = !isPwdVisible">
+                            <button class="border d-flex px-1 py-0 m-0 password-visible-icon"
+                                [matTooltip]="isPwdVisible ? 'Hide Password' : 'Show Password'"
+                                (click)="isPwdVisible = !isPwdVisible">
                                 <mat-icon class="align-self-center"> {{isPwdVisible ? 'visibility_off' : 'visibility'}}
                                 </mat-icon>
                             </button>
@@ -45,8 +47,8 @@
                     <div class="d-flex justify-content-between align-items-center py-3">
                         <!-- Checkbox -->
                         <div class="form-check mb-0">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                            <label class="form-check-label" for="form2Example3">
+                            <input class="form-check-input me-2" type="checkbox" id="remeberMe" />
+                            <label class="form-check-label" for="remeberMe">
                                 Remember me
                             </label>
                         </div>
@@ -54,8 +56,12 @@
                     </div>
 
                     <div class="row justify-content-center py-4">
-                        <button mat-raised-button type="submit" color="default" (click)="validateLogin()"
-                            class="col-8 btn-login rounded-pill p-1 btn-theme-primary">
+
+                        <button mat-raised-button type="submit" (click)="validateLogin()"
+                            class="col-8 btn-theme-primary rounded-pill p-1" [disabled]="isLoading">
+                            <mat-icon *ngIf="isLoading">
+                                <mat-spinner diameter="25"></mat-spinner>
+                            </mat-icon>
                             Login
                         </button>
                     </div>

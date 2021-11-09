@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CustServiceService } from '../services/cust-service.service';
 
 @Component({
   selector: 'app-docs-view',
   templateUrl: './docs-view.component.html',
   styleUrls: ['./docs-view.component.scss']
 })
-export class DocsViewComponent {
+export class DocsViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _custService: CustServiceService) { }
 
   docList: any[] = [
     { name: 'SFMF', link: 'sfmf', desc: 'Small and Marginal Farmer Verification Certificate' },
@@ -17,5 +18,20 @@ export class DocsViewComponent {
     { name: 'PMKSY', link: 'pmksy', desc: 'Pradhan Mantri Krishi Sinchayee Yojana' },
     { name: 'JVR', link: 'jvr', desc: 'Joint Verification Report' }
   ];
+
+  applicationId: string = 'Applicant Id';
+  customerName: string = 'Customer Name';
+
+  errorMessage: string = '';
+
+  ngOnInit() {
+    const customerRecArr: any[] = this._custService.getLoadedCustomerRecord();
+    if (customerRecArr.length === 1 && customerRecArr[0].applicationId) {
+      this.applicationId = customerRecArr[0]?.applicationId;
+      this.customerName = customerRecArr[0]?.farmerName;
+    } else {
+      this.errorMessage = 'There were missing data about customer. Please reload the page or select customer record again.';
+    }
+  }
 
 }

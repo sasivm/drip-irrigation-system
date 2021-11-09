@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, //to view working scr
   { path: 'login', component: LoginComponent },
   {
-    path: 'drips', component: SidenavComponent, canActivateChild: [AuthGuard], children: [
+    path: 'drips', component: SidenavComponent, children: [
       { path: '', redirectTo: 'register', pathMatch: 'full' },
       { path: 'register', component: RegistrationComponent },
       { path: 'bulk-register', component: BulkRegistorComponent },
@@ -50,7 +50,7 @@ const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: '/login' }
+  // { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

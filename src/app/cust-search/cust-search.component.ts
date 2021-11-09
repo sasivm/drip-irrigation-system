@@ -2,9 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConstants } from '../common/app.global-constant';
-import { CommonList, OptionList, TableErrorMessage } from '../common/models/common-types';
+import { OptionList, TableErrorMessage } from '../common/models/common-types';
 import { CustomerResponse } from '../common/models/customer';
 import { CustServiceService } from '../services/cust-service.service';
 
@@ -17,13 +17,13 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private _custService: CustServiceService) { }
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private _custService: CustServiceService) { }
 
   customerSearch: FormGroup = this.fb.group({
     applicationId: [''],
     farmerName: [''],
     farmerType: [''],
-    registeredBy: [''],
+    fatherName: [''],
     department: ['Agriculture'],
     block: [''],
     village: ['']
@@ -37,8 +37,6 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
   };
 
   formerTypeList: OptionList[] = GlobalConstants.APPLICATION_FormerTypeList;
-
-  registeredByList: OptionList[] = GlobalConstants.APPLICATION_RegisteredByList;
 
   departmentList: OptionList[] = GlobalConstants.APPLICATION_DepartmentList;
 
@@ -88,17 +86,15 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
     });
   }
 
-  viewCustRecReq(applicationId: string) {
-    const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
-    if (isSaved) {
-      this.router.navigate(['/docs']);
-    }
+  viewCustRecReq(custRecord: any) {
+    this._custService.setCustomerRecordOnSession([custRecord]);
+    this.router.navigate(['/drips/docs']);
   }
 
   saveCustRecReq(applicationId: string) {
     const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
     if (isSaved) {
-      this.router.navigate(['/register']);
+      this.router.navigate(['../register'], { relativeTo: this.route });
     }
   }
 
@@ -116,7 +112,7 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
     this.customerSearch.get('applicationId')?.reset('');
     this.customerSearch.get('farmerName')?.reset('');
     this.customerSearch.get('farmerType')?.reset('');
-    this.customerSearch.get('registeredBy')?.reset('');
+    this.customerSearch.get('fatherName')?.reset('');
     this.customerSearch.get('department')?.reset('');
     this.customerSearch.get('block')?.reset('');
     this.customerSearch.get('village')?.reset('');

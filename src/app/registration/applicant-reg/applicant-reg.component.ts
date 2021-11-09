@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -20,8 +21,6 @@ export class ApplicantRegComponent implements OnInit {
   @Input() custRecError: string = '';
 
   formerTypeList: OptionList[] = GlobalConstants.APPLICATION_FormerTypeList;
-
-  registeredByList: OptionList[] = GlobalConstants.APPLICATION_RegisteredByList;
 
   departmentList: OptionList[] = GlobalConstants.APPLICATION_DepartmentList;
 
@@ -50,7 +49,7 @@ export class ApplicantRegComponent implements OnInit {
     applicationId: [''],
     aadhaarNo: [''],
     farmerType: [''],
-    registeredBy: [''],
+    fatherName: [''],
     department: [''],
     miCompany: [''],
     landOwnership: [''],
@@ -68,9 +67,9 @@ export class ApplicantRegComponent implements OnInit {
   custRecFormData: any[] = [];
 
   ENABLED_FIELDS: string[] = ['aadhaarNo', 'landOwnership', 'landOwnSon', 'gender'];
-  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'registeredBy', 'department', 'miCompany',
+  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany',
     'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
-  NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'registeredBy', 'department', 'miCompany',
+  NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany',
     'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
 
   isNewRegForm: boolean = true;
@@ -172,7 +171,6 @@ export class ApplicantRegComponent implements OnInit {
   loadInitDataForNewReq() {
     const initData: any = {
       farmerType: 'SF / MF',
-      registeredBy: 'MI Company',
       department: 'Agriculture',
       miCompany: 'Vedanta Irrigation system Pvt Ltd.',
       district: 'Tiruppur',
@@ -206,6 +204,37 @@ export class ApplicantRegComponent implements OnInit {
     return true;
   }
 
+  deleteCustRecord() {
+    this.showModal = false;
+    this.clearMesgBanner();
+    const applicationId = this.registrationForm.get('applicationId')?.value;
+
+    if (applicationId) {
+      this._custService.deleteCustomerRecord(applicationId).subscribe(res => {
+        if (res && res.isSuccess) {
+          this.sucessMessage = res.message;
+        } else {
+          this.errorMessage.message = 'There were error while deleting record.';
+          this.errorMessage.desc = res.message;
+        }
+      }, error => {
+        console.log('deletion error: ', error);
+        const errorMessage = 'There were error while deleting record.';
+        if (error instanceof HttpErrorResponse) {
+          if (error?.error?.message) {
+            this.errorMessage.message = error.error.message;
+          } else {
+            this.errorMessage.message = errorMessage;
+            this.errorMessage.desc = error.message;
+          }
+        } else {
+          this.errorMessage.message = errorMessage;
+          this.errorMessage.desc = error.message;
+        }
+      });
+    }
+  }
+
   checkForUserRequest() {
     const userReqStr: string | null = sessionStorage.getItem('user-req');
     if (userReqStr) {
@@ -219,7 +248,8 @@ export class ApplicantRegComponent implements OnInit {
       if (data && data.isSuccess && data.custRec.length > 0) {
         console.log(data.custRec);
         this.custRecFormData = data.custRec;
-        this.storeCustomerDetailsOnSession();
+        this._custService.setCustomerRecordOnSession(this.custRecFormData);
+        this.loadSavedCustomerData();
       } else if (!data || !data.isSuccess) {
         this.errorMessage.message = data.message || 'Error occured while getting data';
         console.log('Res is not scuccess', data.message);
@@ -236,14 +266,7 @@ export class ApplicantRegComponent implements OnInit {
     });
   }
 
-  storeCustomerDetailsOnSession() {
-    if (this.custRecFormData.length === 1) {
-      sessionStorage.setItem('cust-rec', JSON.stringify(this.custRecFormData));
-      this.loadInitUserData();
-    }
-  }
-
-  loadInitUserData() {
+  loadSavedCustomerData() {
     const custRecord: any[] = this._custService.getLoadedCustomerRecord();
     if (custRecord.length === 1 && custRecord[0]._id) {
       this.custRecFormData = custRecord;

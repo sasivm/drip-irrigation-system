@@ -13,19 +13,24 @@ export class CustServiceService {
 
   constructor(private _http: HttpClient) { }
 
-  getCustomerData(applicantId: string): Observable<CustomerResponse> {
-    const customerIdSearch = this.REST_API_SERVER + '/customer/' + applicantId;
+  getCustomerData(applicationId: string): Observable<CustomerResponse> {
+    const customerIdSearch = this.REST_API_SERVER + '/customer/' + applicationId;
     return this._http.get<CustomerResponse>(customerIdSearch);
   }
 
   updateCustomer(custRecord: any): Observable<CustomerResponse> {
-    const customerUpdate: string = this.REST_API_SERVER + '/customer';
-    return this._http.post<CustomerResponse>(customerUpdate, custRecord);
+    const custUpdateEndPoint: string = this.REST_API_SERVER + '/customer';
+    return this._http.post<CustomerResponse>(custUpdateEndPoint, custRecord);
   }
 
   updateMILandRecord(miLandRecord: any): Observable<CustomerResponse> {
-    const customerUpdate: string = this.REST_API_SERVER + '/customer/updateMILand';
-    return this._http.post<CustomerResponse>(customerUpdate, miLandRecord);
+    const miUpdateEndPoint: string = this.REST_API_SERVER + '/customer/updateMILand';
+    return this._http.post<CustomerResponse>(miUpdateEndPoint, miLandRecord);
+  }
+
+  deleteCustomerRecord(applicationId: string) {
+    const deleteEndPoint: string = this.REST_API_SERVER + `/customer/delete/${applicationId}`;
+    return this._http.delete<CustomerResponse>(deleteEndPoint);
   }
 
   searchCustomersDetails(customerQuery: any): Observable<CustomerResponse> {
@@ -47,9 +52,16 @@ export class CustServiceService {
     if (!custRecStr) return [];
 
     const custRecord = JSON.parse(custRecStr);
-    if (!custRecord) return [];
+    if (!custRecord || custRecord.length !== 1) return [];
 
     return custRecord;
+  }
+
+  setCustomerRecordOnSession(custRecord: any[]) {
+    if (custRecord.length === 1 && custRecord[0].applicationId) {
+      const custRecStr: string = JSON.stringify(custRecord);
+      sessionStorage.setItem('cust-rec', custRecStr);
+    }
   }
 
 }

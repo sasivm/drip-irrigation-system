@@ -4,8 +4,8 @@
         <div class="col-2 px-0 border-right">
             <mat-list>
                 <ng-container *ngFor="let document of docList">
-                    <a mat-list-item [routerLink]="document.link" [matTooltip]="document.desc" routerLinkActive="hl-doc-active"
-                        class="doc-list-item">
+                    <a mat-list-item [routerLink]="document.link" [matTooltip]="document.desc"
+                        routerLinkActive="hl-doc-active" class="doc-list-item">
                         <mat-icon mat-list-icon class="folder-icon"> folder </mat-icon>
                         <div mat-line> {{document.name}} </div>
                     </a>
@@ -14,6 +14,17 @@
         </div>
 
         <div class="col vh-100 px-0">
+            <div id="doc-header" class="p-3">
+                <h3 class="d-inline"> <b> <u> {{applicationId}} | {{customerName}} </u> </b> </h3>
+                <mat-icon matTooltip="Copy Application ID" [cdkCopyToClipboard]="applicationId"
+                    class="d-inline px-2 mat-icon-btn"> content_copy </mat-icon>
+            </div>
+
+            <div *ngIf="errorMessage">
+                <div class="alert alert-danger">
+                    {{errorMessage}}
+                </div>
+            </div>
             <!-- <app-sfmf-doc></app-sfmf-doc> -->
             <!-- <app-verification-doc></app-verification-doc> -->
             <iframe id="printPdf" name="printPdf" height="700" class="col px-0"></iframe>

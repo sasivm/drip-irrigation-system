@@ -1,5 +1,6 @@
 
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { AfterViewInit, Component, Input, OnChanges, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -21,7 +22,8 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
 
   @Input() custDataArray: any[] = [];
 
-  constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router) { }
+  constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router,
+    private datepipe: DatePipe) { }
 
   COL_NAME_TO_FIELD_NAME: any = ExcelFileConstants.EXCEL_FILE_COL_AND_FIELD_MAP;
 
@@ -33,10 +35,6 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
     message: '',
     desc: ''
   };
-
-  // ngOnInit() {
-  //   this.loadCustomerDetailsToTable();
-  // }
 
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
@@ -70,8 +68,17 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
       const custRecord: any[] = this.custDataArray[i];
       const custRecObject: any = {};
       for (let j = 0; j < custRecord.length; j++) {
-        custRecObject[ExcelFileConstants.EXCEL_HEADERS_FIELD_NAME[j]] = custRecord[j];
+        const fieldName = ExcelFileConstants.EXCEL_HEADERS_FIELD_NAME[j];
+        custRecObject[fieldName] = custRecord[j];
       }
+
+      let date = custRecObject['workOrderDate'] ?? '';
+      if (date) {
+        date = ((date - 25569) * 24 * 60 * 60 * 1000);
+        date = this.datepipe.transform(date, 'dd-MM-yyyy');
+      }
+      custRecObject['workOrderDate'] = date;
+
       this.custDataSource.data.push(custRecObject);
       // console.log('customer obj', custRecObject);
     }
@@ -100,14 +107,13 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
 
       for (let j = 0; j < surveyList.length; j++) {
         const [survey_no, sub_div] = surveyList[j].split(surveyDivsionSplitExp);
-        if (survey_no !== null && survey_no !== undefined && survey_no !== NaN && survey_no !== '' && survey_no !== ' ') {
+        if (survey_no && survey_no?.trim()) {
           surveyNoList.push(survey_no);
         }
-        if (sub_div !== null && sub_div !== undefined && sub_div !== NaN && sub_div !== '' && sub_div !== ' ') {
+        if (sub_div && sub_div?.trim()) {
           subDivList.push(sub_div);
         }
       }
-
 
       const miLandRec: any = {};
       miLandRec['cropType'] = custRec.department;
@@ -116,6 +122,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
       const surveyCropRec: any = {};
       surveyCropRec['surveyNo'] = surveyNoList;
       surveyCropRec['subDivisionNo'] = subDivList;
+      surveyCropRec['surveyAndSubDivNo'] = custRec.surveyNo;
       surveyCropRec['totalArea'] = custRec.totalArea;
       surveyCropRec['appliedArea'] = custRec.appliedArea;
       surveyCropRec['crop'] = custRec.crop;
@@ -139,7 +146,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
         } else {
           const resposeMessage: string = data.message || 'Failed while saving...'
           this.errorMessage.message = resposeMessage;
-          
+
           if (data.invalidRecordAt > 0) {
             this.errorMessage.desc = `Record at ${data.invalidRecordAt} is not valid...`;
           }

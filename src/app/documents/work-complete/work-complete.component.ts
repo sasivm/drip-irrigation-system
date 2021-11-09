@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
 import * as _pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TFontDictionary } from 'pdfmake/interfaces';
-import { TamilFontsBase64 } from 'src/app/common/font-base64';
+import { CUstomeFontsBase64 } from 'src/app/common/font-base64';
 import { PDFMakeConstants } from 'src/app/common/pdfMake-constants';
+import { CustServiceService } from 'src/app/services/cust-service.service';
 import { DataService } from 'src/app/services/data.service';
 (_pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -13,12 +14,167 @@ import { DataService } from 'src/app/services/data.service';
   templateUrl: './work-complete.component.html',
   styleUrls: ['./work-complete.component.scss']
 })
-export class WorkCompleteComponent implements OnInit {
+export class WorkCompleteComponent implements AfterViewInit {
 
-  constructor(private _dataServ: DataService) { }
+  constructor(private _dataServ: DataService, private _custService: CustServiceService) { }
 
-  ngOnInit(): void {
+  DOC_CUSTOMER_DATA = {
+    village: '',
+    block: '',
+    district: '',
+    farmerName: '',
+    fatherName: '',
+    surveyAndSubDivNo: '', // surveyNo and subDivisionNo comes as array and convet to string
+    totalArea: '',
+    crop: '',
+    appliedArea: '',
+    spacing: '',
+    applicationId: ''
+  };
+
+  ngAfterViewInit(): void {
+    /* mapping customer data to doc object */
+    this.mapCustomerDataToDocObject();
+
+    /* construct line and content for bdf with doc object data */
+    this.constructPDFLineForDataContent();
+    this.constructPDFFullBody();
+
     this.generatePDF();
+  }
+
+  mapCustomerDataToDocObject() {
+    const customerRecord = this._custService.getLoadedCustomerRecord()[0];
+    if (customerRecord && customerRecord?.applicationId) {
+      this._dataServ.mapCustomerDataToObject(this.DOC_CUSTOMER_DATA, customerRecord, true);
+    }
+    console.log('Work Comp doc', this.DOC_CUSTOMER_DATA);
+  }
+
+  constructPDFFullBody() {
+    this.DOC_BODY_CONTENTS = [
+      this.LINE1_CONTENT, this.LINE2_CONTENT, this.LINE3_CONTENT, this.LINE4_CONTENT,
+      this.LINE5_CONTENT, this.LINE6_CONTENT, this.LINE7_CONTENT, this.LINE8_CONTENT, this.LINE9_CONTENT,
+      this.PARA2_LINE1_CONTENT, this.PARA2_LINE2_CONTENT, this.PARA2_LINE3_CONTENT,
+      this.PARA3_Line1_CONTENT, this.PARA3_Line2_CONTENT
+    ];
+
+    this.FULL_DOC_CONTENT_ARRAY = [
+      this.DOC_HEADER_CONTENT, this.DOC_BODY_CONTENTS, this.DOC_FOOTER_CONTENT, this.COMPANY_MARK
+    ];
+  }
+
+  constructPDFLineForDataContent() {
+    this.LINE1_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: '', border: PDFMakeConstants.TABLE_CELL_NO_BORDER },
+            { text: this.DOC_CUSTOMER_DATA.district, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['firstLineContent', 'populatedTextEng'] },
+            { text: 'மாவட்டத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.block, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
+            { text: 'வட்டத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] }
+          ],
+        ],
+        widths: ['10%', '30%', '20%', '30%', '*']
+      }
+    };
+
+    this.LINE2_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: this.DOC_CUSTOMER_DATA.village, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['firstLineContent', 'populatedTextEng'] },
+            { text: 'கிராமத்தில் வசித்துவரும் திரு/திருமதி', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.farmerName, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
+          ],
+        ],
+        widths: ['32%', '48%', '*']
+      }
+    };
+
+    this.LINE3_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: 'த.பெ/க.பெ', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: this.DOC_CUSTOMER_DATA.fatherName, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
+            { text: 'ஆகிய எனக்கு', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.village, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
+          ],
+        ],
+        widths: ['15%', '35%', '18%', '*']
+      }
+    };
+
+    this.LINE4_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: 'கிராமத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: this.DOC_CUSTOMER_DATA.block, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
+            { text: 'வட்டாரத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.surveyAndSubDivNo, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
+            { text: 'சர்வே', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] },
+          ],
+        ],
+        widths: ['15%', '30%', '17%', '30%', '*']
+      }
+    };
+
+    this.LINE5_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: 'எண்களில் பாத்தியப்பட்ட', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: this.DOC_CUSTOMER_DATA.totalArea, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
+            { text: 'எக்டர் பரப்பளவில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.crop, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
+          ],
+        ],
+        widths: ['32%', '20%', '25%', '*']
+      }
+    };
+
+    this.LINE6_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: 'பயிருக்கு', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: this.DOC_CUSTOMER_DATA.appliedArea, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
+            { text: 'எக்டர் பரப்பளவில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
+            { text: this.DOC_CUSTOMER_DATA.spacing, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
+            { text: 'இடைவெளியில் சொட்டு நீர்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] }
+          ],
+        ],
+        widths: ['13%', '13%', '25%', '20%', '*']
+      }
+    };
+
+    this.LINE8_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: this.DOC_CUSTOMER_DATA.applicationId, border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
+            { text: 'பதிவு  எண்ணில்  விண்ணப்பித்து பணியாணை வழங்கியதின்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+          ],
+        ], widths: ['43%', '*']
+      }
+    };
   }
 
   DOC_HEADER_CONTENT: Content = [
@@ -35,103 +191,17 @@ export class WorkCompleteComponent implements OnInit {
     ]
   };
 
-  LINE1_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: '', border: PDFMakeConstants.TABLE_CELL_NO_BORDER },
-          { text: 'TIRUPPUR', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['firstLineContent', 'populatedTextEng'] },
-          { text: 'மாவட்டத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: 'GUDIMANGALAM', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
-          { text: 'வட்டத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] }
-        ],
-      ],
-      widths: ['10%', '30%', '20%', '30%', '*']
-    }
-  };
+  LINE1_CONTENT: Content = [];
 
-  LINE2_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'MUKKUTU JALLIPATTI', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['firstLineContent', 'populatedTextEng'] },
-          { text: 'கிராமத்தில் வசித்துவரும் திரு/திருமதி', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: 'KANAGARAJ', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
-        ],
-      ],
-      widths: ['32%', '48%', '*']
-    }
-  };
+  LINE2_CONTENT: Content = [];
 
-  LINE3_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'த.பெ/க.பெ', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: 'VEERASAMY', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
-          { text: 'ஆகிய எனக்கு', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: 'MUKKUTU JALLIPATTI', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
-        ],
-      ],
-      widths: ['15%', '35%', '18%', '*']
-    }
-  };
+  LINE3_CONTENT: Content = [];
 
-  LINE4_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'கிராமத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: 'GUDIMANGALAM', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
-          { text: 'வட்டாரத்தில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: '112/1C', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
-          { text: 'சர்வே', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] },
-        ],
-      ],
-      widths: ['15%', '30%', '17%', '30%', '*']
-    }
-  };
+  LINE4_CONTENT: Content = [];
 
-  LINE5_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'எண்களில் பாத்தியப்பட்ட', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: '1.39', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
-          { text: 'எக்டர் பரப்பளவில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: 'COCONUT', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' }
-        ],
-      ],
-      widths: ['32%', '20%', '25%', '*']
-    }
-  };
+  LINE5_CONTENT: Content = [];
 
-  LINE6_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'பயிருக்கு', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: '1.35', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: ['populatedTextEng'] },
-          { text: 'எக்டர் பரப்பளவில்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textCenter'] },
-          { text: '8m*8m', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
-          { text: 'இடைவெளியில் சொட்டு நீர்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'textRight'] }
-        ],
-      ],
-      widths: ['13%', '13%', '25%', '20%', '*']
-    }
-  };
+  LINE6_CONTENT: Content = [];
 
   LINE7_CONTENT: Content = {
     // layout: 'noBorders',
@@ -149,18 +219,7 @@ export class WorkCompleteComponent implements OnInit {
     }
   };
 
-  LINE8_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'A-TPR-gdm-6518105712-2021-22', border: PDFMakeConstants.TABLE_CELL_BOTTOM_BORDER, style: 'populatedTextEng' },
-          { text: 'பதிவு  எண்ணில்  விண்ணப்பித்து பணியாணை வழங்கியதின்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-        ],
-      ], widths: ['43%', '*']
-    }
-  };
+  LINE8_CONTENT: Content = [];
 
   LINE9_CONTENT: Content = {
     // layout: 'noBorders',
@@ -195,7 +254,7 @@ export class WorkCompleteComponent implements OnInit {
       body: [
         [
           { text: 'மூன்றாண்டுகளுக்கு  சொட்டு  நீர்  பாசன  கருவிகளுக்கு   சேவை  அளிப்பதுடன்  ஏற்படும் பழுதுகளையும் சரி', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-        ],
+        ]
       ]
     }
   };
@@ -207,7 +266,7 @@ export class WorkCompleteComponent implements OnInit {
       body: [
         [
           { text: 'செய்து தரப்படும்.', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-        ],
+        ]
       ]
     }
   };
@@ -237,19 +296,11 @@ export class WorkCompleteComponent implements OnInit {
             text: 'சரி செய்து உபயோகப்படுத்துவேன். தற்போது அமைக்கப்பட்ட சொட்டு நீர்பாசனம் நல்ல முறையில் திருப்திகரமாக இயங்கிவருகிறது.',
             lineHeight: 2,
             border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2']
-          },
+          }
         ]
       ]
     }
   };
-
-  DOC_BODY_CONTENTS: Content = [
-    this.LINE1_CONTENT, this.LINE2_CONTENT, this.LINE3_CONTENT, this.LINE4_CONTENT,
-    this.LINE5_CONTENT, this.LINE6_CONTENT, this.LINE7_CONTENT, this.LINE8_CONTENT,
-    this.LINE9_CONTENT,
-    this.PARA2_LINE1_CONTENT, this.PARA2_LINE2_CONTENT, this.PARA2_LINE3_CONTENT,
-    this.PARA3_Line1_CONTENT, this.PARA3_Line2_CONTENT
-  ];
 
   DOC_FOOTER_CONTENT: Content = {
     style: 'footerSignWorkComp',
@@ -260,8 +311,7 @@ export class WorkCompleteComponent implements OnInit {
           { text: 'நிறுவனத்தார் கையொப்பம்', alignment: 'left', style: ['docTamil2'] },
           { text: 'விவசாயி கையொப்பம்', alignment: 'right', style: ['docTamil2'] }
         ]
-      ],
-      widths: ['*', '*']
+      ], widths: ['*', '*']
     }
   };
 
@@ -269,18 +319,17 @@ export class WorkCompleteComponent implements OnInit {
     style: 'companyMarker',
     text: [
       { text: 'Vedanta', color: 'blue' },
-      { text: ' Irrigation Systems Pvt. Ltd' },
+      { text: ' Irrigation Systems Pvt. Ltd' }
     ]
-  }
+  };
 
-  FULL_DOC_CONTENT_ARRAY: Content[] = [
-    this.DOC_HEADER_CONTENT, this.DOC_BODY_CONTENTS, this.DOC_FOOTER_CONTENT, this.COMPANY_MARK
-  ];
+  DOC_BODY_CONTENTS: Content = [];
+  FULL_DOC_CONTENT_ARRAY: Content[] = [];
 
   generatePDF() {
     // this adds our base64 encoded data to the existing 'virtual file system'
-    pdfFonts.pdfMake.vfs['Baloo_64'] = TamilFontsBase64.Baloo_Regular_BASE64;
-    pdfFonts.pdfMake.vfs['Baloo_bold_b64'] = TamilFontsBase64.Baloo_Bold_BASE64;
+    pdfFonts.pdfMake.vfs['Baloo_64'] = CUstomeFontsBase64.Baloo_Regular_BASE64;
+    pdfFonts.pdfMake.vfs['Baloo_bold_b64'] = CUstomeFontsBase64.Baloo_Bold_BASE64;
     // pdfFonts.pdfMake.vfs['Baamini_b64'] = TamilFontsBase64.Baamini_BASE64;
 
     const pdfTamilFonts: TFontDictionary = {

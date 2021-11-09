@@ -55,6 +55,7 @@ import { AdminProfileComponent } from './admin/admin-profile/admin-profile.compo
 import { PermissionManagerComponent } from './admin/permission-manager/permission-manager.component';
 import { PmksyDocComponent } from './documents/pmksy-doc/pmksy-doc.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -101,6 +102,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
     MatProgressBarModule, MatMenuModule, ClipboardModule
   ],
   providers: [
+    DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]

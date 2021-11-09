@@ -31,7 +31,7 @@
                     <label for="applicationId" class="col-5"> Application Id </label>
                     <input type="text" formControlName="applicationId" id="applicationId" class="col-7 form-control">
                 </div>
-                <mat-icon matTooltip="Copy application id" [cdkCopyToClipboard]="clipboardCopy" class="pt-2 mat-icon-btn"> content_copy </mat-icon>
+                <mat-icon matTooltip="Copy Application ID" [cdkCopyToClipboard]="clipboardCopy" class="pt-2 mat-icon-btn"> content_copy </mat-icon>
             </div>
 
             <div class="row py-2">
@@ -57,13 +57,9 @@
                 </div>
 
                 <div class="col">
-                    <label for="registeredBy" class="col-5"> Registered By </label>
-                    <select name="registeredby" formControlName="registeredBy" id="registeredBy"
+                    <label for="fatherName" class="col-5"> Father Name </label>
+                    <input type="text" name="fatherName" formControlName="fatherName" id="fatherName"
                         class="col-7 form-control">
-                        <option *ngFor="let type of registeredByList" [value]="type.value">
-                            {{type.option}}
-                        </option>
-                    </select>
                 </div>
             </div>
 
@@ -208,7 +204,7 @@
                 </div>
                 <div class="modal-body"> {{deletionWarningMsg}} </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-theme-secondary px-4"> Yes</button>
+                    <button type="button" class="btn btn-theme-secondary px-4" (click)="deleteCustRecord()"> Yes</button>
                     <button type="button" class="btn btn-theme-primary px-4" (click)="showModal=false"> No </button>
                 </div>
             </div>

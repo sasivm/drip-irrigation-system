@@ -9,13 +9,6 @@ export class GlobalConstants {
         { option: 'Others', value: 'Others' },
     ];
 
-    public static APPLICATION_RegisteredByList: OptionList[] = [
-        { option: 'Select Register', value: '' },
-        { option: 'Self / Farmer', value: 'Self' },
-        { option: 'Department', value: 'Department' },
-        { option: 'MI Company', value: 'MI Company' },
-    ];
-
     public static APPLICATION_DepartmentList: OptionList[] = [
         { option: 'Select Department', value: '' },
         { option: 'Horticulture', value: 'Horticulture' },

@@ -129,8 +129,13 @@ $table-row-highlight: #ffeed6 !important;
 }
 
 .disabled-btn {
-  background-color: rgba(0, 0, 0, 0.54);
+  background-color: rgba(0, 0, 0, 0.54) !important;
   color: #fff !important;
+  cursor: default !important;
+}
+
+.disabled-icon-btn {
+  color: rgba(0, 0, 0, 0.54) !important;
 }
 
 .hl-active,
@@ -281,4 +286,3 @@ tr.mat-row:nth-child(even) {
   display: block;
   backdrop-filter: contrast(0.5);
 }
-

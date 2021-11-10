@@ -20,13 +20,13 @@
 
             <ng-container *ngFor="let colName of displayedColumns; let idx = index; first as isFirst"
                 [matColumnDef]="colName">
-                <div *ngIf="isFirst; then btnTemp else cellTemp"></div>
+                <div *ngIf="(isFirst && displayedColumns[0] === 'action'); then btnTemp else cellTemp"></div>
 
                 <ng-template #btnTemp>
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let element">
-                        <button (click)="saveCustRecReq(element.applicationId)"
-                            mat-flat-button color="primary" type="button"> view </button>
+                        <button (click)="saveCustRecReq(element.applicationId)" mat-flat-button color="primary"
+                            type="button"> view </button>
                     </td>
                 </ng-template>
 
@@ -43,12 +43,16 @@
         </table>
     </div>
 
-    <div class="row justify-content-between">
-        <div>
-            <button class="btn btn-theme-primary" (click)="bulkRegister()"> Register All </button>
-            <button class="btn btn-theme-secondary mx-3"> Selected Only </button>
+    <div class="row">
+        <div class="col-2">
+            <button mat-flat-button class="btn btn-theme-primary px-3 py-1" (click)="bulkRegister()"> Register All </button>
+            <!-- <button class="btn btn-theme-secondary mx-3"> Selected Only </button> -->
         </div>
-
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <div class="col-2" *ngIf="loadSpinner">
+            <mat-spinner diameter="40"></mat-spinner>
+        </div>
+        <div class="col">
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
     </div>
 </div>

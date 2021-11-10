@@ -68,9 +68,11 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
           this.custDataSource.data = customerRecords;
         } else {
           this.errorMessage.message = 'No record found';
+          this.custDataSource.data = [];
         }
       } else {
         this.errorMessage.message = response.message;
+        this.custDataSource.data = [];
       }
       this.loadProgresser = false;
     }, err => {
@@ -83,6 +85,7 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
         this.errorMessage.message = err.message;
       }
       this.loadProgresser = false;
+      this.custDataSource.data = [];
     });
   }
 

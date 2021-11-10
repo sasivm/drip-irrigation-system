@@ -1,9 +1,12 @@
-<button mat-menu-item (click)="selectedItem('account')">
-    <a>
-        <mat-icon mat-list-icon> person </mat-icon> {{adminName}}
-        <mat-icon mat-list-icon class="ml-auto"> arrow_right </mat-icon>
+<div mat-menu-item (click)="selectedItem('account')">
+    <a class="row align-items-center justify-content-between px-3">
+        <span>
+            <mat-icon mat-list-icon> person </mat-icon> {{adminName}}
+        </span>
+
+        <mat-icon mat-list-icon> arrow_right </mat-icon>
     </a>
-</button>
+</div>
 <button mat-menu-item (click)="selectedItem('view')">
     <a>
         <mat-icon mat-list-icon> manage_accounts </mat-icon> Manage sub admins

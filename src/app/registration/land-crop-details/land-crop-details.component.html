@@ -42,9 +42,9 @@
                             class="col form-control">
                     </div>
 
-                    <div id="survey-delete" *ngIf="surveyDetails.length > 1" (click)="removeSurveyField(i)"
-                        matTooltip="Delete Record">
-                        <mat-icon color="warn"> delete </mat-icon>
+                    <!-- (click)="removeSurveyField(i)" -->
+                    <div id="survey-delete" *ngIf="surveyDetails.length > 1" matTooltip="Delete Record">
+                        <mat-icon color="warn" class="disabled-icon-btn"> delete </mat-icon>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button type="button" (click)="AddLandDetails()" class="btn-sm btn-theme-primary"> Add More Land Details
+                <!-- (click)="AddLandDetails()" -->
+                <button type="button" mat-flat-button class="btn-sm btn-theme-primary disabled-btn"> Add More Land Details
                 </button>
             </div>
         </form>
@@ -131,9 +132,9 @@
                             class="col form-control">
                     </div>
 
-                    <div id="survey-delete" *ngIf="cropDetails.length > 1" (click)="removeCropFieldDetails(i)"
-                        matTooltip="Delete Record">
-                        <mat-icon color="warn"> delete </mat-icon>
+                    <!-- (click)="removeCropFieldDetails(i)" -->
+                    <div id="survey-delete" *ngIf="cropDetails.length > 1" matTooltip="Delete Record">
+                        <mat-icon color="warn" class="disabled-icon-btn"> delete </mat-icon>
                     </div>
                 </div>
             </div>
@@ -145,7 +146,8 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <button type="button" (click)="AddCropFieldDetails()" class="btn-sm btn-theme-primary"> Add More Crop
+                <!-- (click)="AddCropFieldDetails()" -->
+                <button mat-flat-button type="button" class="btn btn-theme-primary disabled-btn"> Add More Crop
                     Details </button>
             </div>
         </form>

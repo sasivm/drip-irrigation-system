@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnChanges, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConstants } from '../common/app.global-constant';
 import { ExcelFileConstants } from '../common/excelFile-constant';
 import { TableErrorMessage } from '../common/models/common-types';
@@ -23,7 +23,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
   @Input() custDataArray: any[] = [];
 
   constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router,
-    private datepipe: DatePipe) { }
+    private datepipe: DatePipe, private route: ActivatedRoute) { }
 
   COL_NAME_TO_FIELD_NAME: any = ExcelFileConstants.EXCEL_FILE_COL_AND_FIELD_MAP;
 
@@ -36,6 +36,8 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
     desc: ''
   };
 
+  loadSpinner: boolean = false;
+
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
   }
@@ -43,7 +45,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
   saveCustRecReq(applicationId: string) {
     const isReqSaved: boolean = this._custService.setCustomerReqOnSession(applicationId);
     if (isReqSaved) {
-      this.router.navigate(['/register']);
+      this.router.navigate(['../register'], { relativeTo: this.route });
     }
   }
 
@@ -138,10 +140,14 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
 
   bulkRegister() {
     if (this.custDataSource.data.length > 0) {
+      this.loadSpinner = true;
       this.resetMessages();
+
       const custRequest: any[] = this.prepareCustomerRecords();
+
       this._bulkService.sendBulkCustData(custRequest).subscribe((data: BulkCustomerResponse) => {
         if (data.isSuccess) {
+          this.displayedColumns.unshift('action');
           this.sucessMessage = data.message;
         } else {
           const resposeMessage: string = data.message || 'Failed while saving...'
@@ -151,9 +157,11 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
             this.errorMessage.desc = `Record at ${data.invalidRecordAt} is not valid...`;
           }
         }
+        this.loadSpinner = false;
       }, err => {
         console.log('Error from api', err);
         this.errorMessage.message = err.message;
+        this.loadSpinner = false;
       });
     } else {
       this.errorMessage.message = GlobalConstants.CUST_TABLE_EMPTY;

@@ -16,8 +16,6 @@ export class RegistrationComponent implements OnInit {
 
   @ViewChild(MatStepper) private myStepper!: MatStepper;
 
-  isCustRecordReq: boolean = false;
-
   constructor(private _custServc: CustServiceService) { }
 
   selectedStepperSubject: Subject<any> = new Subject();
@@ -50,9 +48,6 @@ export class RegistrationComponent implements OnInit {
           this.completedState.step3 = true;
         }
       }
-      // if (moveToNext) {
-      //   // this.goForwardOnStepper();
-      // }
     });
 
     setTimeout(() => this.checkForUserRequest(), 0);
@@ -63,9 +58,8 @@ export class RegistrationComponent implements OnInit {
   }
 
   checkForUserRequest() {
-    const userReqStr: string | null = sessionStorage.getItem('user-req');
-    this.isCustRecordReq = !!userReqStr;
-    if (this.isCustRecordReq) {
+    const applicationId: string | null = this._custServc.getRequestedCustApplictionIdFromSession();
+    if (applicationId) {
       this.goForwardOnStepper();
     }
   }
@@ -86,11 +80,12 @@ export class RegistrationComponent implements OnInit {
 
   selectionChange(event: StepperSelectionEvent) {
     const stepLabel = event.selectedStep.label;
+    const isCustApp_IdRequested: boolean = !!(this._custServc.getRequestedCustApplictionIdFromSession());
 
-    console.log('selected Step :', stepLabel, 'cust-re', this.isCustRecordReq);
+    console.log('selected Step :', stepLabel, 'cust-re', isCustApp_IdRequested);
 
     const selectedStepState = {
-      isCustRecReq: this.isCustRecordReq,
+      isCustRecReq: isCustApp_IdRequested,
       stepName: stepLabel
     };
 

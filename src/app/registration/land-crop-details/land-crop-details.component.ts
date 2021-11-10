@@ -61,6 +61,9 @@ export class LandCropDetailsComponent implements OnInit {
           this.loadCropDetails(surveyCropRec);
         }
       }
+
+      this.surveyDetailsForm.disable();
+      this.cropDetailsForm.disable();
     });
   }
 

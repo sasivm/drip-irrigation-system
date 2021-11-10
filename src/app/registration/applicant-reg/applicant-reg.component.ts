@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { CustomerConstants } from 'src/app/common/customer-constant';
 import { GenderList, OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
-import { ApplicantReqData, CustomerResponse, PostMark } from 'src/app/common/models/customer';
+import { CustomerResponse, PostMark } from 'src/app/common/models/customer';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 import { DataService } from 'src/app/services/data.service';
 
@@ -102,6 +102,7 @@ export class ApplicantRegComponent implements OnInit {
 
   ngOnInit() {
     this.selectedStepper.subscribe(data => {
+      console.log('app reg loading...');
       if (this.custRecFormData.length === 0) { // only if first time coming to screen
         this.isNewRegForm = !(data.isCustRecReq);
         if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
@@ -112,7 +113,9 @@ export class ApplicantRegComponent implements OnInit {
           this.checkForUserRequest();
         } else {
           if (!this.isNewReqDataLoaded) {
-            this.loadInitDataForNewReq();
+            this.clearMesgBanner(); // requires, if cust recorde deleted and if user selects new reg in same stepper
+            this.enableFullForm();
+            this.loadInitDataForNewRegistraion();
             console.log('loading new data');
             this.isNewReqDataLoaded = true;
           }
@@ -168,16 +171,17 @@ export class ApplicantRegComponent implements OnInit {
     return this.registrationForm.get('applicationId')?.value;
   }
 
-  loadInitDataForNewReq() {
-    const initData: any = {
-      farmerType: 'SF / MF',
-      department: 'Agriculture',
-      miCompany: 'Vedanta Irrigation system Pvt Ltd.',
-      district: 'Tiruppur',
-      gender: 'M',
-      socialStatus: 'Other Caste'
-    };
-    this.registrationForm.patchValue(initData);
+  private readonly NEW_REG_CUST__INITIAL_DATA = {
+    farmerType: 'SF / MF',
+    department: 'Agriculture',
+    miCompany: 'Vedanta Irrigation system Pvt Ltd.',
+    district: 'Tiruppur',
+    gender: 'M',
+    socialStatus: 'Other Caste'
+  };
+
+  loadInitDataForNewRegistraion() {
+    this.registrationForm.patchValue(this.NEW_REG_CUST__INITIAL_DATA);
     this.registrationForm.get('applicationId')?.disable();
   }
 
@@ -213,6 +217,13 @@ export class ApplicantRegComponent implements OnInit {
       this._custService.deleteCustomerRecord(applicationId).subscribe(res => {
         if (res && res.isSuccess) {
           this.sucessMessage = res.message;
+          this.custRecFormData = [];
+          this._custService.removeCustomerRecordAndReqFromSession();
+
+          this.registrationForm.reset();
+          this.isNewRegForm = true;
+          this.enableNextBtn = false;
+          this.updatePostMark();
         } else {
           this.errorMessage.message = 'There were error while deleting record.';
           this.errorMessage.desc = res.message;
@@ -232,14 +243,15 @@ export class ApplicantRegComponent implements OnInit {
           this.errorMessage.desc = error.message;
         }
       });
+    } else {
+      this.errorMessage.message = 'Application Id is missing in form.';
     }
   }
 
   checkForUserRequest() {
-    const userReqStr: string | null = sessionStorage.getItem('user-req');
-    if (userReqStr) {
-      const userReqObject: ApplicantReqData = JSON.parse(userReqStr);
-      this.getApplicantDetails(userReqObject.applicationId);
+    const applicationId: string | null = this._custService.getRequestedCustApplictionIdFromSession();
+    if (applicationId) {
+      this.getApplicantDetails(applicationId);
     }
   }
 
@@ -253,7 +265,7 @@ export class ApplicantRegComponent implements OnInit {
       } else if (!data || !data.isSuccess) {
         this.errorMessage.message = data.message || 'Error occured while getting data';
         console.log('Res is not scuccess', data.message);
-        // this.errorMessage.desc = '';
+        this.isNewRegForm = true;
       }
     }, err => {
       console.log('cust error occured', err);
@@ -261,6 +273,7 @@ export class ApplicantRegComponent implements OnInit {
       console.log(err.message);
       this.errorMessage.message = 'Error occured while getting data';
       this.errorMessage.desc = err.message;
+      this.isNewRegForm = true;
     }, () => {
       // this.goForwardOnStepper();
     });
@@ -284,12 +297,12 @@ export class ApplicantRegComponent implements OnInit {
     }
   }
 
-  updatePostMark(custRec: any) {
+  updatePostMark(custRec: any = {}) {
     this.postMarkSection = {
-      createdBy: custRec?.createdBy,
-      createdAt: custRec?.createdAt,
-      updatedBy: custRec?.updatedBy,
-      updatedAt: custRec?.updatedAt
+      createdBy: custRec?.createdBy ?? '',
+      createdAt: custRec?.createdAt ?? '',
+      updatedBy: custRec?.updatedBy ?? '',
+      updatedAt: custRec?.updatedAt ?? ''
     }
   }
 

@@ -152,7 +152,7 @@ export class ExcelFileConstants {
 
     public static readonly CUST_TABLE_VISIBLE_HEADERS: string[] = [
         // below fields are related to Excel File columns as array
-        "action",
+        // "action", show afer succesfull save
         "Srl No",
         "Year",
         "Application Id",

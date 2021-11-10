@@ -41,10 +41,24 @@ export class CustServiceService {
   setCustomerReqOnSession(applicationId: string) {
     if (applicationId) {
       const userReqString: string = JSON.stringify({ 'applicationId': applicationId });
-      sessionStorage.setItem('user-req', userReqString);
+      sessionStorage.setItem('custRec-req', userReqString);
       return true;
     }
     return false;
+  }
+
+  getRequestedCustApplictionIdFromSession(): string | null {
+    const requestStr = sessionStorage.getItem('custRec-req');
+    if (!requestStr) {
+      return null;
+    }
+
+    const requestObj: any = JSON.parse(requestStr);
+    if (requestObj && requestObj?.applicationId) {
+      return requestObj.applicationId;
+    }
+
+    return null;
   }
 
   getLoadedCustomerRecord(): any[] {
@@ -62,6 +76,11 @@ export class CustServiceService {
       const custRecStr: string = JSON.stringify(custRecord);
       sessionStorage.setItem('cust-rec', custRecStr);
     }
+  }
+
+  removeCustomerRecordAndReqFromSession() {
+    sessionStorage.removeItem('cust-rec');
+    sessionStorage.removeItem('custRec-req');
   }
 
 }

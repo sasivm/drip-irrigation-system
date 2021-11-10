@@ -25,8 +25,43 @@ export class LoginComponent {
 
   isPwdVisible: boolean = false;
 
-  validateLogin() {
+  validateAdminLogin() {
+    const { mail, password } = this.loginForm.value;
+    let errorMessage = '';
+    if (!mail && !password) {
+      errorMessage = 'Email and Password are required.';
+    } else if (!mail?.trim()) {
+      errorMessage = 'Email is required.';
+    } else if (!password?.trim()) {
+      errorMessage = 'Password is required.';
+    }
+
+    this.errorMessage = errorMessage;
+    if (errorMessage) {
+      return false;
+    }
+    const length = mail.length;
+    if (length < 5 || !(mail.includes('.') && mail.includes('@'))) {
+      errorMessage = 'Enter valid Email address.';
+    } else if (password.length < 6) {
+      errorMessage = 'Enter valid Pasword.';
+    }
+
+    this.errorMessage = errorMessage;
+    if (errorMessage) {
+      return false;
+    }
+
+    return true;
+  }
+
+  submitAdminLogin() {
     this.errorMessage = '';
+    const isValid = this.validateAdminLogin();
+    if (!isValid) {
+      return;
+    }
+
     const adminLogin = this.loginForm.value;
     this.isLoading = true;
 

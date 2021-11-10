@@ -36,9 +36,9 @@ export class GlobalConstants {
 
     public static CROP_CropTypeList: OptionList[] = [
         { option: 'Select Crop Type', value: '' },
-        { option: 'Agriculture / Private SugarMill', value: 'Agriculture' },
-        { option: 'Horticulture', value: 'Horticulture' },
-        { option: 'Sugarcane / Cooperative SugarMill', value: 'Sugarcane' }
+        { option: 'Agriculture / Private SugarMill', value: 'AGRICULTURE' },
+        { option: 'Horticulture', value: 'HORTICULTURE' },
+        { option: 'Sugarcane / Cooperative SugarMill', value: 'SUGARCANE' }
     ];
 
     public static CROP_CropLandTypeList: OptionList[] = [
@@ -50,8 +50,8 @@ export class GlobalConstants {
 
     public static CROP_MITypeList: OptionList[] = [
         { option: 'Select MI Type', value: '' },
-        { option: 'Drip', value: 'Drip' },
-        { option: 'Sprinkler', value: 'Sprinkler' },
+        { option: 'Drip', value: 'DRIP' },
+        { option: 'Sprinkler', value: 'SPRINKLER' },
     ];
 
     public static CROP_PrimaryCropList: CommonList[] = [

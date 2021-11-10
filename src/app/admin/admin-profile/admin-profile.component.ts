@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { info } from 'console';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { AdminService } from 'src/app/services/admin.service';
@@ -52,6 +51,11 @@ export class AdminProfileComponent implements OnInit {
   ngOnInit() {
     this.disableForm();
     this.loadAdminProfile();
+    this.checkLoggedAdminRole();
+
+    if (!this.isSubAdminLogged) {
+      
+    }
   }
 
   validatePassword() {
@@ -145,17 +149,19 @@ export class AdminProfileComponent implements OnInit {
       this.adminRec = adminProfile;
       this.loadSavedAdminData();
     }
+  }
 
-    this.checkLoggedAdminRole();
+  private get subAdminRoles(): String[] {
+    const rolseOfSubAdmins = ['admin2', 'admin3'];
+    return rolseOfSubAdmins;
   }
 
   checkLoggedAdminRole() {
     const [{ role: adminRole }] = this._authService.getAdminFromSession();
-    const subAdminRoles = ['admin2', 'admin3'];
 
-    if (adminRole && subAdminRoles.includes(adminRole)) {
-      this.isSubAdminLogged = false; // default true
-      console.log('role', adminRole);
+    if (adminRole && this.subAdminRoles.includes(adminRole)) {
+      this.isSubAdminLogged = true; // default true
+      console.log('current admin role', adminRole);
     } else {
       this.isSubAdminLogged = false; // this is correct but add one more check to find super admin
     }

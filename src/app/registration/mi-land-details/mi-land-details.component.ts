@@ -61,7 +61,8 @@ export class MiLandDetailsComponent implements OnInit {
   loadLandDetails(landRecord: MILandRecord) {
     console.log('mi rec', landRecord);
     this.miLandForm.patchValue(landRecord);
-    if (landRecord.cropLandType) {
+    
+    if (landRecord.cropLandType && landRecord.cropLandType?.trim()) {
       this.enableNextBtn = true;
     }
   }

@@ -83,8 +83,12 @@ export class LoginComponent {
   loginErrorHandling(error: any) {
     console.log('login error: ', error);
     if (error instanceof HttpErrorResponse) {
-      if (error.ok === false && (error.status === 0 || error.status === 404)) {
-        this.errorMessage = 'It seems serve is down.';
+      const statusCode = error.status;
+      if (error.ok === false && (statusCode === 0 || statusCode === 404)) {
+        this.errorMessage = 'It looks like application serve is down right now. Please try again after sometimes.';
+        if (statusCode === 0 && !(this.isInternetAvailable())) {
+          this.errorMessage = `It seems your internet connetion is down. Please try to reload the application.`;
+        }
       }
       else if (error?.error?.message) {
         this.errorMessage = error.error.message;
@@ -95,6 +99,10 @@ export class LoginComponent {
       this.errorMessage = error.message;
     }
     this.isLoading = false;
+  }
+
+  isInternetAvailable(): boolean {
+    return (window.navigator.onLine)
   }
 
   validateLoginResponse(response: any) {

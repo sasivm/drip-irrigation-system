@@ -4,12 +4,12 @@ import { AfterViewInit, Component, Input, OnChanges, SimpleChange, SimpleChanges
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalConstants } from '../common/app.global-constant';
-import { ExcelFileConstants } from '../common/excelFile-constant';
-import { TableErrorMessage } from '../common/models/common-types';
-import { BulkCustomerResponse } from '../common/models/customer';
-import { CustServiceService } from '../services/cust-service.service';
-import { CustTableBulkService } from '../services/cust-table-bulk.service';
+import { GlobalConstants } from '../../common/app.global-constant';
+import { ExcelFileConstants } from '../../common/excelFile-constant';
+import { TableErrorMessage } from '../../common/models/common-types';
+import { BulkCustomerResponse } from '../../common/models/customer';
+import { CustServiceService } from '../../services/cust-service.service';
+import { CustTableBulkService } from '../../services/cust-table-bulk.service';
 
 @Component({
   selector: 'app-cust-table',

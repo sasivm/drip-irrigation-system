@@ -2,10 +2,9 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Subject } from 'rxjs';
-import { CustomerConstants } from '../common/customer-constant';
-import { StepperStepState } from '../common/models/common-types';
-import { CustServiceService } from '../services/cust-service.service';
-import { DataService } from '../services/data.service';
+import { CustomerConstants } from 'src/app/common/customer-constant';
+import { StepperStepState } from 'src/app/common/models/common-types';
+import { CustServiceService } from 'src/app/services/cust-service.service';
 
 @Component({
   selector: 'app-registration',

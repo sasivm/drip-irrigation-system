@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
@@ -37,7 +38,7 @@ export class LoginComponent implements OnInit {
       this.isLoggedOut = (isUserLoggedOut === 'true');
     }
 
-    if (!this.isLoggedOut) {
+    if (!this.isLoggedOut && environment.envName === 'prod') {
       this.showPswModal = true;
     }
   }
@@ -88,6 +89,8 @@ export class LoginComponent implements OnInit {
       if (response && response.isSuccess) {
         try {
           this.validateLoginResponse(response);
+          this.isLoggedOut = true; // just showing message while lazy loading
+          this.logoutMessage = 'Login verified successfully';
           this.router.navigate(['drips/register']);
         } catch (error) {
           this.errorMessage = error + '';

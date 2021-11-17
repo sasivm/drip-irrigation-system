@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalConstants } from '../common/app.global-constant';
-import { OptionList, TableErrorMessage } from '../common/models/common-types';
-import { CustomerResponse } from '../common/models/customer';
-import { CustServiceService } from '../services/cust-service.service';
+import { GlobalConstants } from 'src/app/common/app.global-constant';
+import { OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
+import { CustomerResponse } from 'src/app/common/models/customer';
+import { CustServiceService } from 'src/app/services/cust-service.service';
 
 @Component({
   selector: 'app-cust-search',
@@ -17,7 +17,8 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private _custService: CustServiceService) { }
+  constructor(private fb: FormBuilder, private router: Router,
+    private route: ActivatedRoute, private _custService: CustServiceService) { }
 
   customerSearch: FormGroup = this.fb.group({
     applicationId: [''],

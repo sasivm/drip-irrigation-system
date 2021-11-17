@@ -7,6 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AccountSettingComponent {
 
+  newAdminQueryParam: any = {
+    new: true
+  };
+
   constructor() { }
 
 }

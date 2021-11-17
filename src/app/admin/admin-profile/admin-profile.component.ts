@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { AdminService } from 'src/app/services/admin.service';
@@ -12,7 +13,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class AdminProfileComponent implements OnInit {
 
-  constructor(private fb: FormBuilder, private _adminServ: AdminService, private _authService: AuthService) { }
+  constructor(private fb: FormBuilder, private _adminServ: AdminService,
+    private _authService: AuthService, private route: ActivatedRoute) { }
 
   imageURL: string = 'assets/images/avatar_profile.jpg';
 
@@ -26,14 +28,24 @@ export class AdminProfileComponent implements OnInit {
     conPassword: ['']
   });
 
-  admin_profile: any = {};
+  // constants details variables
+  private readonly NEW_REG_PARAM_NAME: string = 'new';
+  readonly PASSWORD_DESCRIPTION = GlobalConstants.PROFILE_PASSWORD_DESCRIPTION;
 
-  pswdBtnDesc: string = 'Change password';
-  showSaveCancelBtn: boolean = false;
+  readonly adminRoleList: OptionList[] = GlobalConstants.ADMIN_ROLELIST;
+  private readonly UPDATE_ENABLE_FIELDS = ['mail', 'firstName', 'lastName', 'role'];
+  private readonly subAdminRoles: String[] = ['admin2', 'admin3'];
 
+  // Logged admin info
   isSubAdminLogged: boolean = true; // true - default
-  isNewRequest: boolean = false; // false
   adminRec: any[] = [];
+
+  // page info
+  isNewRegRequest: boolean = false; // false
+  isRecordUpdation: boolean = false; // the state of form (new or updaing record)
+
+  admin_profile: any = {};
+  showSaveCancelBtn: boolean = false;
 
   /* Message variables */
   sucessMessage: string = '';
@@ -42,24 +54,48 @@ export class AdminProfileComponent implements OnInit {
     desc: ''
   };
   modelMessage: string = '';
-
-  adminRoleList: OptionList[] = GlobalConstants.ADMIN_ROLELIST;
   showPswModal: boolean = false;
-
-  UPDATE_ENABLE_FIELDS = ['mail', 'firstName', 'lastName', 'role'];
 
   ngOnInit() {
     this.disableForm();
-    this.loadAdminProfile();
     this.checkLoggedAdminRole();
 
-    if (!this.isSubAdminLogged) {
-      
+    this.checkForNewReg(); // works only if it is syncourounus code
+  }
+
+  newRegFormScreen() {
+    this.isRecordUpdation = false;
+    this.isNewRegRequest = true;
+    this.adminRec = [];
+    this.admin_profile = {};
+    // this.enableNewRegFields();
+  }
+
+  checkForNewReg() {
+    this.route.queryParamMap.subscribe(paramMap => {
+      this.regResetFullForm();
+      this.clearMessageBanner();
+
+      const isNewReg = paramMap.get(this.NEW_REG_PARAM_NAME);
+
+      if (isNewReg === 'true') {
+        this.newRegFormScreen();
+      } else {
+        this.loadAdminProfile();
+      }
+    });
+  }
+
+  submitPasswordModel() {
+    this.modelMessage = '';
+
+    const isValidPassword = this.validatePassword();
+    if (isValidPassword) {
+      this.showPswModal = false;
     }
   }
 
   validatePassword() {
-    this.modelMessage = '';
     const { password, conPassword } = this.adminProfileForm.value;
 
     if (!(password && conPassword)) {
@@ -72,41 +108,82 @@ export class AdminProfileComponent implements OnInit {
       this.modelMessage = 'Enter valid password';
     }
     else {
-      this.showPswModal = false;
+      return true;
     }
+
+    return false;
+  }
+
+  newAdminRegesitation() {
+    this.clearMessageBanner();
+    this.enableUpdateForm();
+    this.enableNewRegFields();
+    this.showSaveCancelBtn = true;
   }
 
   saveNewAdminProfile() {
-    this.clearMessageBanner();
     const adminProfile = this.adminProfileForm.value;
     delete adminProfile['conPassword'];
     console.log('admin profile', adminProfile);
 
     this._adminServ.registerNewAdmin(adminProfile).subscribe(respose => {
-      console.log('respose ', respose);
-      if (respose.isSuccess) {
-        this.sucessMessage = respose.message;
-        if (respose.adminRec?.length === 1) {
-          this.adminRec = respose.adminRec;
-          this.loadSavedAdminData();
-        }
-      } else {
-        this.errorMessage.message = respose.message;
-      }
+      this.saveSuccessResponse(respose);
     }, err => {
-      console.log('ad error ', err);
+      console.log('add error ', err);
       this.errorMessage.message = err.error.message;
     });
   }
 
-  updateAdminProfile() {
+  saveSuccessResponse(respose: any) {
+    this.showSaveCancelBtn = false;
+
+    if (respose.isSuccess) {
+      this.sucessMessage = respose.message;
+      if (respose.adminRec?.length === 1) {
+        this.adminRec = respose.adminRec;
+        // this._authService.storeAdminOnSession(respose.adminRec); // maybe we will get reponse if we update  new admin
+        this.loadSavedAdminData();
+      }
+    } else {
+      this.errorMessage.message = respose.message;
+    }
+  }
+
+  saveUpdatedAdminProfile() {
+    const updateFields = ['adminId', 'mail', 'firstName', 'lastName', 'role'];
+    const adminProfile: any = {};
+    for (let field of updateFields) {
+      adminProfile[field] = this.adminProfileForm.get(field)?.value;
+    }
+
+    adminProfile['_id'] = adminProfile['adminId'];
+    delete adminProfile['adminId'];
+    console.log('admin profile', adminProfile);
+    this._adminServ.updateAdminDetails(adminProfile).subscribe(res => {
+      this.saveSuccessResponse(res);
+    }, err => {
+      console.log('update error ', err);
+      this.errorMessage.message = err.error?.message || err?.message;
+    });
+  }
+
+  submitAdminProfile() {
+    this.clearMessageBanner();
+    const isFormValid = this.validateAdminUpdateForm();
+
+    if (isFormValid) {
+      if (this.isRecordUpdation) {
+        this.saveUpdatedAdminProfile();
+      } else {
+        this.saveNewAdminProfile();
+      }
+    }
+  }
+
+  updateAdminForm() {
     this.enableUpdateForm();
     this.showSaveCancelBtn = true;
-
-    // const isValidUpdate = this.validateAdminUpdateForm();
-    // if (isValidUpdate) {
-
-    // }
+    this.isRecordUpdation = true;
   }
 
   enableUpdateForm() {
@@ -115,9 +192,16 @@ export class AdminProfileComponent implements OnInit {
     });
   }
 
-  cancelUpdateForm() {
-    this.loadSavedAdminData();
+  cancelEditForm() {
+    this.clearMessageBanner();
+    this.regResetFullForm();
     this.showSaveCancelBtn = false;
+
+    if (this.adminRec.length) {
+      this.loadSavedAdminData();
+    }
+
+    this.disableForm();
   }
 
   resetForm() {
@@ -135,9 +219,16 @@ export class AdminProfileComponent implements OnInit {
     } else if (!(firstName && firstName.length > 2)) {
       this.errorMessage.message = 'Enter valid First Name';
     } else if (!role) {
-      this.errorMessage.message = 'Enter valid First Name';
+      this.errorMessage.message = 'Enter valid Role for Admin';
+    } else if (!this.isRecordUpdation) {
+      const isValidPassword = this.validatePassword();
+      if (!isValidPassword) {
+        this.errorMessage.message = 'Enter valid Password.';
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      return true; // if it's update then pass not required
     }
 
     return false;
@@ -146,14 +237,10 @@ export class AdminProfileComponent implements OnInit {
   loadAdminProfile() {
     const adminProfile = this._authService.getAdminFromSession();
     if (adminProfile.length === 1) {
+      this.isRecordUpdation = true;
       this.adminRec = adminProfile;
       this.loadSavedAdminData();
     }
-  }
-
-  private get subAdminRoles(): String[] {
-    const rolseOfSubAdmins = ['admin2', 'admin3'];
-    return rolseOfSubAdmins;
   }
 
   checkLoggedAdminRole() {
@@ -196,7 +283,7 @@ export class AdminProfileComponent implements OnInit {
   }
 
   openPasswordModal() {
-    if (this.pswdBtnDesc === 'Set Password') {
+    if (this.showSaveCancelBtn) {
       this.adminProfileForm.get('password')?.enable();
       this.adminProfileForm.get('conPassword')?.enable();
       this.showPswModal = true;
@@ -204,20 +291,23 @@ export class AdminProfileComponent implements OnInit {
     }
   }
 
-  enableFields() {
+  enableNewRegFields() {
     this.adminProfileForm.get('firstName')?.enable();
     this.adminProfileForm.get('lastName')?.enable();
     this.adminProfileForm.get('mail')?.enable();
 
-    if (this.isNewRequest) {
+    if (this.isNewRegRequest) {
       this.adminProfileForm.get('role')?.enable();
       this.adminProfileForm.get('role')?.setValue('admin3');
-      this.pswdBtnDesc = 'Set Password';
     }
   }
 
   disableForm() {
     this.adminProfileForm.disable();
+  }
+
+  regResetFullForm() {
+    this.adminProfileForm.reset();
   }
 
 }

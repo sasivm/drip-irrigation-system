@@ -144,7 +144,8 @@ $table-row-highlight: #ffeed6 !important;
   background-color: #f5f5f5 !important;
 }
 
-#login-container {
+#login-container,
+#forget-pswd-container {
   background-color: $bg-color-primary;
 }
 
@@ -267,11 +268,14 @@ tr.mat-row:nth-child(even) {
   width: 25vw !important;
   a {
     text-decoration: none !important;
-    color: rgba(0, 0, 0, 0.54) !important;
+    color: rgb(10, 9, 9) !important;
   }
 
   .mat-menu-item:hover {
-    a,
+    a, a span{
+      font-weight: 500 !important;
+      color: #000 !important;
+    }
     .mat-list-icon {
       color: #000 !important;
     }

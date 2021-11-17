@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -20,10 +20,22 @@ export class LoggedMenuInfoComponent implements OnInit {
 
   selectedItem(action: string) {
     let selectedScreen = 'admin/account';
+
     if (action === 'view') {
       selectedScreen = 'admin/view';
     }
-    this.router.navigate([selectedScreen], { relativeTo: this.route });
+
+    if (action !== 'logout') {
+      this.router.navigate([selectedScreen], { relativeTo: this.route });
+    } else if (action === 'logout') {
+      this.logoutUser();
+    }
+  }
+
+  logoutUser() {
+    this._authService.__removeUserFromSession();
+    const logOutQueryParams: NavigationExtras = { queryParams: { loggedOut: true } };
+    this.router.navigate(['login'], logOutQueryParams);
   }
 
 }

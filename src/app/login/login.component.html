@@ -13,7 +13,13 @@
                     <h3> BHARATHI DRIPS </h3>
                 </div>
 
-                <div class="d-flex flex-column px-4 pt-4">
+                <div class="d-flex flex-column px-4 pt-4 pb-2">
+                    <div *ngIf="isLoggedOut && !errorMessage">
+                        <div class="alert alert-success">
+                            <b> {{logoutMessage}} </b>
+                        </div>
+                    </div>
+
                     <div *ngIf="errorMessage">
                         <div class="alert alert-danger">
                             <b> {{errorMessage}} </b>
@@ -35,7 +41,7 @@
                         <div class="input-group">
                             <input [type]="(isPwdVisible) ? 'text' : 'password'" formControlName="password"
                                 id="password" class="form-control" />
-                            <button class="border d-flex px-1 py-0 m-0 password-visible-icon"
+                            <button type="button" class="border d-flex px-1 py-0 m-0 password-visible-icon"
                                 [matTooltip]="isPwdVisible ? 'Hide Password' : 'Show Password'"
                                 (click)="isPwdVisible = !isPwdVisible">
                                 <mat-icon class="align-self-center"> {{isPwdVisible ? 'visibility_off' : 'visibility'}}
@@ -52,12 +58,13 @@
                                 Remember me
                             </label>
                         </div>
-                        <a href="#!">Forgot password?</a>
+                        <a routerLink="/forget-password">Forgot password?</a>
                     </div>
 
                     <div class="row justify-content-center py-4">
 
-                        <button mat-raised-button type="submit" class="col-8 btn-theme-primary rounded-pill p-1" [disabled]="isLoading">
+                        <button mat-raised-button type="submit" class="col-8 btn-theme-primary rounded-pill p-1"
+                            [disabled]="isLoading">
                             <mat-icon *ngIf="isLoading">
                                 <mat-spinner diameter="25"></mat-spinner>
                             </mat-icon>
@@ -65,6 +72,31 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showPswModal" class="modal showModal text-center">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="alert alert-danger modal-content">
+
+                <div class="modal-header">
+                    <h3> <b> Alert </b> </h3>
+                    <button type="button" class="close" (click)="showPswModal=false" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="text-center"> <b> This is a demo site of an original application. </b> </div>
+                    <br>
+                    <div class="text-justify">
+                        The mail and password used for authentication are not real data but it follows the same security
+                        rules.
+                        The data used inside applications are for testing purpose only. These are not real data.
+                    </div>
+                </div>
             </div>
         </div>
     </div>

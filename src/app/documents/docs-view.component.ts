@@ -26,11 +26,16 @@ export class DocsViewComponent implements OnInit {
 
   ngOnInit() {
     const customerRecArr: any[] = this._custService.getLoadedCustomerRecord();
-    if (customerRecArr.length === 1 && customerRecArr[0].applicationId) {
-      this.applicationId = customerRecArr[0]?.applicationId;
-      this.customerName = customerRecArr[0]?.farmerName;
+    if (customerRecArr.length === 1) {
+      if (customerRecArr[0].applicationId) {
+        this.applicationId = customerRecArr[0]?.applicationId;
+        this.customerName = customerRecArr[0]?.farmerName;
+      } else {
+        this.errorMessage = 'There were missing data about customer. Please reload the page or select customer record again.';
+      }
     } else {
-      this.errorMessage = 'There were missing data about customer. Please reload the page or select customer record again.';
+      this.errorMessage = 'Please Select the customer before viewing the documents.';
+      this.docList = [];
     }
   }
 

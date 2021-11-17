@@ -1,6 +1,11 @@
 import { environment } from "src/environments/environment";
 import { CommonList, GenderList, OptionList } from "./models/common-types";
 
+interface PASS_DESC {
+    UPDATE: string,
+    NEW: string
+}
+
 export class GlobalConstants {
 
     public static APPLICATION_FormerTypeList: OptionList[] = [
@@ -283,9 +288,15 @@ export class GlobalConstants {
 
     public static ADMIN_ROLELIST: OptionList[] = [
         { option: 'Select Admin Role', value: '' },
+        { option: 'Admin', value: 'admin' },
         { option: 'Admin 2', value: 'admin2' },
         { option: 'Admin 3', value: 'admin3' }
     ];
+
+    public static readonly PROFILE_PASSWORD_DESCRIPTION: PASS_DESC = {
+        UPDATE: 'Change Password',
+        NEW: 'Set Password'
+    };
 
     readonly baseAppUrl: string = 'http://localhost:57431/';
     readonly baseAPIUrl: string = 'https://api.github.com/';

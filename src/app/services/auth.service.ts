@@ -9,7 +9,8 @@ export class AuthService {
 
   isAdminLoggedIn(): boolean {
     const isLogged: boolean = !!(sessionStorage.getItem('auth-token'));
-    return isLogged;
+    const isAdminRecExist: boolean = !!(sessionStorage.getItem('admin-rec'))
+    return isLogged && isAdminRecExist;
   }
 
   getAdminFromSession(): any[] {
@@ -39,5 +40,13 @@ export class AuthService {
 
   getAuthTokenOnSession() {
     return sessionStorage.getItem('auth-token');
+  }
+
+  /**
+    Removes all the sessionStorage related to admin detils in current session 
+  */
+  __removeUserFromSession(): void {
+    sessionStorage.removeItem('auth-token');
+    sessionStorage.removeItem('admin-rec');
   }
 }

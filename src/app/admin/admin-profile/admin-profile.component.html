@@ -54,9 +54,11 @@
                         <label for="email"> Email Address </label>
                         <input type="text" formControlName="mail" class="form-control" id="email">
                     </div>
-                    <div class="ml-auto mt-auto" *ngIf="!isSubAdminLogged">
-                        <button mat-raised-button (click)="openPasswordModal()" class="col btn-theme-secondary"> <b>
-                                {{pswdBtnDesc}} </b> </button>
+
+                    <div class="ml-auto mt-auto" *ngIf="!isSubAdminLogged && showSaveCancelBtn">
+                        <button mat-raised-button (click)="openPasswordModal()" class="col btn-theme-secondary">
+                            <b> {{isRecordUpdation ? PASSWORD_DESCRIPTION.UPDATE : PASSWORD_DESCRIPTION.NEW }} </b>
+                        </button>
                     </div>
                 </div>
 
@@ -95,19 +97,21 @@
                         </div>
 
                         <div *ngIf="!showSaveCancelBtn" class="col mt-auto d-flex justify-content-end">
-                            <button *ngIf="!isNewRequest" mat-raised-button class="btn-theme-primary"
-                                (click)="updateAdminProfile()"> Update
+                            <button *ngIf="(this.adminRec.length === 1)" mat-raised-button class="btn-theme-primary"
+                                (click)="updateAdminForm()"> Update
                             </button>
-                            <button *ngIf="isNewRequest && !this.adminRec.length" mat-raised-button
-                                class="btn-theme-primary" (click)="saveNewAdminProfile()"> Add new admin
+                            <button *ngIf="isNewRegRequest && !this.adminRec.length" mat-raised-button
+                                class="btn-theme-primary" (click)="newAdminRegesitation()"> Add new admin
                             </button>
                         </div>
 
                         <div *ngIf="showSaveCancelBtn" class="col mt-auto d-flex justify-content-end">
-                            <button mat-raised-button class="btn-theme-primary px-4 mx-2" (click)="updateAdminProfile()"> Save
+                            <button mat-raised-button class="btn-theme-primary px-4 mx-2"
+                                (click)="submitAdminProfile()"> Save
                             </button>
                             <!-- <button mat-raised-button class="reset-btn px-4 mx-2" (click)="resetForm()"> Reset </button> -->
-                            <button mat-raised-button class="btn-theme-primary px-4" (click)="cancelUpdateForm()"> Cancel </button>
+                            <button mat-raised-button class="btn-theme-primary px-4" (click)="cancelEditForm()">
+                                Cancel </button>
                         </div>
                     </div>
                 </ng-template>
@@ -153,7 +157,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-theme-secondary px-4" (click)="validatePassword()">
+                                <button type="button" class="btn btn-theme-secondary px-4" (click)="submitPasswordModel()">
                                     Submit </button>
                                 <button type="button" class="btn btn-theme-primary px-4" (click)="showPswModal=false">
                                     No </button>

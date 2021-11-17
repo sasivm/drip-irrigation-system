@@ -56,6 +56,7 @@ import { PermissionManagerComponent } from './admin/permission-manager/permissio
 import { PmksyDocComponent } from './documents/pmksy-doc/pmksy-doc.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { DatePipe } from '@angular/common';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { DatePipe } from '@angular/common';
     AccountSettingComponent,
     AdminProfileComponent,
     PermissionManagerComponent,
-    PmksyDocComponent
+    PmksyDocComponent,
+    ForgetPasswordComponent
   ],
   imports: [
     BrowserModule,

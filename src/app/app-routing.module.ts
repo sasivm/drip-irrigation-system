@@ -12,6 +12,7 @@ import { PreDocComponent } from './documents/pre-doc/pre-doc.component';
 import { SfmfDocComponent } from './documents/sfmf-doc/sfmf-doc.component';
 import { VerificationDocComponent } from './documents/verification-doc/verification-doc.component';
 import { WorkCompleteComponent } from './documents/work-complete/work-complete.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { LoginComponent } from './login/login.component';
 import { BulkRegistorComponent } from './registration/bulk-registor/bulk-registor.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -21,6 +22,7 @@ import { SubsidyCalculatorComponent } from './subsidy-calculator/subsidy-calcula
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, //to view working scr
   { path: 'login', component: LoginComponent },
+  { path: 'forget-password', component: ForgetPasswordComponent },
   {
     path: 'drips', component: SidenavComponent, canActivateChild: [AuthGuard], children: [
       { path: '', redirectTo: 'register', pathMatch: 'full' },
@@ -50,7 +52,7 @@ const routes: Routes = [
       }
     ]
   },
-  // { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

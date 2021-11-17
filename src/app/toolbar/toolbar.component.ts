@@ -18,7 +18,10 @@ export class ToolbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.app_title += ` - (${environment?.envName})`;
+    const ENVIRONMENT_NAME = environment?.envName;
+    if (ENVIRONMENT_NAME !== 'prod') {
+      this.app_title += `(${ENVIRONMENT_NAME})`;
+    }
   }
 
   changeAppTheme() {

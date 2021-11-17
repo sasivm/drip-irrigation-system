@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
@@ -10,20 +10,37 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder, private _adminServ: AdminService, private _authService: AuthService) { }
+  constructor(private router: Router, private fb: FormBuilder, private _adminServ: AdminService,
+    private _authService: AuthService, private route: ActivatedRoute) { }
 
   loginForm: FormGroup = this.fb.group({
-    mail: ['demo@gmail.com'],
-    password: ['123456']
+    mail: ['admin.sasikumar.drip@gmail.com'],
+    password: ['admin@123#']
   });
 
   isLoading: boolean = false;
+  showPswModal: boolean = false;
 
   errorMessage: string = '';
 
   isPwdVisible: boolean = false;
+
+  logoutMessage: string = 'You successfully logged out now.';
+
+  isLoggedOut: boolean = false;
+
+  ngOnInit() {
+    const isUserLoggedOut = this.route.snapshot.queryParamMap.get('loggedOut');
+    if (isUserLoggedOut) {
+      this.isLoggedOut = (isUserLoggedOut === 'true');
+    }
+
+    if (!this.isLoggedOut) {
+      this.showPswModal = true;
+    }
+  }
 
   validateAdminLogin() {
     const { mail, password } = this.loginForm.value;
@@ -57,6 +74,8 @@ export class LoginComponent {
 
   submitAdminLogin() {
     this.errorMessage = '';
+    this.isLoggedOut = false;
+
     const isValid = this.validateAdminLogin();
     if (!isValid) {
       return;

@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div id="form-container" class="py-2">
 
-        <form [formGroup]="customerSearch" class="card">
+        <form id="cust-search" [formGroup]="customerSearch" class="card">
 
             <h3 class="px-3 pt-3"> <b> Customer Search </b> </h3>
 
@@ -24,54 +24,54 @@
             <div class="p-3">
 
                 <div class="row py-2">
-                    <div class="col">
-                        <label for="applicationId" class="col-5"> Application Id </label>
-                        <input type="text" formControlName="applicationId" id="applicationId" class="col-7 form-control"
+                    <div class="col col-sm">
+                        <label for="applicationId" class="col-12 col-sm-5"> Application Id </label>
+                        <input type="text" formControlName="applicationId" id="applicationId" class="col col-sm-7 form-control"
                             autofocus>
                     </div>
 
-                    <div class="col">
-                        <label for="farmerName" class="col-5"> Farmer Name </label>
-                        <input type="text" formControlName="farmerName" id="farmerName" class="col-7 form-control">
+                    <div class="col col-sm">
+                        <label for="farmerName" class="col-12 col-sm-5"> Farmer Name </label>
+                        <input type="text" formControlName="farmerName" id="farmerName" class="col col-sm-7 form-control">
                     </div>
                 </div>
 
                 <div class="row py-2">
-                    <div class="col">
-                        <label for="farmerType" class="col-5"> Farmer Type </label>
+                    <div class="col col-sm">
+                        <label for="farmerType" class="col-12 col-sm-5"> Farmer Type </label>
                         <select name="farmertype" formControlName="farmerType" id="farmerType"
-                            class="col-7 form-control">
+                            class="col col-sm-7 custom-select">
                             <option *ngFor="let type of formerTypeList" [value]="type.value">
                                 {{type.option}}
                             </option>
                         </select>
                     </div>
 
-                    <div class="col">
-                        <label for="fatherName" class="col-5"> Father Name </label>
+                    <div class="col col-sm">
+                        <label for="fatherName" class="col-12 col-sm-5"> Father Name </label>
                         <input type="text" name="fatherName" formControlName="fatherName" id="fatherName"
-                            class="col-7 form-control">
+                            class="col col-sm-7 form-control">
                     </div>
 
                 </div>
 
                 <div class="row py-2">
                     <div class="col">
-                        <label for="village" class="col-5"> Village </label>
-                        <input type="text" formControlName="village" id="village" class="col-7 form-control">
+                        <label for="village" class="col-12 col-sm-5"> Village </label>
+                        <input type="text" formControlName="village" id="village" class="col col-sm-7 form-control">
                     </div>
 
                     <div class="col">
-                        <label for="block" class="col-5"> Block </label>
-                        <input type="text" formControlName="block" id="block" class="col-7 form-control">
+                        <label for="block" class="col-12 col-sm-5"> Block </label>
+                        <input type="text" formControlName="block" id="block" class="col col-sm-7 form-control">
                     </div>
                 </div>
 
                 <div class="row py-2">
                     <div class="col-6">
-                        <label for="department" class="col-5"> Department </label>
+                        <label for="department" class="col-12 col-sm-5"> Department </label>
                         <select name="department" formControlName="department" id="department"
-                            class="col-7 form-control">
+                            class="col col-sm-7 form-control-sm custom-select">
                             <option *ngFor="let type of departmentList" [value]="type.value">
                                 {{type.option}}
                             </option>

@@ -90,6 +90,7 @@ export class DataService {
 
   updateFrameSrc(result: string) {
     const pdfFrameEle: HTMLIFrameElement | null = document.getElementById('printPdf') as HTMLIFrameElement;
+    // pdfFrameEle.srcdoc = `<!doctype html><html lang="en"><body></body></html>`;
     pdfFrameEle.src = result;
   }
 }

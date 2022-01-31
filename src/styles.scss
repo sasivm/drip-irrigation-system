@@ -238,7 +238,7 @@ tr.mat-row:nth-child(even) {
 }
 
 .folder-icon {
-  background: #dbdfe4;
+  background: none; // grey - dbdfe4
   color: #fccc77;
 }
 
@@ -289,4 +289,45 @@ tr.mat-row:nth-child(even) {
 .showModal {
   display: block;
   backdrop-filter: contrast(0.5);
+}
+
+/*
+* below code only for mobile devices 
+*/
+@media only screen and (max-width: 600px) {
+  h1, h2 {
+    font-size: 3.0vh !important;
+    b {
+      font-size: 2.3vh !important;
+    }
+  }
+
+  #toolbar-title {
+    // overflow: hidden !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .divider-ver {
+    border: none !important;
+  }
+
+  .custom-file {
+     margin-left: 6vw !important;
+    
+    .upload-file-label {
+      text-align: left !important;
+    }
+  }
+
+  #cust-search {
+    select {
+      height: 6vh !important;
+    }
+  }
+
+  #cust-srch-table-container {
+    overflow: auto !important;
+  }
 }

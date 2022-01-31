@@ -3,3 +3,26 @@
     min-width: 60px;
     padding: 0 5px !important;
 }
+
+@media only screen and (max-width: 600px) {
+    .mat-column-view,
+    .mat-column-action {
+        min-width: 1vw !important;
+    }
+
+    .mat-column {
+        padding: 0 1vw !important;
+    }
+
+    .mat-column-applicationId {
+        min-width: 49vw !important;
+    }
+
+    .mat-column-farmerName, .mat-column-department {
+        min-width: 37vw !important;
+    }
+
+    .mat-column-farmerType {
+        min-width: 25vw !important;
+    }
+}

@@ -52,7 +52,7 @@ export class ApplicantRegComponent implements OnInit {
     fatherName: [''],
     department: [''],
     miCompany: [''],
-    landOwnership: [''],
+    // landOwnership: [''],
     district: [''],
     block: [''],
     village: [''],
@@ -60,17 +60,15 @@ export class ApplicantRegComponent implements OnInit {
     mobileNo: [''],
     gender: [''],
     socialStatus: [''],
-    landOwnSon: [''],
+    // landOwnSon: [''],
     _id: ['']
   });
 
   custRecFormData: any[] = [];
 
-  ENABLED_FIELDS: string[] = ['aadhaarNo', 'landOwnership', 'landOwnSon', 'gender'];
-  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany',
-    'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
-  NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany',
-    'landOwnership', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'landOwnSon'];
+  ENABLED_FIELDS: string[] = ['aadhaarNo', 'gender'];
+  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus'];
+  NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus'];
 
   isNewRegForm: boolean = true;
 

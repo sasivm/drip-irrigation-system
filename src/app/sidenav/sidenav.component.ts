@@ -16,7 +16,7 @@ export class SidenavComponent implements OnInit {
     { scrName: 'Register', link: 'register', icon: 'dashboard' },
     { scrName: 'Bulk Register', link: 'bulk-register', icon: 'assignment' },
     { scrName: 'Search', link: 'search', icon: 'person_search' },
-    { scrName: 'Subsidy Calc', link: 'subs-calc', icon: 'calculate' },
+    // { scrName: 'Subsidy Calc', link: 'subs-calc', icon: 'calculate' },
     { scrName: 'Docments', link: 'docs', icon: 'menu_book' },
   ];
 

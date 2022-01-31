@@ -26,4 +26,9 @@ export class AdminService {
     const adminUpdateAPI = this.REST_API_SERVER + '/admin/update';
     return this._http.post(adminUpdateAPI, request);
   }
+
+  searchCustomersDetails(request: any): Observable<any> {
+    const customerSearch: string = this.REST_API_SERVER + '/admin/search';
+    return this._http.post<any>(customerSearch, request);
+  }
 }

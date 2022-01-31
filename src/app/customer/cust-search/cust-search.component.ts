@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,7 +13,7 @@ import { CustServiceService } from 'src/app/services/cust-service.service';
   templateUrl: './cust-search.component.html',
   styleUrls: ['./cust-search.component.scss']
 })
-export class CustSearchComponent implements AfterViewInit, OnInit {
+export class CustSearchComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
@@ -47,9 +47,9 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
 
   loadProgresser: boolean = false;
 
-  ngOnInit() {
-    this.searchCustomers();
-  }
+  // ngOnInit() {
+  //   // this.searchCustomers();
+  // }
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
   }

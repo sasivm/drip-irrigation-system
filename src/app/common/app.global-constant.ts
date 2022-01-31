@@ -289,8 +289,8 @@ export class GlobalConstants {
     public static ADMIN_ROLELIST: OptionList[] = [
         { option: 'Select Admin Role', value: '' },
         { option: 'Admin', value: 'admin' },
-        { option: 'Admin 2', value: 'admin2' },
-        { option: 'Admin 3', value: 'admin3' }
+        // { option: 'Admin 2', value: 'admin2' },
+        // { option: 'Admin 3', value: 'admin3' }
     ];
 
     public static readonly PROFILE_PASSWORD_DESCRIPTION: PASS_DESC = {

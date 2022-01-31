@@ -1,14 +1,14 @@
-<mat-toolbar id="toolbar-container" color="primary">
+<mat-toolbar id="toolbar-container" color="primary" class="row">
 
     <button mat-icon-button (click)="navbarRef.toggle()">
         <mat-icon> menu </mat-icon>
     </button>
 
-    <span class="px-3">
+    <span id="toolbar-title" class="col col-sm-8">
         <h1> <b> {{app_title}} </b> </h1>
     </span>
 
-    <div class="ml-auto px-3">
+    <div class="col offset-sm-1 col-sm">
         <button mat-button [matMenuTriggerFor]="menu">
             <mat-icon> account_circle </mat-icon>
         </button>

@@ -34,15 +34,14 @@ export class PmksyDocComponent implements AfterContentInit {
     irrigationType: '',
     surveyAndSubDivNo: '',
     spacing: '',
-    workOrderDate: ''
+    workOrderDate: '',
+    miCompany: '',
+    aadhaarNo: ''
   };
 
   Table_Title: TableCell[] = ['', { text: 'Particulars', style: 'fillTextContent' }, ''];
 
-  DOC_HEADER_CONTENT: Content = [
-    { text: 'Pradhan Mantri Krishi Sinchayee Yojana (PMKSY) - 2021 - 22', style: 'docHeadTitle_Normal' },
-    { text: 'Abstract', style: ['docHeadTitle_Normal', 'redText'], margin: [0, 0, 0, 30] }// R T L B
-  ];
+  DOC_HEADER_CONTENT: Content = [];
 
   DOC_FOOTER_CONTENT: Content = {
     style: 'pmksyFooter',
@@ -128,6 +127,11 @@ export class PmksyDocComponent implements AfterContentInit {
       FARMER_FULL_ADDRESS = `S/o, ${fatherName}, ${village}, ${block}, ${district}.`;
     }
 
+    this.DOC_HEADER_CONTENT = [
+      { text: `Pradhan Mantri Krishi Sinchayee Yojana (PMKSY) - ${this.getPMKSYYear(this.PMKSY_DOC_CUSTOMER_DATA.applicationId)}`, style: 'docHeadTitle_Normal' },
+      { text: 'Abstract', style: ['docHeadTitle_Normal', 'redText'], margin: [0, 0, 0, 30] }// R T L B
+    ];
+
     this.TABLE_CONTENT = {
       // style: ['rowLineContent'],
       fontSize: 10,
@@ -137,7 +141,7 @@ export class PmksyDocComponent implements AfterContentInit {
           this.Table_Title,
           [1, this.COLOUMN1_CONTENT.APPLICATION_TYPE_01, { text: 'New Registration', style: 'AbstractCol3' }],
           [2, this.COLOUMN1_CONTENT.TANHODA_NO_02, { text: this.PMKSY_DOC_CUSTOMER_DATA.applicationId, style: ['AbstractCol3', 'redText'] }],
-          [3, this.COLOUMN1_CONTENT.F_AADHAR_NO_03, { text: '', style: 'AbstractCol3' }],
+          [3, this.COLOUMN1_CONTENT.F_AADHAR_NO_03, { text: this.PMKSY_DOC_CUSTOMER_DATA.aadhaarNo, style: 'AbstractCol3' }],
           [4, this.COLOUMN1_CONTENT.F_NAME_04, { text: this.PMKSY_DOC_CUSTOMER_DATA.farmerName, style: ['AbstractCol3', 'boldText'] }],
           [5, this.COLOUMN1_CONTENT.F_ADDRESS_05, { text: FARMER_FULL_ADDRESS, style: 'AbstractCol3' }],
           [6, this.COLOUMN1_CONTENT.CONTACT_NO_06, { text: this.PMKSY_DOC_CUSTOMER_DATA.mobileNo, style: 'AbstractCol3' }],
@@ -157,7 +161,7 @@ export class PmksyDocComponent implements AfterContentInit {
           [20, this.COLOUMN1_CONTENT.T_SUBSIDY_20, { text: '', style: 'AbstractCol3' }],
           [21, this.COLOUMN1_CONTENT.SUBSIDY_RELEASED_21, { text: '', style: 'AbstractCol3' }],
           [22, this.COLOUMN1_CONTENT.BAL_SUBSIDY_REL_22, { text: '', style: 'AbstractCol3' }],
-          [23, this.COLOUMN1_CONTENT.COMPANY_NAME_23, this._mergeColToCell({ text: 'Vedanta', style: ['boldText', 'blueText'], margin: [10, 0, 0, 0] }, { text: 'Irrigation Systems Pvt.Ltd', style: 'boldText' })]
+          [23, this.COLOUMN1_CONTENT.COMPANY_NAME_23, { text: this.PMKSY_DOC_CUSTOMER_DATA.miCompany.toUpperCase(), style: 'columnCompanyMark' }]
         ], widths: ['3%', '45%', '40%']
       }
     };
@@ -174,4 +178,9 @@ export class PmksyDocComponent implements AfterContentInit {
     return mergedCell;
   }
 
+  getPMKSYYear(applicationId: string) {
+    const id = applicationId.trim();
+    const result = applicationId.slice(-7);
+    return result;
+  }
 }

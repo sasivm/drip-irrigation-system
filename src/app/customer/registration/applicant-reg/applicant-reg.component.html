@@ -31,7 +31,8 @@
                     <label for="applicationId" class="col-5"> Application Id </label>
                     <input type="text" formControlName="applicationId" id="applicationId" class="col-7 form-control">
                 </div>
-                <mat-icon matTooltip="Copy Application ID" [cdkCopyToClipboard]="clipboardCopy" class="pt-2 mat-icon-btn"> content_copy </mat-icon>
+                <mat-icon matTooltip="Copy Application ID" [cdkCopyToClipboard]="clipboardCopy"
+                    class="pt-2 mat-icon-btn"> content_copy </mat-icon>
             </div>
 
             <div class="row py-2">
@@ -102,9 +103,10 @@
                 </div>
 
                 <div class="col">
-                    <label for="gender" class="col-5"> Gender </label>
-                    <select name="gender" formControlName="gender" id="gender" class="col-7 form-control">
-                        <option *ngFor="let type of genderList" [value]="type.value">
+                    <label for="socialStatus" class="col-5"> Social Status </label>
+                    <select name="socialStatus" formControlName="socialStatus" id="socialStatus"
+                        class="col-7 form-control">
+                        <option *ngFor="let type of socialStatusList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
@@ -130,13 +132,19 @@
                 </div>
 
                 <div class="col">
-                    <label for="socialStatus" class="col-5"> Social Status </label>
-                    <select name="socialStatus" formControlName="socialStatus" id="socialStatus"
-                        class="col-7 form-control">
-                        <option *ngFor="let type of socialStatusList" [value]="type.value">
+                    <label for="gender" class="col-5"> Gender </label>
+                    <select name="gender" formControlName="gender" id="gender" class="col-7 form-control">
+                        <option *ngFor="let type of genderList" [value]="type.value">
                             {{type.option}}
                         </option>
                     </select>
+                </div>
+            </div>
+
+            <div class="row py-2">
+                <div class="col-6">
+                    <label for="sfmfCertNo" class="col-5"> SF/MF certifcate No </label>
+                    <input type="text" formControlName="sfmfCertNo" id="sfmfCertNo" class="col-7 form-control">
                 </div>
             </div>
 
@@ -182,8 +190,9 @@
 
     <div class="d-flex justify-content-around pt-3">
         <button mat-button matStepperPrevious class="btn-theme-secondary mx-3"> Back </button>
-        <button mat-button matStepperNext [ngClass]="enableNextBtn ? 'btn-theme-secondary' : 'disabled-btn'"
-            [disabled]="!enableNextBtn" (click)="nextBtnSelected()"> Next
+        <button mat-button matStepperNext
+            [ngClass]="(enableNextBtn || !isNewRegForm) ? 'btn-theme-secondary' : 'disabled-btn'"
+            [disabled]="!enableNextBtn && isNewRegForm" (click)="nextBtnSelected()"> Next
         </button>
 
         <a routerLink="../docs" class="btn btn-sm btn-theme-secondary mx-3">
@@ -204,7 +213,8 @@
                 </div>
                 <div class="modal-body"> {{deletionWarningMsg}} </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-theme-secondary px-4" (click)="deleteCustRecord()"> Yes</button>
+                    <button type="button" class="btn btn-theme-secondary px-4" (click)="deleteCustRecord()">
+                        Yes</button>
                     <button type="button" class="btn btn-theme-primary px-4" (click)="showModal=false"> No </button>
                 </div>
             </div>

@@ -17,7 +17,7 @@ import { DataService } from 'src/app/services/data.service';
 export class SfmfDocComponent implements AfterContentInit {
 
   SFMF_DOC_CUSTOMER: any = {
-    certifcateNo: '',
+    sfmfCertNo: '',
     farmerName: '',
     fatherName: '',
     village: '',
@@ -113,7 +113,7 @@ export class SfmfDocComponent implements AfterContentInit {
         body: [
           [
             { text: 'This is certify that the SF/MF certificate No', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: 'firstLineContent' },
-            { text: this.SFMF_DOC_CUSTOMER.certifcateNo, border: [false, false, false, true], style: 'fillTextContent' },
+            { text: this.SFMF_DOC_CUSTOMER.sfmfCertNo, border: [false, false, false, true], style: 'fillTextContent' },
             { text: 'submitted', border: PDFMakeConstants.TABLE_CELL_NO_BORDER },
           ],
         ],

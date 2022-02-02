@@ -9,7 +9,8 @@
                     <h3> <b> Bulk Register </b> </h3>
                     <P> Upload applicants deails using Excel file </P>
                     <div>
-                        <a routerLink="../bulk-register" class="btn btn-sm btn-theme-primary px-3"> Bulk Registarion </a>
+                        <a routerLink="../bulk-register" class="btn btn-sm btn-theme-primary px-3"> Bulk Registarion
+                        </a>
                     </div>
                 </div>
             </div>
@@ -19,7 +20,8 @@
                     <h3> <b> Register new Customer Details </b> </h3>
                     <p> Create new applicant and crop details on your own </p>
                     <div>
-                        <button matStepperNext type="button" class="btn-sm btn-theme-primary px-3"> New Registarion
+                        <button type="button" (click)="newRegBtnSelected()" class="btn-sm btn-theme-primary px-3">
+                            New Registarion
                         </button>
                     </div>
                 </div>

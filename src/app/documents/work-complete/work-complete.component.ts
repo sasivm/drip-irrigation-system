@@ -29,7 +29,8 @@ export class WorkCompleteComponent implements AfterViewInit {
     crop: '',
     appliedArea: '',
     spacing: '',
-    applicationId: ''
+    applicationId: '',
+    miCompany: ''
   };
 
   ngAfterViewInit(): void {
@@ -175,6 +176,41 @@ export class WorkCompleteComponent implements AfterViewInit {
         ], widths: ['43%', '*']
       }
     };
+
+    this.LINE7_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContentTamilDoc'],
+      table: {
+        body: [
+          [
+            { text: 'பாசனம்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: 'PMKSY', style: 'populatedTextEng', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, },
+            { text: 'திட்டத்தின் கீழ் ', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+            { text: this.DOC_CUSTOMER_DATA.miCompany.toUpperCase(), border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['populatedTextEng'] },
+            { text: 'நிறுவனம் மூலம் அமைக்க', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+          ],
+        ], widths: ['8%', '9%', '15%', '42%', 'auto']
+      }
+    };
+
+    this.PARA2_LINE1_CONTENT = {
+      // layout: 'noBorders',
+      style: ['newParaghraph'],
+      table: {
+        body: [
+          [
+            { text: 'சொட்டு நீர் பாசனம் அமைந்துள்ள', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'firstLineContent'] },
+            { text: this.DOC_CUSTOMER_DATA.miCompany.toUpperCase(), border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['populatedTextEng'] },
+            { text: 'நிறுவனத்தால்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
+          ],
+        ], widths: ['42%', '40%', '17%']
+      }
+    };
+
+    this.COMPANY_MARK = {
+      style: 'companyMarker',
+      text: [{ text: this.DOC_CUSTOMER_DATA.miCompany.toUpperCase() }]
+    };
   }
 
   DOC_HEADER_CONTENT: Content = [
@@ -183,13 +219,6 @@ export class WorkCompleteComponent implements AfterViewInit {
       margin: [0, 0, 0, 30], // R T L B.
     }
   ];
-
-  CompanyNameContent: Content = {
-    text: [
-      { text: 'Vedanta ', color: 'blue', style: 'componyNameMarker' },
-      { text: 'IRRIGATION SYSTEMS', style: 'componyNameMarker' },
-    ]
-  };
 
   LINE1_CONTENT: Content = [];
 
@@ -203,21 +232,7 @@ export class WorkCompleteComponent implements AfterViewInit {
 
   LINE6_CONTENT: Content = [];
 
-  LINE7_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContentTamilDoc'],
-    table: {
-      body: [
-        [
-          { text: 'பாசனம்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: 'PMKSY', style: 'populatedTextEng', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, },
-          { text: 'திட்டத்தின் கீழ் ', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-          { text: this.CompanyNameContent, border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['populatedTextEng'] },
-          { text: 'நிறுவனம் மூலம் அமைக்க', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-        ],
-      ], widths: ['8%', '9%', '15%', '38%', 'auto']
-    }
-  };
+  LINE7_CONTENT: Content = [];
 
   LINE8_CONTENT: Content = [];
 
@@ -233,19 +248,7 @@ export class WorkCompleteComponent implements AfterViewInit {
     }
   };
 
-  PARA2_LINE1_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['newParaghraph'],
-    table: {
-      body: [
-        [
-          { text: 'சொட்டு நீர் பாசனம் அமைந்துள்ள', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2', 'firstLineContent'] },
-          { text: this.CompanyNameContent, border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['populatedTextEng'] },
-          { text: 'நிறுவனத்தால்', border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: ['docTamil2'] },
-        ],
-      ], widths: ['42%', '35%', '17%']
-    }
-  };
+  PARA2_LINE1_CONTENT: Content = [];
 
   PARA2_LINE2_CONTENT: Content = {
     // layout: 'noBorders',
@@ -315,13 +318,7 @@ export class WorkCompleteComponent implements AfterViewInit {
     }
   };
 
-  COMPANY_MARK: Content = {
-    style: 'companyMarker',
-    text: [
-      { text: 'Vedanta', color: 'blue' },
-      { text: ' Irrigation Systems Pvt. Ltd' }
-    ]
-  };
+  COMPANY_MARK: Content = [];
 
   DOC_BODY_CONTENTS: Content = [];
   FULL_DOC_CONTENT_ARRAY: Content[] = [];

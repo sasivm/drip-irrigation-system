@@ -60,14 +60,15 @@ export class ApplicantRegComponent implements OnInit {
     mobileNo: [''],
     gender: [''],
     socialStatus: [''],
+    sfmfCertNo: [''],
     // landOwnSon: [''],
     _id: ['']
   });
 
   custRecFormData: any[] = [];
 
-  ENABLED_FIELDS: string[] = ['aadhaarNo', 'gender'];
-  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus'];
+  ENABLED_FIELDS: string[] = ['aadhaarNo', 'gender', 'sfmfCertNo'];
+  NEW_REG_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus', 'sfmfCertNo'];
   NEW_REG_MANDATRY_FIELDS: string[] = ['applicationId', 'aadhaarNo', 'farmerType', 'fatherName', 'department', 'miCompany', 'district', 'block', 'village', 'farmerName', 'mobileNo', 'gender', 'socialStatus'];
 
   isNewRegForm: boolean = true;
@@ -100,26 +101,47 @@ export class ApplicantRegComponent implements OnInit {
 
   ngOnInit() {
     this.selectedStepper.subscribe(data => {
-      console.log('app reg loading...');
-      if (this.custRecFormData.length === 0) { // only if first time coming to screen
-        this.isNewRegForm = !(data.isCustRecReq);
-        if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
-          console.log('loading req cust data');
-          this.registrationForm.reset();
-          this.disableFullForm();
-          console.log('data chanaging in applicant reg', data);
-          this.checkForUserRequest();
-        } else {
-          if (!this.isNewReqDataLoaded) {
-            this.clearMesgBanner(); // requires, if cust recorde deleted and if user selects new reg in same stepper
-            this.enableFullForm();
-            this.loadInitDataForNewRegistraion();
-            console.log('loading new data');
-            this.isNewReqDataLoaded = true;
+      if (this.checkIsNewRegistration(data)) {
+        this.custRecFormData = [];
+        this.isNewRegForm = true;
+        this.loadFormAsNewReg();
+        this.selectedStepper.next({
+          isCustRecReq: false,
+          stepName: CustomerConstants.STEPPER_LABLES.step3Label
+        });
+        return; // stop if only new reg request
+      } else {
+        if (this.custRecFormData.length === 0) { // only if first time coming to screen get data from backend
+          this.isNewRegForm = !(data?.isCustRecReq);
+          if (!this.isNewRegForm && data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+            this.registrationForm.reset();
+            this.disableFullForm();
+            this.checkForUserRequest();
           }
+        } else {
+          // dont write code here again this will be exceuted after clicking NEXT btn
         }
       }
     });
+  }
+
+  checkIsNewRegistration(data: any): boolean {
+    if (data && data?.isNewBtnClicked && data?.stepName === CustomerConstants.STEPPER_LABLES.step1Label) {
+      return true;
+    }
+
+    return false;
+  }
+
+  loadFormAsNewReg() {
+    if (!this.isNewReqDataLoaded) { // if we come back frm step 3 or 4 to we should populate entered values
+      this.registrationForm.reset();
+      this.clearMesgBanner();
+      this.enableFullForm();
+      this.loadInitDataForNewRegistraion();
+      console.log('new reg default data loaded...');
+      this.isNewReqDataLoaded = true;
+    }
   }
 
   selectedAction(action: string) {
@@ -154,6 +176,7 @@ export class ApplicantRegComponent implements OnInit {
     if (!this.custRecFormData[0]?.gender) {
       this.registrationForm.get('gender')?.setValue('M');
     }
+    document.getElementById('aadhaarNo')?.focus();
   }
 
   cancelFormAction() {
@@ -288,10 +311,10 @@ export class ApplicantRegComponent implements OnInit {
 
       if (this.custRecFormData[0]?.isCompleted) {
         this.enableNextBtn = true;
-        this.nextBtnSelected();
+        // this.nextBtnSelected();
       }
     } else {
-      // this.errorMessage.message = 'customer data not loaded';
+      this.errorMessage.message = `Error While loading customer data '_id not found`;
     }
   }
 
@@ -380,7 +403,7 @@ export class ApplicantRegComponent implements OnInit {
       this.custRecFormData = response.custRec;
       if (response.custRec[0]?.isCompleted) {
         this.enableNextBtn = true;
-        this.nextBtnSelected();
+        // this.nextBtnSelected();
       }
       this.updatePostMark(this.custRecFormData[0]);
       this.disableFullForm();

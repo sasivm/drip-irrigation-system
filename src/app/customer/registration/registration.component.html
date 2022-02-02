@@ -1,7 +1,7 @@
 <mat-horizontal-stepper linear id="myStepper" (selectionChange)="selectionChange($event)">
     <!-- Process Type -->
     <mat-step [label]="stepperLabels?.step1Label" [completed]="completedState.step1">
-        <app-reg-type></app-reg-type>
+        <app-reg-type [selectedStepper]="selectedStepperSubject"></app-reg-type>
     </mat-step>
 
     <!-- Process 1 -->

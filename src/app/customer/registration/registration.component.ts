@@ -33,7 +33,12 @@ export class RegistrationComponent implements OnInit {
   ngOnInit() {
     this.selectedStepperSubject.subscribe(data => {
       const moveToNext: boolean = data.isNext ?? false;
-      if (data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
+
+      if (data.stepName === CustomerConstants.STEPPER_LABLES.step1Label) {
+        this.goForwardOnStepper();
+        return;
+      }
+      else if (data.stepName === CustomerConstants.STEPPER_LABLES.step2Label) {
         console.log('Reg event triggered');
         if (data?.isCompleted) {
           console.log('next step', data?.isCompleted);

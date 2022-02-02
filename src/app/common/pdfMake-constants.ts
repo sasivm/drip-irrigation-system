@@ -92,6 +92,11 @@ export class PDFMakeConstants {
         AbstractCol3: {
             alignment: 'center'
         },
+        columnCompanyMark: {
+            fontSize: 9,
+            bold: true,
+            alignment: 'center'
+        },
         docTamil: {
             font: 'Baloo2'
         },

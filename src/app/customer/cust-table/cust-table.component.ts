@@ -1,6 +1,6 @@
 
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, Input, OnChanges, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,11 +16,13 @@ import { CustTableBulkService } from '../../services/cust-table-bulk.service';
   templateUrl: './cust-table.component.html',
   styleUrls: ['./cust-table.component.scss']
 })
-export class CustTableComponent implements AfterViewInit, OnChanges {
+export class CustTableComponent implements AfterViewInit, OnChanges, OnInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
   @Input() custDataArray: any[] = [];
+  checkBoxArrayList: boolean[] = new Array(this.custDataArray.length).fill(false);
+  selectedRecords: any[] = [];
 
   constructor(private _bulkService: CustTableBulkService, private _custService: CustServiceService, private router: Router,
     private datepipe: DatePipe, private route: ActivatedRoute) { }
@@ -28,7 +30,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
   COL_NAME_TO_FIELD_NAME: any = ExcelFileConstants.EXCEL_FILE_COL_AND_FIELD_MAP;
 
   custDataSource: MatTableDataSource<any> = new MatTableDataSource();
-  displayedColumns: string[] = ExcelFileConstants.CUST_TABLE_VISIBLE_HEADERS;
+  displayedColumns: string[] = [];
 
   sucessMessage: string = '';
   errorMessage: TableErrorMessage = {
@@ -37,6 +39,10 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
   };
 
   loadSpinner: boolean = false;
+
+  ngOnInit() {
+    this.displayedColumns = ['action', ...ExcelFileConstants.CUST_TABLE_VISIBLE_HEADERS];
+  }
 
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
@@ -56,16 +62,20 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
     const custDataChange: SimpleChange = changes.custDataArray;
     if (custDataChange.currentValue) {
       this.custDataArray = custDataChange.currentValue;
+      this.checkBoxArrayList = new Array((this.custDataArray.length - 1)).fill(false); // excluding header
+      this.selectedRecords = [];
       this.loadCustomerDetailsToTable();
-
       this.resetMessages();
     }
-
     this.custDataSource.paginator = this.paginator;
   }
 
-  loadCustomerDetailsToTable() {
+  setCheckBoxIdx(event: any, idx: number) {
+    const isChecked = !!(event?.target && event.target?.checked);
+    this.checkBoxArrayList[idx] = isChecked;
+  }
 
+  loadCustomerDetailsToTable() {
     for (let i = 1; i < this.custDataArray.length; i++) {
       const custRecord: any[] = this.custDataArray[i];
       const custRecObject: any = {};
@@ -82,26 +92,26 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
       custRecObject['workOrderDate'] = date;
 
       this.custDataSource.data.push(custRecObject);
-      // console.log('customer obj', custRecObject);
     }
-
-    // console.log('heders', this.displayedColumns);
-    // console.log('data', this.custDataSource.data);
-    // console.log('Excel Array', this.custDataArray);
-
   }
 
-  selectedRow(idx: number) {
-    console.log(this.custDataSource.data[idx]);
+  getCustomerSelectedRecords(checkedList: boolean[]) {
+    const result: any[] = [];
+    for (let i = 0; i < checkedList.length; i++) {
+      if (checkedList[i] === true) {
+        result.push(this.custDataSource.data[i]);
+      }
+    }
+    return result;
   }
 
-  prepareCustomerRecords() {
+  prepareCustomerRecords(recordsList: any[]) {
     const surveyListsSplitExp: string = ' , ';
     const surveyDivsionSplitExp: string = '/';
 
     const custReqArr: any[] = [];
-    for (let i = 0; i < this.custDataSource.data.length; i++) {
-      const custRec = { ...this.custDataSource.data[i] };
+    for (let i = 0; i < recordsList.length; i++) {
+      const custRec = { ...recordsList[i] };
 
       const subDivList: any[] = [];
       const surveyNoList: any[] = [];
@@ -138,23 +148,39 @@ export class CustTableComponent implements AfterViewInit, OnChanges {
     return custReqArr;
   }
 
-  bulkRegister() {
+  submitRecords(type: string = 'ALL') {
     if (this.custDataSource.data.length > 0) {
       this.loadSpinner = true;
       this.resetMessages();
 
-      const custRequest: any[] = this.prepareCustomerRecords();
+      let custRequest: any[] = [];
+      if (type === 'ALL') {
+        custRequest = this.prepareCustomerRecords(this.custDataSource.data);
+      } else {
+        this.selectedRecords = this.getCustomerSelectedRecords(this.checkBoxArrayList);
+        custRequest = this.prepareCustomerRecords(this.selectedRecords);
+      }
+
+      if (custRequest.length === 0) {
+        return;
+      }
 
       this._bulkService.sendBulkCustData(custRequest).subscribe((data: BulkCustomerResponse) => {
         if (data.isSuccess) {
-          this.displayedColumns.unshift('action');
+          // this.displayedColumns.unshift('action');
           this.sucessMessage = data.message;
         } else {
           const resposeMessage: string = data.message || 'Failed while saving...'
           this.errorMessage.message = resposeMessage;
 
           if (data.invalidRecordAt > 0) {
-            this.errorMessage.desc = `Record at ${data.invalidRecordAt} is not valid...`;
+            let invalid_appId = '';
+            if (type === 'ALL') {
+              invalid_appId = this.custDataSource.data[data.invalidRecordAt].applicationId;
+            } else {
+              invalid_appId = this.selectedRecords[data.invalidRecordAt - 1].applicationId;
+            }
+            this.errorMessage.desc = `Applicant Id ${invalid_appId} is already exist...`;
           }
         }
         this.loadSpinner = false;

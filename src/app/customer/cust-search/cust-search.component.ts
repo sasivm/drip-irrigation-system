@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,7 +13,7 @@ import { CustServiceService } from 'src/app/services/cust-service.service';
   templateUrl: './cust-search.component.html',
   styleUrls: ['./cust-search.component.scss']
 })
-export class CustSearchComponent implements AfterViewInit {
+export class CustSearchComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: any;
 
@@ -47,9 +47,9 @@ export class CustSearchComponent implements AfterViewInit {
 
   loadProgresser: boolean = false;
 
-  // ngOnInit() {
-  //   // this.searchCustomers();
-  // }
+  ngOnInit() {
+    document.getElementById('applicationId')?.focus();
+  }
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
   }
@@ -91,11 +91,13 @@ export class CustSearchComponent implements AfterViewInit {
   }
 
   viewCustRecReq(custRecord: any) {
+    this._custService.removeCustomerRecordAndReqFromSession();
     this._custService.setCustomerRecordOnSession([custRecord]);
     this.router.navigate(['/drips/docs']);
   }
 
   saveCustRecReq(applicationId: string) {
+    this._custService.removeCustomerRecordAndReqFromSession();
     const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
     if (isSaved) {
       this.router.navigate(['../register'], { relativeTo: this.route });

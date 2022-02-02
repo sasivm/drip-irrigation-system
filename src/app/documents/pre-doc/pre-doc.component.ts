@@ -26,7 +26,8 @@ export class PreDocComponent implements AfterContentInit {
     surveyAndSubDivNo: '', // surveyNo and subDivisionNo comes as array and convet to string
     appliedArea: '',
     PMKSYYear: 'PMKSY 2020 - 2021', // not sure about the data
-    preInspectedDate: '' // not sure about the data
+    preInspectedDate: '', // not sure about the data
+    miCompany: ''
   };
 
   DOC_HEADER_CONTENT: Content = [
@@ -35,13 +36,6 @@ export class PreDocComponent implements AfterContentInit {
       margin: [0, 0, 0, 30] // R T L B
     }
   ];
-
-  CompanyNameContent: Content = {
-    text: [
-      { text: 'Vedanta ', color: 'blue', style: 'boldText' },
-      { text: 'Irrigation Systems Pvt. Ltd.', style: 'boldText' },
-    ]
-  };
 
   LINE1_CONTENT: Content = [];
 
@@ -55,17 +49,7 @@ export class PreDocComponent implements AfterContentInit {
 
   LINE6_CONTENT: Content = [];
 
-  LINE7_CONTENT: Content = {
-    // layout: 'noBorders',
-    style: ['rowLineContent'],
-    table: {
-      body: [
-        [
-          { text: this.CompanyNameContent, border: PDFMakeConstants.TABLE_CELL_NO_BORDER }
-        ],
-      ]
-    }
-  };
+  LINE7_CONTENT: Content = [];
 
   DOC_BODY_CONTENTS: Content[] = [];
   DOC_FOOTER_CONTENT: Content[] = [];
@@ -193,6 +177,18 @@ export class PreDocComponent implements AfterContentInit {
           ],
         ],
         widths: ['25%', '75%']
+      }
+    };
+
+    this.LINE7_CONTENT = {
+      // layout: 'noBorders',
+      style: ['rowLineContent'],
+      table: {
+        body: [
+          [
+            { text: this.PRE_DOC_CUSTOMER_DATA.miCompany.toUpperCase(), border: PDFMakeConstants.TABLE_CELL_NO_BORDER, style: 'boldText' }
+          ],
+        ]
       }
     };
 

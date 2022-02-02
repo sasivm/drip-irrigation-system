@@ -42,7 +42,13 @@ export class MiLandDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.selectedStepper.subscribe(data => {
-      if (data.isCustRecReq && data.stepName === CustomerConstants.STEPPER_LABLES.step3Label) {
+      const applicant_id = this._custService.getRequestedCustApplictionIdFromSession();
+      if (applicant_id === null) {
+        this.miLandForm.reset();
+        this.clearMesgBanner();
+        this.enableFullForm();
+        return;
+      } else if (data.isCustRecReq && data.stepName === CustomerConstants.STEPPER_LABLES.step3Label) {
         const customerRec: any[] = this._custService.getLoadedCustomerRecord();
         console.log('cust rec', customerRec);
         if (customerRec.length === 1) {
@@ -61,7 +67,7 @@ export class MiLandDetailsComponent implements OnInit {
   loadLandDetails(landRecord: MILandRecord) {
     console.log('mi rec', landRecord);
     this.miLandForm.patchValue(landRecord);
-    
+
     if (landRecord.cropLandType && landRecord.cropLandType?.trim()) {
       this.enableNextBtn = true;
     }
@@ -98,6 +104,12 @@ export class MiLandDetailsComponent implements OnInit {
   clearMesgBanner() {
     this.sucessMessage = '';
     this.errorMessage = { message: '', desc: '' };
+  }
+
+  enableFullForm() {
+    this.miLandForm.get('cropType')?.enable();
+    this.miLandForm.get('miType')?.enable();
+    this.miLandForm.get('cropLandType')?.enable();
   }
 
   resetFormData() {

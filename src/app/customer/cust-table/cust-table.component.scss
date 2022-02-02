@@ -2,9 +2,16 @@ table td,
 table th {
     padding: 2px 10px;
     font-size: 0.8rem;
+    position: relative;
 }
 
-.mat-button, .mat-flat-button {
+.cpy-btn-align {
+    position: absolute;
+    right: 1.7vw;;
+}
+
+.mat-button,
+.mat-flat-button {
     line-height: 1.8rem !important;
 }
 
@@ -13,7 +20,8 @@ table th {
     min-width: 100px;
 }
 
-.mat-column-Srl-No {
+.mat-column-Srl-No,
+.mat-column-action {
     min-width: 60px;
 }
 
@@ -37,4 +45,9 @@ table th {
 
 .mat-column-Current-Status-Date {
     min-width: 110px;
+}
+
+.action-checkbox {
+    width: 1.5vw !important;
+    height: 4vh !important;
 }

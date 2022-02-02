@@ -35,7 +35,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     const isUserLoggedOut = this.route.snapshot.queryParamMap.get('loggedOut');
     if (isUserLoggedOut) {
-      this.isLoggedOut = (isUserLoggedOut === 'true');
+      const isLogOutSuccess = sessionStorage.getItem('log-out');
+      if (isLogOutSuccess) {
+        this.isLoggedOut = (isUserLoggedOut === 'true');
+        sessionStorage.removeItem('log-out');
+      }
     }
 
     if (!this.isLoggedOut && environment.envName === 'prod') {

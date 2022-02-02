@@ -48,5 +48,6 @@ export class AuthService {
   __removeUserFromSession(): void {
     sessionStorage.removeItem('auth-token');
     sessionStorage.removeItem('admin-rec');
+    sessionStorage.setItem('log-out', 'true');
   }
 }

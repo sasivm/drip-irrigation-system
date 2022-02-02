@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,16 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'drip-irrigation-system';
 
-  constructor() { }
+  loadingRouteConfig: boolean = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof RouteConfigLoadStart) {
+        this.loadingRouteConfig = true;
+      } else if (event instanceof RouteConfigLoadEnd) {
+        this.loadingRouteConfig = false;
+      }
+    });
+  }
 
 }

@@ -248,8 +248,8 @@ tr.mat-row:nth-child(even) {
 }
 
 .mat-progress-bar {
-  height: 10px;
-  padding: 10px 0;
+  height: 0.5vh !important;
+  padding: 0.8vh 0;
 }
 .mat-progress-bar .mat-progress-bar-buffer {
   @include secondary-theme();
@@ -272,7 +272,8 @@ tr.mat-row:nth-child(even) {
   }
 
   .mat-menu-item:hover {
-    a, a span{
+    a,
+    a span {
       font-weight: 500 !important;
       color: #000 !important;
     }
@@ -295,8 +296,9 @@ tr.mat-row:nth-child(even) {
 * below code only for mobile devices 
 */
 @media only screen and (max-width: 600px) {
-  h1, h2 {
-    font-size: 3.0vh !important;
+  h1,
+  h2 {
+    font-size: 3vh !important;
     b {
       font-size: 2.3vh !important;
     }
@@ -314,8 +316,8 @@ tr.mat-row:nth-child(even) {
   }
 
   .custom-file {
-     margin-left: 6vw !important;
-    
+    margin-left: 6vw !important;
+
     .upload-file-label {
       text-align: left !important;
     }

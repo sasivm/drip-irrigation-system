@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustServiceService } from '../services/cust-service.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-docs-view',
@@ -9,7 +10,7 @@ import { CustServiceService } from '../services/cust-service.service';
 })
 export class DocsViewComponent implements OnInit {
 
-  constructor(private _custService: CustServiceService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private _custService: CustServiceService, private router: Router, private route: ActivatedRoute, private _pdfService: DataService) { }
 
   docList: any[] = [
     { name: 'SFMF', link: 'sfmf', desc: 'Small and Marginal Farmer Verification Certificate' },
@@ -31,7 +32,7 @@ export class DocsViewComponent implements OnInit {
       if (customerRecArr[0].applicationId) {
         this.applicationId = customerRecArr[0]?.applicationId;
         this.customerName = customerRecArr[0]?.farmerName;
-        this.router.navigate(['sfmf'], { relativeTo: this.route });
+        this.router.navigate(['jvr'], { relativeTo: this.route });
       } else {
         this.errorMessage = 'There were missing data about customer. Please reload the page or select customer record again.';
       }
@@ -39,6 +40,11 @@ export class DocsViewComponent implements OnInit {
       this.errorMessage = 'Please Select the customer before viewing the documents.';
       this.docList = [];
     }
+  }
+
+  onActiveOutlet() {
+    const emptySrc: string = '';
+    this._pdfService.updateFrameSrc(emptySrc);
   }
 
 }

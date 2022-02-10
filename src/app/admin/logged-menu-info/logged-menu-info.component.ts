@@ -19,17 +19,19 @@ export class LoggedMenuInfoComponent implements OnInit {
   }
 
   selectedItem(action: string) {
+    if (action === 'logout') {
+      this.logoutUser();
+      return;
+    }
+
     let selectedScreen = 'admin/account';
 
-    if (action === 'view') {
-      selectedScreen = 'admin/view';
+    if (action === 'profile') {
+      selectedScreen = 'admin/account';
+    } else if (action === 'manage') {
+      selectedScreen = 'admin/search';
     }
-
-    if (action !== 'logout') {
-      this.router.navigate([selectedScreen], { relativeTo: this.route });
-    } else if (action === 'logout') {
-      this.logoutUser();
-    }
+    this.router.navigate([selectedScreen], { relativeTo: this.route });
   }
 
   logoutUser() {

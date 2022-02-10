@@ -14,12 +14,13 @@ import { DatePipe } from '@angular/common';
 // screen components
 import { LoginComponent } from './login/login.component';
 import { ForgetPasswordComponent } from './login/forget-password/forget-password.component';
+import { JvrDocComponent } from './documents/jvr-doc/jvr-doc.component';
 
 // custom modules for application
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, ForgetPasswordComponent
+    AppComponent, LoginComponent, ForgetPasswordComponent, JvrDocComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule,

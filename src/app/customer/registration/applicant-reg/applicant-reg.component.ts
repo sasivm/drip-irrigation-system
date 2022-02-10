@@ -401,6 +401,7 @@ export class ApplicantRegComponent implements OnInit {
     if (response.isSuccess) {
       this.sucessMessage = response.message;
       this.custRecFormData = response.custRec;
+      this._custService.setCustomerRecordOnSession(response.custRec);
       if (response.custRec[0]?.isCompleted) {
         this.enableNextBtn = true;
         // this.nextBtnSelected();

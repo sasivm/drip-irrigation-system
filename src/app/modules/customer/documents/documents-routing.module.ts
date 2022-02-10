@@ -7,6 +7,7 @@ import { SfmfDocComponent } from '../../../documents/sfmf-doc/sfmf-doc.component
 import { VerificationDocComponent } from '../../../documents/verification-doc/verification-doc.component';
 import { WorkCompleteComponent } from 'src/app/documents/work-complete/work-complete.component';
 import { DocsViewComponent } from 'src/app/documents/docs-view.component';
+import { JvrDocComponent } from 'src/app/documents/jvr-doc/jvr-doc.component';
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
       { path: 'verification', component: VerificationDocComponent },
       { path: 'pre', component: PreDocComponent },
       { path: 'wrk-complete', component: WorkCompleteComponent },
-      { path: 'pmksy', component: PmksyDocComponent }
+      { path: 'pmksy', component: PmksyDocComponent },
+      { path: 'jvr', component: JvrDocComponent }
     ]
   }
 ];

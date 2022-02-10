@@ -1,4 +1,4 @@
-<div mat-menu-item (click)="selectedItem('account')">
+<div mat-menu-item (click)="selectedItem('profile')">
     <a class="row align-items-center justify-content-between px-3">
         <span>
             <mat-icon mat-list-icon> person </mat-icon> {{adminName}}
@@ -7,17 +7,11 @@
         <mat-icon mat-list-icon> arrow_right </mat-icon>
     </a>
 </div>
-<button mat-menu-item (click)="selectedItem('sub-manage')">
+<button mat-menu-item (click)="selectedItem('manage')">
     <a>
         <mat-icon mat-list-icon> manage_accounts </mat-icon> Manage sub admins
     </a>
 </button>
-<button mat-menu-item (click)="selectedItem('account')">
-    <a>
-        <mat-icon mat-list-icon> https </mat-icon> Change Password
-    </a>
-</button>
-
 <hr>
 <button mat-menu-item (click)="selectedItem('logout')">
     <a>

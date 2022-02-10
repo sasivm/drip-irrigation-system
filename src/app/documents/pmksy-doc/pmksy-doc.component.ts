@@ -179,8 +179,8 @@ export class PmksyDocComponent implements AfterContentInit {
   }
 
   getPMKSYYear(applicationId: string) {
-    const id = applicationId.trim();
-    const result = applicationId.slice(-7);
+    const appId = applicationId.trim();
+    const result = appId.slice(-7);
     return result;
   }
 }

@@ -108,6 +108,17 @@ export class PDFMakeConstants {
         companyMarker: {
             bold: true,
             fontSize: 10
-        }
+        },
+        jvr_header_title: {
+            fontSize: 12,
+            alignment: 'center',
+            bold: true
+        },
+        jvr_leftColumnTxt: {
+            margin: [8, 0]
+        },
+        jvr_mi_comp_signature: {
+            alignment: 'left'
+        },
     }
 }

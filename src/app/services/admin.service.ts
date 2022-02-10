@@ -31,4 +31,9 @@ export class AdminService {
     const customerSearch: string = this.REST_API_SERVER + '/admin/search';
     return this._http.post<any>(customerSearch, request);
   }
+
+  deleteAdminRecord(adminId: string) {
+    const adminDelete: string = this.REST_API_SERVER + '/admin/delete/' + adminId;
+    return this._http.delete<any>(adminDelete);
+  }
 }

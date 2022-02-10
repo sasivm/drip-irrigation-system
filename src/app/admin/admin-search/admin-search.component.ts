@@ -17,11 +17,9 @@ export class AdminSearchComponent {
   adminSearch: FormGroup = this.fb.group({
     _id: [''],
     firstName: [''],
-    adminRole: ['admin'],
-    email: ['']
+    email: [''],
+    lastName: ['']
   });
-
-  adminRoleList: OptionList[] = GlobalConstants.ADMIN_ROLELIST;
 
   loadProgresser: boolean = false;
 
@@ -39,7 +37,7 @@ export class AdminSearchComponent {
 
   searchAdmins() {
     this.sucessMessage = '';
-    this.errorMessage = {message: '', desc: ''};
+    this.errorMessage = { message: '', desc: '' };
 
     const isFormValid = this.validateAdminSearch();
     if (!isFormValid) {
@@ -48,13 +46,13 @@ export class AdminSearchComponent {
     }
 
     const searchRequest = this.adminSearch.value;
-    delete searchRequest.adminRole;
 
     this._adminServ.searchCustomersDetails(searchRequest).subscribe(response => {
       if (response && response.adminRec && response.adminRec.length > 0) {
         this.adminDataSource.data = response.adminRec;
       } else {
         this.errorMessage.message = 'No record found';
+        this.adminDataSource.data = [];
       }
     }, err => {
       if (err.name === 'HttpErrorResponse') {
@@ -68,25 +66,44 @@ export class AdminSearchComponent {
 
   validateAdminSearch() {
     const searchForm = this.adminSearch.value;
-    if (searchForm._id || searchForm.firstName || searchForm.email) {
+    if (searchForm._id || searchForm.firstName || searchForm.email || searchForm.lastName) {
       return true;
     }
     return false;
   }
 
-  viewAdminRec(adminId: string) {
+  deleteAdmin(adminId: string) {
+    this.clearMsgBanner();
 
+    this._adminServ.deleteAdminRecord(adminId).subscribe(response => {
+      if (response && response.isSuccess) {
+        this.sucessMessage = response.message;
+      } else {
+        this.errorMessage.message = response.message;
+      }
+    }, err => {
+      if (err.name === 'HttpErrorResponse') {
+        this.errorMessage.message = err?.error?.message ?? err.message;
+        this.errorMessage.desc = err.statusText;
+      } else {
+        this.errorMessage.message = err.message;
+      }
+    });
+  }
+
+  clearMsgBanner() {
+    this.sucessMessage = '';
+    this.errorMessage = { message: '', desc: '' };
   }
 
   resetForm() {
-    this.sucessMessage = '';
-    this.errorMessage = {message: '', desc: ''};
+    this.clearMsgBanner();
 
     this.adminSearch.get('_id')?.reset('');
     this.adminSearch.get('firstName')?.reset('');
-    this.adminSearch.get('adminRole')?.reset('');
     this.adminSearch.get('email')?.reset('');
+    this.adminSearch.get('lastName')?.reset('');
   }
-  
+
 
 }

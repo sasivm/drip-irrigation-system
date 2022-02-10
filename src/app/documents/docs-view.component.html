@@ -27,7 +27,7 @@
             <!-- <app-sfmf-doc></app-sfmf-doc> -->
             <!-- <app-verification-doc></app-verification-doc> -->
             <iframe id="printPdf" name="printPdf" height="700" class="col px-0"></iframe>
-            <router-outlet></router-outlet>
+            <router-outlet (activate)='onActiveOutlet()'></router-outlet>
         </div>
     </div>
 </div>

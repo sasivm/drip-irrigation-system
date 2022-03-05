@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { RouterConstants } from 'src/app/common/router-constants';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -37,7 +38,7 @@ export class LoggedMenuInfoComponent implements OnInit {
   logoutUser() {
     this._authService.__removeUserFromSession();
     const logOutQueryParams: NavigationExtras = { queryParams: { loggedOut: true } };
-    this.router.navigate(['login'], logOutQueryParams);
+    this.router.navigate([RouterConstants.LOGIN], logOutQueryParams);
   }
 
 }

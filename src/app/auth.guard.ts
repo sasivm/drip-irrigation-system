@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivateChild, Router } from '@angular/router';
+import { RouterConstants } from './common/router-constants';
 import { AuthService } from './services/auth.service';
 
 @Injectable({
@@ -12,7 +13,7 @@ export class AuthGuard implements CanActivateChild {
     if (this._authService.isAdminLoggedIn()) {
       return true;
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate([RouterConstants.EMPTY_REDIRECT_PATH]);
       return false;
     }
   }

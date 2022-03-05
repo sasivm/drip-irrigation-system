@@ -4,6 +4,7 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChange, Simpl
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouterConstants } from 'src/app/common/router-constants';
 import { GlobalConstants } from '../../common/app.global-constant';
 import { ExcelFileConstants } from '../../common/excelFile-constant';
 import { TableErrorMessage } from '../../common/models/common-types';
@@ -51,7 +52,7 @@ export class CustTableComponent implements AfterViewInit, OnChanges, OnInit {
   saveCustRecReq(applicationId: string) {
     const isReqSaved: boolean = this._custService.setCustomerReqOnSession(applicationId);
     if (isReqSaved) {
-      this.router.navigate(['../register'], { relativeTo: this.route });
+      this.router.navigate([RouterConstants.BACK_TO_REGISTATION], { relativeTo: this.route });
     }
   }
 

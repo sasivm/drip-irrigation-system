@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterConstants } from '../common/router-constants';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -13,11 +14,11 @@ export class SidenavComponent implements OnInit {
   adminName: string = 'Sasi Kumar';
 
   navListItems: any[] = [
-    { scrName: 'Register', link: 'register', icon: 'dashboard' },
-    { scrName: 'Bulk Register', link: 'bulk-register', icon: 'assignment' },
-    { scrName: 'Search', link: 'search', icon: 'person_search' },
+    { scrName: 'Register', link: RouterConstants.REGISTERATION, icon: 'dashboard' },
+    { scrName: 'Bulk Register', link: RouterConstants.BULK_REGISTERATION, icon: 'assignment' },
+    { scrName: 'Search', link: RouterConstants.CUST_SEARCH, icon: 'person_search' },
     // { scrName: 'Subsidy Calc', link: 'subs-calc', icon: 'calculate' },
-    { scrName: 'Docments', link: 'docs', icon: 'menu_book' },
+    { scrName: 'Docments', link: RouterConstants.DOCS_MODEULE, icon: 'menu_book' },
   ];
 
   constructor(private _auth: AuthService) { }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RouterConstants } from '../common/router-constants';
 import { CustServiceService } from '../services/cust-service.service';
 import { DataService } from '../services/data.service';
 
@@ -13,12 +14,12 @@ export class DocsViewComponent implements OnInit {
   constructor(private _custService: CustServiceService, private router: Router, private route: ActivatedRoute, private _pdfService: DataService) { }
 
   docList: any[] = [
-    { name: 'SFMF', link: 'sfmf', desc: 'Small and Marginal Farmer Verification Certificate' },
-    { name: 'VERIFICATION', link: 'verification', desc: 'Verification Certificate' },
-    { name: 'PRE', link: 'pre', desc: 'Pre Inspection Report' },
-    { name: 'WORK COMPLETION', link: 'wrk-complete', desc: 'Work Completion Certificate' },
-    { name: 'PMKSY', link: 'pmksy', desc: 'Pradhan Mantri Krishi Sinchayee Yojana' },
-    { name: 'JVR', link: 'jvr', desc: 'Joint Verification Report' }
+    { name: 'SFMF', link: RouterConstants.SFMF_DOC, desc: 'Small and Marginal Farmer Verification Certificate' },
+    { name: 'VERIFICATION', link: RouterConstants.VERIFICATION_DOC, desc: 'Verification Certificate' },
+    { name: 'PRE', link: RouterConstants.PRE_DOC, desc: 'Pre Inspection Report' },
+    { name: 'WORK COMPLETION', link: RouterConstants.WORK_COMP_DOC, desc: 'Work Completion Certificate' },
+    { name: 'PMKSY', link: RouterConstants.PMKSY_DOC, desc: 'Pradhan Mantri Krishi Sinchayee Yojana' },
+    { name: 'JVR', link: RouterConstants.JVR_DOC, desc: 'Joint Verification Report' }
   ];
 
   applicationId: string = 'Applicant Id';
@@ -32,7 +33,7 @@ export class DocsViewComponent implements OnInit {
       if (customerRecArr[0].applicationId) {
         this.applicationId = customerRecArr[0]?.applicationId;
         this.customerName = customerRecArr[0]?.farmerName;
-        this.router.navigate(['jvr'], { relativeTo: this.route });
+        this.router.navigate([RouterConstants.SFMF_DOC], { relativeTo: this.route });
       } else {
         this.errorMessage = 'There were missing data about customer. Please reload the page or select customer record again.';
       }

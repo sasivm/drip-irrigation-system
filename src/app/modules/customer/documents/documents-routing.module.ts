@@ -8,16 +8,17 @@ import { VerificationDocComponent } from '../../../documents/verification-doc/ve
 import { WorkCompleteComponent } from 'src/app/documents/work-complete/work-complete.component';
 import { DocsViewComponent } from 'src/app/documents/docs-view.component';
 import { JvrDocComponent } from 'src/app/documents/jvr-doc/jvr-doc.component';
+import { RouterConstants } from 'src/app/common/router-constants';
 
 const routes: Routes = [
   {
-    path: '', component: DocsViewComponent, children: [
-      { path: 'sfmf', component: SfmfDocComponent },
-      { path: 'verification', component: VerificationDocComponent },
-      { path: 'pre', component: PreDocComponent },
-      { path: 'wrk-complete', component: WorkCompleteComponent },
-      { path: 'pmksy', component: PmksyDocComponent },
-      { path: 'jvr', component: JvrDocComponent }
+    path: RouterConstants.EMPTY_PATH, component: DocsViewComponent, children: [
+      { path: RouterConstants.SFMF_DOC, component: SfmfDocComponent },
+      { path: RouterConstants.VERIFICATION_DOC, component: VerificationDocComponent },
+      { path: RouterConstants.PRE_DOC, component: PreDocComponent },
+      { path: RouterConstants.WORK_COMP_DOC, component: WorkCompleteComponent },
+      { path: RouterConstants.PMKSY_DOC, component: PmksyDocComponent },
+      { path: RouterConstants.JVR_DOC, component: JvrDocComponent }
     ]
   }
 ];

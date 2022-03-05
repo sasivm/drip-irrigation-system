@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalConstants } from 'src/app/common/app.global-constant';
 import { OptionList, TableErrorMessage } from 'src/app/common/models/common-types';
 import { CustomerResponse } from 'src/app/common/models/customer';
+import { RouterConstants } from 'src/app/common/router-constants';
 import { CustServiceService } from 'src/app/services/cust-service.service';
 
 @Component({
@@ -50,14 +51,30 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     document.getElementById('applicationId')?.focus();
   }
+  
   ngAfterViewInit() {
     this.custDataSource.paginator = this.paginator;
+  }
+
+  validateSearchForm() {
+    const searchForm = this.customerSearch.value;
+    if (searchForm.applicationId?.trim() || searchForm.farmerName?.trim() || searchForm.farmerType?.trim() || searchForm.fatherName?.trim() ||
+      searchForm.department?.trim() || searchForm.block?.trim() || searchForm.village?.trim()) {
+      return true;
+    }
+
+    return false;
   }
 
   searchCustomers() {
     this.clearMessageBanner();
     const searchRequest: any = this.customerSearch.value;
     console.log(searchRequest);
+
+    if (!this.validateSearchForm()) {
+      this.errorMessage.message = 'Please Enter value for any Field to search';
+      return;
+    }
 
     this.loadProgresser = true;
     this._custService.searchCustomersDetails(searchRequest).subscribe((response: CustomerResponse) => {
@@ -93,14 +110,14 @@ export class CustSearchComponent implements AfterViewInit, OnInit {
   viewCustRecReq(custRecord: any) {
     this._custService.removeCustomerRecordAndReqFromSession();
     this._custService.setCustomerRecordOnSession([custRecord]);
-    this.router.navigate(['/drips/docs']);
+    this.router.navigate([RouterConstants.DIRECT_TO_DOCS]);
   }
 
   saveCustRecReq(applicationId: string) {
     this._custService.removeCustomerRecordAndReqFromSession();
     const isSaved: boolean = this.setCustomerReqInStorage(applicationId);
     if (isSaved) {
-      this.router.navigate(['../register'], { relativeTo: this.route });
+      this.router.navigate([RouterConstants.BACK_TO_REGISTATION], { relativeTo: this.route });
     }
   }
 

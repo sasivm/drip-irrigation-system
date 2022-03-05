@@ -8,6 +8,9 @@ import { AuthService } from './auth.service';
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
+  private readonly AUTHORIZATION_HEADER = 'Authorization';
+  private readonly AUTHORIZATION_HEADER_PREFIX = 'Bearer ';
+
   constructor(private _authService: AuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,7 +20,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     }
 
     const clonedRequest = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${token}`)
+      headers: req.headers.set(this.AUTHORIZATION_HEADER, `${this.AUTHORIZATION_HEADER_PREFIX}${token}`)
     });
 
     return next.handle(clonedRequest);

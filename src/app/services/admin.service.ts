@@ -36,4 +36,9 @@ export class AdminService {
     const adminDelete: string = this.REST_API_SERVER + '/admin/delete/' + adminId;
     return this._http.delete<any>(adminDelete);
   }
+
+  validateAuthToken(): Observable<any> {
+    const adminLogin = this.REST_API_SERVER + '/auth/token';
+    return this._http.get(adminLogin);
+  }
 }

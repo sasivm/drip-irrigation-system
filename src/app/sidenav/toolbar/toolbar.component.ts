@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
     const ENVIRONMENT_NAME = environment?.envName;
     if (ENVIRONMENT_NAME !== 'prod') {
-      this.app_title += `(${ENVIRONMENT_NAME})`;
+      this.app_title += `  (${ENVIRONMENT_NAME})`;
     }
   }
 

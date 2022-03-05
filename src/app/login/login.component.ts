@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { RouterConstants } from '../common/router-constants';
+import { StorageConstants } from '../common/StorageConstants';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
@@ -32,17 +34,19 @@ export class LoginComponent implements OnInit {
 
   isLoggedOut: boolean = false;
 
+  private readonly PROD_ENV_NAME = 'prod';
+
   ngOnInit() {
     const isUserLoggedOut = this.route.snapshot.queryParamMap.get('loggedOut');
     if (isUserLoggedOut) {
-      const isLogOutSuccess = sessionStorage.getItem('log-out');
+      const isLogOutSuccess = sessionStorage.getItem(StorageConstants.LOGOUT);
       if (isLogOutSuccess) {
         this.isLoggedOut = (isUserLoggedOut === 'true');
-        sessionStorage.removeItem('log-out');
+        sessionStorage.removeItem(StorageConstants.LOGOUT);
       }
     }
 
-    if (!this.isLoggedOut && environment.envName === 'prod') {
+    if (!this.isLoggedOut && environment.envName === this.PROD_ENV_NAME) {
       this.showPswModal = true;
     }
   }
@@ -95,7 +99,8 @@ export class LoginComponent implements OnInit {
           this.validateLoginResponse(response);
           this.isLoggedOut = true; // just showing message while lazy loading
           this.logoutMessage = 'Login verified successfully';
-          this.router.navigate(['drips/register']);
+          sessionStorage.removeItem(StorageConstants.LOGOUT);
+          this.router.navigate([RouterConstants.APP_HOME]);
         } catch (error) {
           this.errorMessage = error + '';
         }

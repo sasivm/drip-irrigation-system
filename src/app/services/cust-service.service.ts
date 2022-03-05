@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GlobalConstants } from '../common/app.global-constant';
 import { CustomerResponse } from '../common/models/customer';
+import { StorageConstants } from '../common/StorageConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -41,14 +42,14 @@ export class CustServiceService {
   setCustomerReqOnSession(applicationId: string) {
     if (applicationId) {
       const userReqString: string = JSON.stringify({ 'applicationId': applicationId });
-      sessionStorage.setItem('custRec-req', userReqString);
+      sessionStorage.setItem(StorageConstants.CUST_RECORD_REQUEST, userReqString);
       return true;
     }
     return false;
   }
 
   getRequestedCustApplictionIdFromSession(): string | null {
-    const requestStr = sessionStorage.getItem('custRec-req');
+    const requestStr = sessionStorage.getItem(StorageConstants.CUST_RECORD_REQUEST);
     if (!requestStr) {
       return null;
     }
@@ -62,7 +63,7 @@ export class CustServiceService {
   }
 
   getLoadedCustomerRecord(): any[] {
-    const custRecStr: string | null = sessionStorage.getItem('cust-rec');
+    const custRecStr: string | null = sessionStorage.getItem(StorageConstants.CUST_RECORD);
     if (!custRecStr) return [];
 
     const custRecord = JSON.parse(custRecStr);
@@ -74,13 +75,13 @@ export class CustServiceService {
   setCustomerRecordOnSession(custRecord: any[]) {
     if (custRecord.length === 1 && custRecord[0].applicationId) {
       const custRecStr: string = JSON.stringify(custRecord);
-      sessionStorage.setItem('cust-rec', custRecStr);
+      sessionStorage.setItem(StorageConstants.CUST_RECORD, custRecStr);
     }
   }
 
   removeCustomerRecordAndReqFromSession() {
-    sessionStorage.removeItem('cust-rec');
-    sessionStorage.removeItem('custRec-req');
+    sessionStorage.removeItem(StorageConstants.CUST_RECORD);
+    sessionStorage.removeItem(StorageConstants.CUST_RECORD_REQUEST);
   }
 
 }

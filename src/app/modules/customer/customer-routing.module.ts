@@ -5,24 +5,21 @@ import { SidenavComponent } from 'src/app/sidenav/sidenav.component';
 import { CustSearchComponent } from 'src/app/customer/cust-search/cust-search.component';
 import { BulkRegistorComponent } from 'src/app/customer/registration/bulk-registor/bulk-registor.component';
 import { RegistrationComponent } from 'src/app/customer/registration/registration.component';
+import { RouterConstants } from 'src/app/common/router-constants';
 
 const routes: Routes = [
   {
-    path: '', component: SidenavComponent, children: [
-      { path: '', redirectTo: 'register', pathMatch: 'full' },
-      { path: 'register', component: RegistrationComponent },
-      { path: 'bulk-register', component: BulkRegistorComponent },
-      { path: 'search', component: CustSearchComponent },
+    path: RouterConstants.EMPTY_PATH, component: SidenavComponent, children: [
+      { path: RouterConstants.EMPTY_PATH, redirectTo: RouterConstants.REGISTERATION, pathMatch: RouterConstants.PATH_MATCH_FULL },
+      { path: RouterConstants.REGISTERATION, component: RegistrationComponent },
+      { path: RouterConstants.BULK_REGISTERATION, component: BulkRegistorComponent },
+      { path: RouterConstants.CUST_SEARCH, component: CustSearchComponent },
       {
-        path: 'subs-calc',
-        loadChildren: () => import('./subsidy/subsidy.module').then((module) => module.SubsidyModule)
-      },
-      {
-        path: 'docs',
+        path: RouterConstants.DOCS_MODEULE,
         loadChildren: () => import('./documents/documents.module').then((module) => module.DocumentsModule)
       },
       {
-        path: 'admin',
+        path: RouterConstants.ADMIN_MODEULE,
         loadChildren: () => import('../admin/admin.module').then((module) => module.AdminModule)
       }
     ]

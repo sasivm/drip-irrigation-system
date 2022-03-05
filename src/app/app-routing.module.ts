@@ -2,19 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './auth.guard';
+import { RouterConstants } from './common/router-constants';
 
 import { ForgetPasswordComponent } from './login/forget-password/forget-password.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' }, //to view working scr
-  { path: 'login', component: LoginComponent },
-  { path: 'forget-password', component: ForgetPasswordComponent },
+  { path: RouterConstants.EMPTY_PATH, redirectTo: RouterConstants.EMPTY_REDIRECT_PATH, pathMatch: RouterConstants.PATH_MATCH_FULL }, //to view working scr
+  { path: RouterConstants.LOGIN, component: LoginComponent },
+  { path: RouterConstants.FORGET_PASSWORD, component: ForgetPasswordComponent },
   {
-    path: 'drips', canActivateChild: [AuthGuard],
+    path: RouterConstants.DRIP_MODEULE, canActivateChild: [AuthGuard],
     loadChildren: () => import('./modules/customer/customer.module').then((module) => module.CustomerModule)
   },
-  // { path: '**', redirectTo: '/login' }
+  { path: RouterConstants.INVALID_PATH_WILDCARD, redirectTo: RouterConstants.EMPTY_REDIRECT_PATH}
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StorageConstants } from '../common/StorageConstants';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,13 @@ export class AuthService {
   constructor() { }
 
   isAdminLoggedIn(): boolean {
-    const isLogged: boolean = !!(sessionStorage.getItem('auth-token'));
-    const isAdminRecExist: boolean = !!(sessionStorage.getItem('admin-rec'))
+    const isLogged: boolean = !!(sessionStorage.getItem(StorageConstants.AUTH_TOKEN));
+    const isAdminRecExist: boolean = !!(sessionStorage.getItem(StorageConstants.ADMIN_RECORD))
     return isLogged && isAdminRecExist;
   }
 
   getAdminFromSession(): any[] {
-    const adminRec: string | null = sessionStorage.getItem('admin-rec');
+    const adminRec: string | null = sessionStorage.getItem(StorageConstants.ADMIN_RECORD);
     if (!adminRec) return [];
 
     const adminProfile = JSON.parse(adminRec);
@@ -28,26 +29,26 @@ export class AuthService {
   storeAdminOnSession(adminRec: any[]) {
     if (adminRec.length === 1 && adminRec[0]._id) {
       const adminRecStr: string = JSON.stringify(adminRec);
-      sessionStorage.setItem('admin-rec', adminRecStr);
+      sessionStorage.setItem(StorageConstants.ADMIN_RECORD, adminRecStr);
     }
   }
 
   storeAuthTokenOnSession(token: string) {
     if (token && token.length > 5) {
-      sessionStorage.setItem('auth-token', token);
+      sessionStorage.setItem(StorageConstants.AUTH_TOKEN, token);
     }
   }
 
   getAuthTokenOnSession() {
-    return sessionStorage.getItem('auth-token');
+    return sessionStorage.getItem(StorageConstants.AUTH_TOKEN);
   }
 
   /**
     Removes all the sessionStorage related to admin detils in current session 
   */
   __removeUserFromSession(): void {
-    sessionStorage.removeItem('auth-token');
-    sessionStorage.removeItem('admin-rec');
-    sessionStorage.setItem('log-out', 'true');
+    sessionStorage.removeItem(StorageConstants.AUTH_TOKEN);
+    sessionStorage.removeItem(StorageConstants.ADMIN_RECORD);
+    sessionStorage.setItem(StorageConstants.LOGOUT, 'true');
   }
 }
